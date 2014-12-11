@@ -25,16 +25,20 @@
         <meta name="description" content="easyui help you build your web page easily!">
         <meta http-equiv="Cache-control" content="no-cache">
         <meta http-equiv="Cache-control" content="no-store">
-        <title>Registar Cuenta</title>
+        <title>IEGAMAR</title>
         <link rel="stylesheet" type="text/css" href="css/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/icon.css">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/dashboard.css" rel="stylesheet">
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
+        <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/select2.css" rel="stylesheet" type="text/css"/>
         <link href="css/select2-bootstrap.css" rel="stylesheet" type="text/css"/>
+
+
+
 
     </head>
     <body>
@@ -109,20 +113,14 @@
                                 <div class="form-group col-lg-6">
                                     <label>Nombre de usuario</label>
                                     <input type="" name="nombreU" class="form-control" id="nombreU" value="">
-                                    <div id="validaNombreUsu">
-                                        <p>Campo nesesario</p>
-                                    </div>
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label>Contraseña</label>
                                     <input type="password" name="contra" class="form-control" id="contra" value="">
-                                    <div id="validaContraseña">
-                                        <p>Campo nesesario</p>
-                                    </div>
                                 </div>   
 
-                                <button type="submit" name="guardar" value="insertar" class="btn btn-success" style="margin-left: 360px;">Guardar</button>
+                                <button type="submit" id="Guardar" name="guardar" value="insertar" class="btn btn-success" style="margin-left: 360px;">Guardar</button>
                                 <button type="reset" class="btn btn-default">Cancelar</button>                        
                             </div>
 
@@ -134,92 +132,94 @@
             </div>
         </div>
         <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
-
-
         <script src="bootstrap/js/bootstrap.js"></script>
+        <script src="bootstrap/js/alertify.js" type="text/javascript"></script>       
         <script src="js/select2.js" type="text/javascript"></script>      
-        <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
+        <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
         <script>
-                                            $(function () {
-                                                recibir();
+                                            alertify.defaults.theme.ok = "btn btn-success";
+                                            alertify.defaults.theme.cancel = "btn btn-danger";
+                                            alertify.defaults.theme.input = "form-control";
+        </script>
+        <%            String alerte = (String) request.getAttribute("alert");
+            if (alerte != null) {
+                out.print(alerte);
+            }
 
-                                            });
+        %>
+        <script>
+            $(document).ready(function validar() {
 
-                                            function recibir() {
-                                                var valor = $("input[name='opciones']:checked").val();
-                                                $.ajax({
-                                                    dataType: "html",
-                                                    data: {
-                                                        opciones: valor
-                                                    },
-                                                    type: "POST",
-                                                    url: "ajaxCuenta",
-                                                    statusCode: {
-                                                        404: function () {
-                                                            alert("page not found");
-                                                        }
-                                                    }
-                                                }).done(function (datos) {
+                $("#Guardar").click(function () {
+                    if (($("#nombreU").val()) == "") {
 
-                                                    $("#traer").empty();
-                                                    $("#traer").append(datos);
-
-                                                    $("#ConProEsT").select2({
-                                                        minimumInputLength: 2
-                                                    });
-
-                                                });
-                                            }
-
-                                            $(document).ready(function validar() {
-
-                                                $("#validaNombre").hide();
-                                                $("#validaidentificacion").hide();
-                                                $("#validaNombreUsu").hide();
-                                                $("#validaContraseña").hide();
-                                                var expre = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9_\-\.]+$/;
-
-                                                $("#Guardar").click(function () {
-                                                    if (($("#nombre").val()) == "") {
-                                                        $("#validaNombre").show();
-                                                        return false;
-                                                    } else {
-                                                        $("#validaNombre").hide();
-                                                        if (($("#identificacion").val()) == "")
-                                                        {
-                                                            $("#validaidentificacion").show();
-                                                            return false;
-                                                        } else {
-                                                            $("#validaidentificacion").hide();
-                                                            if (($("#nombreU").val()) == "")
-                                                            {
-                                                                $("#validaNombreUsu").show();
-                                                                return false;
-                                                            } else
-                                                                $("#validaNombreUsu").hide();
-                                                            if (($("#contra").val()) == "")
-                                                            {
-                                                                $("#validaContraseña").show();
-                                                                return false;
-                                                            }
+                        new PNotify({
+                            title: 'Campo requerido',
+                            text: 'El nombre de usuario es necesario.',
+                            type: 'error'
+                        });
 
 
-                                                        }
-                                                    }
-                                                });
-                                            });
-                                            function ValidaSoloNumeros() {
-                                                if ((event.keyCode < 48) || (event.keyCode > 57))
-                                                    event.returnValue = false;
-                                            }
-                                            function sololetras() {
-                                                if ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122))
-                                                    event.returnValue = false;
-                                            }
-                                            function pulsar(e) {
-                                                tecla = (document.all) ? e.keyCode : e.which;
-                                                return (tecla != 13);
-                                            }
+                        return false;
+                    } else {
+                        if (($("#contra").val()) == "") {
+                            new PNotify({
+                                title: 'Campo requerido',
+                                text: 'La contraseña es necesario.',
+                                type: 'error'
+                            });
+                            return false;
+                        }
+
+                    }
+
+
+                
+
+
+                });
+                });
+
+           
+
+        </script>
+
+        <script>
+
+
+
+            $(function () {
+                recibir();
+
+            });
+
+            function recibir() {
+                var valor = $("input[name='opciones']:checked").val();
+                $.ajax({
+                    dataType: "html",
+                    data: {
+                        opciones: valor
+                    },
+                    type: "POST",
+                    url: "ajaxCuenta",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (datos) {
+
+                    $("#traer").empty();
+                    $("#traer").append(datos);
+
+                    $("#ConProEsT").select2({
+                        minimumInputLength: 2
+                    });
+
+                });
+            }
+
+
         </script>    
     </body>
 </html>

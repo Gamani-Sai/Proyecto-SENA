@@ -94,6 +94,7 @@ public class ConsultarCuenta extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+        String alert="";
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -110,9 +111,23 @@ public class ConsultarCuenta extends HttpServlet {
                     datosCuenta.setPassword(Contra);
                     datosCuenta.setId_cuenta(Id_cuenta);
 
-                    boolean objejecutar = false;
-                    objejecutar = Cuen.modificarCuenta(datosCuenta);
-                    response.sendRedirect("consultarcuentas.jsp");
+                    //boolean objejecutar = false;
+                    //objejecutar = Cuen.modificarCuenta(datosCuenta);
+                    if (Cuen.modificarCuenta(datosCuenta)) {
+                        alert += "<script type=\"text/javascript\">";
+                        alert += "alertify.alert(\"Modificación Exitosa\");";
+                        alert += "</script>";
+                        request.setAttribute("alert", alert);
+                        getServletConfig().getServletContext().getRequestDispatcher("/consultarcuentas.jsp").forward(request, response);
+
+                    } else {
+                        alert += "<script type=\"text/javascript\">";
+                        alert += "alertify.alert(\"Ya Existe\");";
+                        alert += "</script>";
+                        request.setAttribute("alert", alert);
+                        getServletConfig().getServletContext().getRequestDispatcher("/consultarcuentas.jsp").forward(request, response);
+                    }
+                    //response.sendRedirect("consultarcuentas.jsp");
                 }
             } else if (estado != null) {
                 int id_cuenta_mod = Integer.parseInt(request.getParameter("idcuenta_mod"));
@@ -120,7 +135,7 @@ public class ConsultarCuenta extends HttpServlet {
                 datosCuenta.setEstado(estado);
                 Cuen.cambiar_estado(datosCuenta);
 
-            }else if (recargar != null) {
+            } else if (recargar != null) {
                 out.println(listarCuenta());
             }
 

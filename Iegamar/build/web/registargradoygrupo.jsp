@@ -32,11 +32,12 @@
         <meta name="description" content="easyui help you build your web page easily!">
         <meta http-equiv="Cache-control" content="no-cache">
         <meta http-equiv="Cache-control" content="no-store">
-        <title>Registar Cuenta</title>
+        <title>IEGAMAR</title>
         <link rel="stylesheet" type="text/css" href="css/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/icon.css">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/dashboard.css" rel="stylesheet">
+        <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
@@ -87,9 +88,6 @@
                                     <label for="disabledSelect">Grado</label>
                                     <input type="text" id="grado" name="grado" id="grado" class="form-control" name="Grado" style="width: 255px;">
                                     <input type="hidden"  class="form-control" id="id_grado" name="id_grado" placeholder="">
-                                    <div id="validagrado">
-                                        <p>Campo nesesario</p>
-                                    </div>
                                 </div>
 
                                 <button type="submit" id="Guardar" name="Guardar" value="insertar"  class="btn btn-success"style="margin-left: 193px;">Guardar</button>
@@ -138,13 +136,7 @@
             alertify.defaults.theme.input = "form-control";
         </script>
         <script>
-
-
-
             function cargar() {
-
-
-
                 $.ajax({
                     dataType: "html",
                     data: {
@@ -164,8 +156,6 @@
                 });
             }
             function Estado_habilitado(grado) {
-
-
                 $.ajax({
                     dataType: "html",
                     data: {
@@ -187,8 +177,6 @@
 
             }
             function Estado_inhabilitado(grado) {
-
-
                 $.ajax({
                     dataType: "html",
                     data: {
@@ -210,10 +198,13 @@
 
             }
             $(document).ready(function validar() {
-                $("#validagrado").hide();
                 $("#Guardar").click(function () {
                     if (($("#grado").val()) == "") {
-                        $("#validagrado").show();
+                        new PNotify({
+                            title: 'Campo requerido',
+                            text: 'El grado es necesario.',
+                            type: 'error'
+                        });
                         return false;
                     }
                 });
@@ -233,13 +224,12 @@
 
         %>
 
-
-
         <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
 
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="bootstrap/js/bootstrap.js"></script>
-
+        <script src="bootstrap/js/alertify.js" type="text/javascript"></script>       
+        <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
 
         <!-- En esta parte incluyo la libreria general del dataTables -->
         <script src="bootstrap/js/jquery.dataTables.min.js"></script>

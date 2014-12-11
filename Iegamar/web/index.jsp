@@ -7,7 +7,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Inicio de Sesión</title>
+        <title>IEGAMAR</title>
         <link href="css/signin.css" rel="stylesheet">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
@@ -33,7 +33,7 @@
         <script type="text/javascript">
             // override defaults
             // alertify.defaults.transition = "slide";
-            alertify.defaults.theme.ok = "btn btn-success";
+            alertify.defaults.theme.ok = "btn btn-danger";
             alertify.defaults.theme.cancel = "btn btn-danger";
             alertify.defaults.theme.input = "form-control";
         </script>

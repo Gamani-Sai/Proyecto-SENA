@@ -31,7 +31,7 @@
         <meta name="description" content="easyui help you build your web page easily!">
         <meta http-equiv="Cache-control" content="no-cache">
         <meta http-equiv="Cache-control" content="no-store">
-        <title>Registar Cuenta</title>
+        <title>IEGAMAR</title>
         <link rel="stylesheet" type="text/css" href="css/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/icon.css">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -40,6 +40,7 @@
         <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+        <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
 
     </head>
     <body>
@@ -96,33 +97,24 @@
                                 <div class="form-group col-lg-12">
                                     <label>Nombre</label>
                                     <input type="text" id="nombre" class="form-control" name="nombre" placeholder="" onkeypress="sololetras()">
-                                    <div id="validaNombre">
-                                        <p>Campo nesesario</p>
-                                    </div>
+
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Apellido</label>
                                     <input type="text" id="apellido" class="form-control" name="apellido" placeholder="" onkeypress="sololetras()">
-                                    <div id="validaApellido">
-                                        <p>Campo nesesario</p>
-                                    </div>
+
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Identificación</label>
                                     <input type="text" id="identificacion" class="form-control" name="identificacion" placeholder="" onkeypress="ValidaSoloNumeros()"   maxlength="11">
-                                    <div id="validaIdentificacion">
-                                        <p>Campo nesesario</p>
-                                    </div>
+
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Dirección</label>
-                                    <input type="text" id="direcion" class="form-control" name="direccion" placeholder="">
-                                    <div id="validaDirecion">
-                                        <p>Campo nesesario</p>
-                                    </div>
+                                    <input type="text" id="direcion" class="form-control" name="direccion" placeholder="" onkeypress="validarLetrasNumeros()">
                                 </div>      
 
 
@@ -133,17 +125,13 @@
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
 
-                                    <div id="validaFecha">
-                                        <p>Campo nesesario</p>
-                                    </div>
+
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Telefono</label>
                                     <input type="text" id="Telefono" class="form-control" name="Telefono" placeholder="" onkeypress="ValidaSoloNumeros()">
-                                    <div id="validaTelefono">
-                                        <p>Campo nesesario</p>
-                                    </div>
+
                                 </div> 
 
                                 <div class="form-group col-lg-6">
@@ -173,6 +161,7 @@
         <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
         <script src="bootstrap/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
         <script src="bootstrap/js/bootstrap-datetimepicker.es.js" type="text/javascript"></script>
+        <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
         <script type="text/javascript">
                                         // override defaults
                                         // alertify.defaults.transition = "slide";
@@ -180,40 +169,61 @@
                                         alertify.defaults.theme.cancel = "btn btn-danger";
                                         alertify.defaults.theme.input = "form-control";
                                         $(document).ready(function validar() {
-                                            $("#validaNombre").hide();
-                                            $("#validaApellido").hide();
-                                            $("#validaIdentificacion").hide();
-                                            $("#validaDirecion").hide();
-                                            $("#validaFecha").hide();
-                                            $("#validaTelefono").hide();
+
                                             $("#Guardar").click(function () {
                                                 if (($("#nombre").val()) == "") {
-                                                    $("#validaNombre").show();
+
+                                                    new PNotify({
+                                                        title: 'Campo requerido',
+                                                        text: 'El nombre es necesario.',
+                                                        type: 'error'
+                                                    });
+
+
                                                     return false;
                                                 } else {
-                                                    $("#validaNombre").hide();
                                                     if (($("#apellido").val()) == "") {
-                                                        $("#validaApellido").show();
+                                                        new PNotify({
+                                                            title: 'Campo requerido',
+                                                            text: 'El apellido es necesario.',
+                                                            type: 'error'
+                                                        });
                                                         return false;
                                                     } else {
-                                                        $("#validaApellido").hide();
+
                                                         if (($("#identificacion").val()) == "") {
-                                                            $("#validaIdentificacion").show();
+                                                            new PNotify({
+                                                                title: 'Campo requerido',
+                                                                text: 'La identificacion es necesaria.',
+                                                                type: 'error'
+                                                            });
                                                             return false;
                                                         } else {
-                                                            $("#validaIdentificacion").hide();
+
                                                             if (($("#direcion").val()) == "") {
-                                                                $("#validaDirecion").show();
+                                                                new PNotify({
+                                                                    title: 'Campo requerido',
+                                                                    text: 'La Direcion es necesaria.',
+                                                                    type: 'error'
+                                                                });
                                                                 return false;
                                                             } else {
-                                                                $("#validaDirecion").hide();
+
                                                                 if (($("#Fecha_Nacimiento").val()) == "") {
-                                                                    $("#validaFecha").show();
+                                                                    new PNotify({
+                                                                        title: 'Campo requerido',
+                                                                        text: 'la fecha de nacimiento es necesaria.',
+                                                                        type: 'error'
+                                                                    });
                                                                     return false;
                                                                 } else {
-                                                                    $("#validaFecha").hide();
+
                                                                     if (($("#Telefono").val()) == "") {
-                                                                        $("#validaTelefono").show();
+                                                                        new PNotify({
+                                                                            title: 'Campo requerido',
+                                                                            text: 'El telefono es necesario.',
+                                                                            type: 'error'
+                                                                        });
                                                                         return false;
                                                                     }
                                                                 }
@@ -241,6 +251,12 @@
                                             tecla = (document.all) ? e.keyCode : e.which;
                                             return (tecla != 13);
                                         }
+                                        function validarLetrasNumeros(){
+                                        if((event.keyCode < 48) || (event.keyCode > 57) || (event.keyCode < 41) || (event.keyCode > 90))
+                                        {
+                                            event.returnValue = false;
+                                        }
+                                    }
         </script>
         <%            String alerte = (String) request.getAttribute("alert");
             if (alerte != null) {

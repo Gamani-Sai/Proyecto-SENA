@@ -24,7 +24,7 @@
         <meta name="description" content="easyui help you build your web page easily!">
         <meta http-equiv="Cache-control" content="no-cache">
         <meta http-equiv="Cache-control" content="no-store">
-        <title>Registar Cuenta</title>
+        <title>IEGAMAR</title>
         <link rel="stylesheet" type="text/css" href="css/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/icon.css">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">

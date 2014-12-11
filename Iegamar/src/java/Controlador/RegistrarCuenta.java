@@ -55,6 +55,8 @@ public class RegistrarCuenta extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
+        String alert = "";
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
 
@@ -72,17 +74,38 @@ public class RegistrarCuenta extends HttpServlet {
                     datosCuenta.setPassword(Contra);
                     datosCuenta.setTipo_rol(Tipo);
                     datosCuenta.setEstado(Estado);
-                    objejecutar = Cuen.insertCuenta(datosCuenta);
-                    datosCuenta.setIdentificacion(Identificacion);
-                    datosCuenta.setId_cuenta(traerId_Cuenta());
-                    if (Tipo.equals("Profesores")) {
-                        objejecutar = Cuen.insertIdentificacionPro(datosCuenta);
-                    } else if (Tipo.equals("Estudiante")) {
-                        objejecutar = Cuen.insertIdentificacionEst(datosCuenta);
+
+                    if (Cuen.insertCuenta(datosCuenta)) {
+                        datosCuenta.setIdentificacion(Identificacion);
+                        datosCuenta.setId_cuenta(traerId_Cuenta());
+
+                        if (Tipo.equals("Profesores")) {
+                            objejecutar = Cuen.insertIdentificacionPro(datosCuenta);
+                        } else if (Tipo.equals("Estudiante")) {
+                            objejecutar = Cuen.insertIdentificacionEst(datosCuenta);
+                        }
+                        alert += "<script type=\"text/javascript\">";
+                        alert += "alertify.alert(\"Registro Exitoso\");";
+                        alert += "</script>";
+                        request.setAttribute("alert", alert);
+                        getServletConfig().getServletContext().getRequestDispatcher("/registarcuentas.jsp").forward(request, response);
+                    } else {
+                        alert += "<script type=\"text/javascript\">";
+                        alert += "alertify.alert(\"Ya Existe\");";
+                        alert += "</script>";
+                        request.setAttribute("alert", alert);
+                        getServletConfig().getServletContext().getRequestDispatcher("/registarcuentas.jsp").forward(request, response);
                     }
+
                 }
             }
-            response.sendRedirect("registarcuentas.jsp");
+           // response.sendRedirect("registarcuentas.jsp");
+        } catch (Exception ex) {
+            alert += "<script type=\"text/javascript\">";
+            alert += "alertify.alert(\"Error\");";
+            alert += "</script>";
+            request.setAttribute("alert", alert);
+            getServletConfig().getServletContext().getRequestDispatcher("/registarcuentas.jsp").forward(request, response);
         }
     }
 

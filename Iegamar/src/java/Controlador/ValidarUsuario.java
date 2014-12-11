@@ -72,7 +72,7 @@ public class ValidarUsuario extends HttpServlet {
                 response.sendRedirect("consultarcuentas.jsp");
             } else {
                 alert += "<script type=\"text/javascript\">";
-                alert += "alertify.alert(\"Usuario o contraseña incorrectos\");";
+                alert += "alertify.alert(\"Nombre de usuario y/o contraseña incorrectos\");";
                 alert += "</script>";
                 request.setAttribute("alert", alert);
                 getServletConfig().getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);

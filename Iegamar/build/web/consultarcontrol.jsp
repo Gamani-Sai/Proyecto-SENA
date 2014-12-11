@@ -24,7 +24,7 @@
         <meta name="description" content="easyui help you build your web page easily!">
         <meta http-equiv="Cache-control" content="no-cache">
         <meta http-equiv="Cache-control" content="no-store">
-        <title>Registar Cuenta</title>
+        <title>IEGAMAR</title>
         <link rel="stylesheet" type="text/css" href="css/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/icon.css">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -74,7 +74,7 @@
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h1 class="page-header">Consultar llegada tarde</h1>
+                    <h1 class="page-header">Consultar Llegadas Tardes</h1>
 
                 </div>
             </div>

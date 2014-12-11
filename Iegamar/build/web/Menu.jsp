@@ -25,7 +25,7 @@
         <meta http-equiv="Cache-control" content="no-cache">
         <meta http-equiv="Cache-control" content="no-store">
 
-        <title>Menu</title>
+        <title>IEGAMAR</title>
 
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/navbar-fixed-top.css" rel="stylesheet">

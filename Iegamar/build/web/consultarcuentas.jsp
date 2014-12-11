@@ -27,13 +27,16 @@
         <meta name="description" content="easyui help you build your web page easily!">
         <meta http-equiv="Cache-control" content="no-cache">
         <meta http-equiv="Cache-control" content="no-store">
-        <title>Registar Cuenta</title>
+        <title>IEGAMAR</title>
         <link rel="stylesheet" type="text/css" href="css/easyui.css">
         <link rel="stylesheet" type="text/css" href="css/icon.css">
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/dashboard.css" rel="stylesheet">
         <link href="bootstrap/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
+        <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
+        <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
+        <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
 
     </head>
     <body>
@@ -146,6 +149,8 @@
 
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="bootstrap/js/bootstrap.js"></script>
+        <script src="bootstrap/js/alertify.js" type="text/javascript"></script>       
+        <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
 
 
         <!-- En esta parte incluyo la libreria general del dataTables -->
@@ -153,84 +158,130 @@
         <!--       <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script> -->
         <script src="bootstrap/js/dataTables.bootstrap.js" type="text/javascript"></script>
         <script src="js/mapeomod.js" type="text/javascript"></script>
+
+        <script>
+                                    alertify.defaults.theme.ok = "btn btn-success";
+                                    alertify.defaults.theme.cancel = "btn btn-danger";
+                                    alertify.defaults.theme.input = "form-control";
+        </script>
+
+        <%            String alerte = (String) request.getAttribute("alert");
+            if (alerte != null) {
+                out.print(alerte);
+            }
+
+        %>
+
+        <script>
+            $(document).ready(function validar() {
+
+                $("#Guardar").click(function () {
+                    if (($("#Cuenta").val()) == "") {
+
+                        new PNotify({
+                            title: 'Campo requerido',
+                            text: 'El nombre de usuario es necesario.',
+                            type: 'error'
+                        });
+
+
+                        return false;
+                    } else {
+                        if (($("#Contra").val()) == "") {
+                            new PNotify({
+                                title: 'Campo requerido',
+                                text: 'La contraseña es necesario.',
+                                type: 'error'
+                            });
+                            return false;
+                        }
+
+                    }
+                });
+            });
+
+
+
+        </script>
+
         <script type="text/javascript" charset="utf-8">
-                                    $(document).ready(function () {
-                                        $('#tblArea').dataTable({
-                                            "oLanguage": {
-                                                "sUrl": "bootstrap/js/Spanish.json"
-                                            }
-                                        });
-                                    });
+            $(document).ready(function () {
+                $('#tblArea').dataTable({
+                    "oLanguage": {
+                        "sUrl": "bootstrap/js/Spanish.json"
+                    }
+                });
+            });
 
-                                    function cargar() {
-
-
-
-                                        $.ajax({
-                                            dataType: "html",
-                                            data: {
-                                                recargar: "recargue"
-
-                                            },
-                                            type: "POST",
-                                            url: "ConsultarCuenta",
-                                            statusCode: {
-                                                404: function () {
-                                                    alert("page not found");
-                                                }
-                                            }
-                                        }).done(function (datos) {
-                                            $("#traer").empty();
-                                            $("#traer").append(datos);
-                                        });
-                                    }
-
-                                    function Estado_habilitado(id_cuenta) {
+            function cargar() {
 
 
-                                        $.ajax({
-                                            dataType: "html",
-                                            data: {
-                                                idcuenta_mod: id_cuenta,
-                                                estado_mod: "Inhabilitado"
-                                            },
-                                            type: "POST",
-                                            url: "ConsultarCuenta",
-                                            statusCode: {
-                                                404: function () {
-                                                    alert("page not found");
-                                                }
-                                            }
-                                        }).done(function (datos) {
-                                            $("#cambio_est").empty();
-                                            $("#cambio_est").append(datos);
-                                            cargar();
-                                        });
 
-                                    }
-                                    function Estado_inhabilitado(id_cuenta) {
+                $.ajax({
+                    dataType: "html",
+                    data: {
+                        recargar: "recargue"
+
+                    },
+                    type: "POST",
+                    url: "ConsultarCuenta",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (datos) {
+                    $("#traer").empty();
+                    $("#traer").append(datos);
+                });
+            }
+
+            function Estado_habilitado(id_cuenta) {
 
 
-                                        $.ajax({
-                                            dataType: "html",
-                                            data: {
-                                                idcuenta_mod: id_cuenta,
-                                                estado_mod: "Habilitado"
-                                            },
-                                            type: "POST",
-                                            url: "ConsultarCuenta",
-                                            statusCode: {
-                                                404: function () {
-                                                    alert("page not found");
-                                                }
-                                            }
-                                        }).done(function (datos) {
-                                            $("#cambio_est").empty();
-                                            $("#cambio_est").append(datos);
-                                            cargar();
-                                        });
+                $.ajax({
+                    dataType: "html",
+                    data: {
+                        idcuenta_mod: id_cuenta,
+                        estado_mod: "Inhabilitado"
+                    },
+                    type: "POST",
+                    url: "ConsultarCuenta",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (datos) {
+                    $("#cambio_est").empty();
+                    $("#cambio_est").append(datos);
+                    cargar();
+                });
 
-                                    }
+            }
+            function Estado_inhabilitado(id_cuenta) {
+
+
+                $.ajax({
+                    dataType: "html",
+                    data: {
+                        idcuenta_mod: id_cuenta,
+                        estado_mod: "Habilitado"
+                    },
+                    type: "POST",
+                    url: "ConsultarCuenta",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (datos) {
+                    $("#cambio_est").empty();
+                    $("#cambio_est").append(datos);
+                    cargar();
+                });
+
+            }
 
 
         </script>
