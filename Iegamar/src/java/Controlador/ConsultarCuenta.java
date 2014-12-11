@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -94,6 +95,9 @@ public class ConsultarCuenta extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+        HttpSession sesionOk = request.getSession();
+    
+        if (sesionOk.getAttribute("usuario") != null) {
         String alert="";
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -140,6 +144,10 @@ public class ConsultarCuenta extends HttpServlet {
             }
 
         }
+        }
+        else {
+        response.sendRedirect("index.jsp");
+    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

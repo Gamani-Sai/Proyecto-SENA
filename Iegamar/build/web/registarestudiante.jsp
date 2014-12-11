@@ -252,8 +252,12 @@
                                             return (tecla != 13);
                                         }
                                         function validarLetrasNumeros(){
-                                        if((event.keyCode < 48) || (event.keyCode > 57) || (event.keyCode < 41) || (event.keyCode > 90))
+                                        if((event.keyCode < 48) || (event.keyCode > 57))
                                         {
+                                            event.returnValue = false;
+                                        }
+                                        if((event.keyCode < 41) || (event.keyCode > 90))
+                                            {
                                             event.returnValue = false;
                                         }
                                     }
