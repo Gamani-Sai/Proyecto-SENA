@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Modelo.Estudiantes;
 import Entidad.entidadEstudiantes;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -56,8 +57,8 @@ public class ConsultarEstudiantes extends HttpServlet {
         ResultSet list_est = null;
         String tbl_est = "";
         String colorEstado = "";
-         String  iconoEstado = "";
-         String nomFuncion = "";
+        String iconoEstado = "";
+        String nomFuncion = "";
 
         try {
             list_est = Est.consultarEstudiante();
@@ -72,18 +73,16 @@ public class ConsultarEstudiantes extends HttpServlet {
                 tbl_est += "<td><center>" + list_est.getString("e.Fecha").toString().trim() + "</center></td>";
                 tbl_est += "<td><center>" + list_est.getString("g.Grado").toString().trim() + "</center></td>";
                 tbl_est += " <td><center><button  class='btn btn-primary glyphicon glyphicon-pencil' data-toggle='modal' data-target='#myModal' onclick = 'mapear.estudiantes(" + '\"' + list_est.getString("e.Identificacion").toString().trim() + '\"' + "," + '\"' + list_est.getString("e.Nombre").toString().trim() + '\"' + "," + '\"' + list_est.getString("e.Apellido").toString().trim() + '\"' + "," + '\"' + list_est.getString("e.Direccion").toString().trim() + '\"' + "," + '\"' + list_est.getString("e.Telefono").toString().trim() + '\"' + "," + '\"' + list_est.getString("g.Id_Grado").toString().trim() + '\"' + ")'></button></center></td>";
-                if(list_est.getString("e.Estado").toString().trim().equals("Habilitado"))
-                {
-                colorEstado = "success";
-                iconoEstado = "ok-circle";
-                nomFuncion = "Estado_habilitado("+'"'+list_est.getString("e.Identificacion").toString().trim()+'"'+")";
-                } else if (list_est.getString("e.Estado").toString().trim().equals("Inhabilitado"))
-                {
-                 colorEstado = "danger";
-                iconoEstado = "remove-circle";
-                nomFuncion = "Estado_inhabilitado("+'"'+list_est.getString("e.Identificacion").toString().trim()+'"'+")";
+                if (list_est.getString("e.Estado").toString().trim().equals("Habilitado")) {
+                    colorEstado = "success";
+                    iconoEstado = "ok-circle";
+                    nomFuncion = "Estado_habilitado(" + '"' + list_est.getString("e.Identificacion").toString().trim() + '"' + ")";
+                } else if (list_est.getString("e.Estado").toString().trim().equals("Inhabilitado")) {
+                    colorEstado = "danger";
+                    iconoEstado = "remove-circle";
+                    nomFuncion = "Estado_inhabilitado(" + '"' + list_est.getString("e.Identificacion").toString().trim() + '"' + ")";
                 }
-                tbl_est += "<td><center><div id='cambio_est'><button  class='btn btn-"+ colorEstado +" glyphicon glyphicon-"+iconoEstado+"' onclick ='"+nomFuncion+"'></button></center></div></center></td>";
+                tbl_est += "<td><center><div id='cambio_est'><button  class='btn btn-" + colorEstado + " glyphicon glyphicon-" + iconoEstado + "' onclick ='" + nomFuncion + "'></button></center></div></center></td>";
             }
         } catch (Exception e) {
             tbl_est = "error" + e.getMessage();
@@ -93,57 +92,65 @@ public class ConsultarEstudiantes extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        response.setContentType("text/html;charset=UTF-8");
-        String alert ="";
-        try (PrintWriter out = response.getWriter()) {
-            
-            
-            String evento = request.getParameter("Guardar");
-            String estado = request.getParameter("estado_mod");
-            String recargar = request.getParameter("recargar");
-            if(evento != null)
-            {
-            if(evento.equals("modificar"))
-            {
-            String Identificacion = request.getParameter("identificacion");
-            String Nombre = request.getParameter("nombre");
-            String Apellido = request.getParameter("apellido");
-            String Direccion = request.getParameter("direccion");
-            String Telefono = request.getParameter("telefono");
-            String Grado = request.getParameter("grado");
+        HttpSession sesionOk = request.getSession();
 
-            datosEstudiante.setIdentificacion(Identificacion);
-            datosEstudiante.setNombre(Nombre);
-            datosEstudiante.setApellido(Apellido);
-            datosEstudiante.setDireccion(Direccion);
-            datosEstudiante.setTelefono(Telefono);
-            datosEstudiante.setId_grado(Grado);
+        if (sesionOk.getAttribute("usuario") != null) {
+            response.setContentType("text/html;charset=UTF-8");
+            String alert = "";
+            try (PrintWriter out = response.getWriter()) {
 
-            boolean objejecutar = false;
-            objejecutar = Est.modificarEstudiante(datosEstudiante);
+                String evento = request.getParameter("Guardar");
+                String estado = request.getParameter("estado_mod");
+                String recargar = request.getParameter("recargar");
+                if (evento != null) {
+                    if (evento.equals("modificar")) {
+                        String Identificacion = request.getParameter("identificacion");
+                        String Nombre = request.getParameter("nombre");
+                        String Apellido = request.getParameter("apellido");
+                        String Direccion = request.getParameter("direccion");
+                        String Telefono = request.getParameter("telefono");
+                        String Grado = request.getParameter("grado");
 
-            alert += "<script type=\"text/javascript\">";
-            alert += "alertify.alert(\"Modificado con exitoso\");";
-            alert += "</script>";
-            request.setAttribute("alert", alert);
-            getServletConfig().getServletContext().getRequestDispatcher("/consultarestudiante.jsp").forward(request, response);
+                        datosEstudiante.setIdentificacion(Identificacion);
+                        datosEstudiante.setNombre(Nombre);
+                        datosEstudiante.setApellido(Apellido);
+                        datosEstudiante.setDireccion(Direccion);
+                        datosEstudiante.setTelefono(Telefono);
+                        datosEstudiante.setId_grado(Grado);
+
+                        if (Est.modificarEstudiante(datosEstudiante)) {
+                            alert += "<script type=\"text/javascript\">";
+                            alert += "alertify.alert(\"Modificación Exitosa\");";
+                            alert += "</script>";
+                            request.setAttribute("alert", alert);
+                            getServletConfig().getServletContext().getRequestDispatcher("/consultarestudiante.jsp").forward(request, response);
+                        } else {
+                            alert += "<script type=\"text/javascript\">";
+                            alert += "alertify.alert(\"Ya Existe\");";
+                            alert += "</script>";
+                            request.setAttribute("alert", alert);
+                            getServletConfig().getServletContext().getRequestDispatcher("/consultarestudiante.jsp").forward(request, response);
+                        }
+                    }
+                } else if (estado != null) {
+                    String Identificacion = request.getParameter("identificacion_mod");
+                    datosEstudiante.setIdentificacion(Identificacion);
+                    datosEstudiante.setEstado(estado);
+                    Est.cambiar_estado(datosEstudiante);
+
+                } else if (recargar != null) {
+                    out.println(listarEst());
+                }
+
+            } catch (Exception ex) {
+                alert += "<script type=\"text/javascript\">";
+                alert += "alertify.alert(\"Error\");";
+                alert += "</script>";
+                request.setAttribute("alert", alert);
+                getServletConfig().getServletContext().getRequestDispatcher("/consultarestudiante.jsp").forward(request, response);
             }
-            }else if(estado != null)
-            {
-                String Identificacion = request.getParameter("identificacion_mod");
-                datosEstudiante.setIdentificacion(Identificacion);
-                datosEstudiante.setEstado(estado);
-                Est.cambiar_estado(datosEstudiante);
-            
-            }else if(recargar != null)
-            {
-            out.println(listarEst());
-            }
-            //response.sendRedirect("consultarestudiante.jsp");
-            /* TODO output your page here. You may use following sample code. */
-
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        } else {
+            response.sendRedirect("index.jsp");
         }
     }
 

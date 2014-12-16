@@ -33,6 +33,7 @@
         <link href="bootstrap/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
 
@@ -119,37 +120,22 @@
                             <div class="form-group">
                                 <label for="disabledSelect">Nombre</label>
                                 <input type="text" id="nombre" class="form-control" name="nombre" placeholder="" onkeypress="sololetras()">
-                                <div id="validaNombre">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="disabledSelect">Apellido</label>
                                 <input type="text" id="apellido" class="form-control" name="apellido" placeholder="" onkeypress="sololetras()">
-                                <div id="validaApellido">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="disabledSelect">Identificación</label>
                                 <input type="text" id="identificacion" class="form-control" name="identificacion" placeholder="" onkeypress="ValidaSoloNumeros()">
-                                <div id="validaIdentificacion">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="disabledSelect">Dirección</label>
                                 <input type="text" id="direccion" class="form-control" name="direccion" placeholder="">
-                                <div id="validaDirecion">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="disabledSelect">Telefono</label>
                                 <input type="text" id="telefono" class="form-control" name="telefono" placeholder="" onkeypress="ValidaSoloNumeros()">
-                                <div id="validaTelefono">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
 
                             <div class="form-group">
@@ -157,7 +143,6 @@
                                 <select id="grado" name="grado" class="form-control">
                                     <%                                        ConsultarEstudiantes gra = new ConsultarEstudiantes();
                                         out.println(gra.Traer());
-
                                     %>
                                 </select>
                             </div>
@@ -174,24 +159,99 @@
 
 
         <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
-
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="bootstrap/js/bootstrap.js"></script>
-
-
-        <!-- En esta parte incluyo la libreria general del dataTables -->
         <script src="bootstrap/js/jquery.dataTables.min.js"></script>
-        <!--       <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script> -->
         <script src="bootstrap/js/dataTables.bootstrap.js" type="text/javascript"></script>
         <script src="js/mapeomod.js" type="text/javascript"></script>
         <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
+        <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
+
         <script type="text/javascript">
-                                    // override defaults
-                                    // alertify.defaults.transition = "slide";
                                     alertify.defaults.theme.ok = "btn btn-success";
                                     alertify.defaults.theme.cancel = "btn btn-danger";
                                     alertify.defaults.theme.input = "form-control";
+                                    $(document).ready(function validar() {
+
+                                        $("#Guardar").click(function () {
+                                            if (($("#nombre").val()) == "") {
+
+                                                new PNotify({
+                                                    title: 'Campo requerido',
+                                                    text: 'El nombre es necesario.',
+                                                    type: 'error'
+                                                });
+
+
+                                                return false;
+                                            } else {
+                                                if (($("#apellido").val()) == "") {
+                                                    new PNotify({
+                                                        title: 'Campo requerido',
+                                                        text: 'El apellido es necesario.',
+                                                        type: 'error'
+                                                    });
+                                                    return false;
+                                                } else {
+
+                                                    if (($("#identificacion").val()) == "") {
+                                                        new PNotify({
+                                                            title: 'Campo requerido',
+                                                            text: 'La identificacion es necesaria.',
+                                                            type: 'error'
+                                                        });
+                                                        return false;
+                                                    } else {
+
+                                                        if (($("#direccion").val()) == "") {
+                                                            new PNotify({
+                                                                title: 'Campo requerido',
+                                                                text: 'La dirección es necesaria.',
+                                                                type: 'error'
+                                                            });
+                                                            return false;
+                                                        } else {
+
+                                                            if (($("#telefono").val()) == "") {
+                                                                new PNotify({
+                                                                    title: 'Campo requerido',
+                                                                    text: 'El telefono es necesario.',
+                                                                    type: 'error'
+                                                                });
+                                                                return false;
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+
+                                        });
+
+                                    });
+                                    function ValidaSoloNumeros() {
+                                        if ((event.keyCode < 48) || (event.keyCode > 57))
+                                            event.returnValue = false;
+                                    }
+                                    function sololetras() {
+                                        if ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122))
+                                            event.returnValue = false;
+                                    }
+                                    function pulsar(e) {
+                                        tecla = (document.all) ? e.keyCode : e.which;
+                                        return (tecla != 13);
+                                    }
+                                    function validarLetrasNumeros() {
+                                        if ((event.keyCode < 48) || (event.keyCode > 57))
+                                        {
+                                            event.returnValue = false;
+                                        }
+                                        if ((event.keyCode < 41) || (event.keyCode > 90))
+                                        {
+                                            event.returnValue = false;
+                                        }
+                                    }
         </script>
+
         <script>
 
 

@@ -203,7 +203,7 @@
                                                             if (($("#direcion").val()) == "") {
                                                                 new PNotify({
                                                                     title: 'Campo requerido',
-                                                                    text: 'La Direcion es necesaria.',
+                                                                    text: 'La dirección es necesaria.',
                                                                     type: 'error'
                                                                 });
                                                                 return false;

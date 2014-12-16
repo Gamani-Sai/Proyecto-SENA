@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Modelo.Profesores;
 import Entidad.entidadProfesores;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -40,47 +41,57 @@ public class RegistrarProfesores extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        response.setContentType("text/html;charset=UTF-8");
-        String alert = "";
-        try (PrintWriter out = response.getWriter()) {
+        HttpSession sesionOk = request.getSession();
+        if (sesionOk.getAttribute("usuario") != null) {
+            response.setContentType("text/html;charset=UTF-8");
+            String alert = "";
+            try (PrintWriter out = response.getWriter()) {
 
-            String Identificacion = request.getParameter("Identificacion");
-            String Nombre = request.getParameter("Nombre");
-            String Apellido = request.getParameter("Apellido");
-            String Direccion = request.getParameter("Direccion");
-            String Telefono = request.getParameter("Telefono");
-            String huella = "Por Hacer";
-            String Fecha_Nacimiento = request.getParameter("Fecha_Nacimiento");
-            String Perfil_Profesional = request.getParameter("Perfil_Profesional");
-            String Estado ="Habilitado";
+                String Identificacion = request.getParameter("Identificacion");
+                String Nombre = request.getParameter("Nombre");
+                String Apellido = request.getParameter("Apellido");
+                String Direccion = request.getParameter("Direccion");
+                String Telefono = request.getParameter("Telefono");
+                String huella = "Por Hacer";
+                String Fecha_Nacimiento = request.getParameter("Fecha_Nacimiento");
+                String Perfil_Profesional = request.getParameter("Perfil_Profesional");
+                String Estado = "Habilitado";
 
-            datosProfesores.setIdentificacion(Identificacion);
-            datosProfesores.setNombre(Nombre);
-            datosProfesores.setApellido(Apellido);
-            datosProfesores.setDireccion(Direccion);
-            datosProfesores.setTelefono(Telefono);
-            datosProfesores.setHuella(huella);
-            datosProfesores.setFecha_Nacimiento(Fecha_Nacimiento);
-            datosProfesores.setPerfil_Profesional(Perfil_Profesional);
-            datosProfesores.setEstado(Estado);
+                datosProfesores.setIdentificacion(Identificacion);
+                datosProfesores.setNombre(Nombre);
+                datosProfesores.setApellido(Apellido);
+                datosProfesores.setDireccion(Direccion);
+                datosProfesores.setTelefono(Telefono);
+                datosProfesores.setHuella(huella);
+                datosProfesores.setFecha_Nacimiento(Fecha_Nacimiento);
+                datosProfesores.setPerfil_Profesional(Perfil_Profesional);
+                datosProfesores.setEstado(Estado);
 
-            boolean objejecutar = false;
-            objejecutar = Pro.insertProfesores(datosProfesores);
+                if (Pro.insertProfesores(datosProfesores)) {
 
-            alert += "<script type=\"text/javascript\">";
-            alert += "alertify.alert(\"Registro exitoso\");";
-            alert += "</script>";
-            request.setAttribute("alert", alert);
-            getServletConfig().getServletContext().getRequestDispatcher("/registarprofesores.jsp").forward(request, response);
+                    alert += "<script type=\"text/javascript\">";
+                    alert += "alertify.alert(\"Registro exitoso\");";
+                    alert += "</script>";
+                    request.setAttribute("alert", alert);
+                    getServletConfig().getServletContext().getRequestDispatcher("/registarprofesores.jsp").forward(request, response);
+                } else {
+                    alert += "<script type=\"text/javascript\">";
+                    alert += "alertify.alert(\"Ya Existe\");";
+                    alert += "</script>";
+                    request.setAttribute("alert", alert);
+                    getServletConfig().getServletContext().getRequestDispatcher("/registarprofesores.jsp").forward(request, response);
+                }
+                //response.sendRedirect("registarprofesores.jsp");
+            } catch (Exception ex) {
+                alert += "<script type=\"text/javascript\">";
+                alert += "alertify.alert(\"Error\");";
+                alert += "</script>";
+                request.setAttribute("alert", alert);
+                getServletConfig().getServletContext().getRequestDispatcher("/registarprofesores.jsp").forward(request, response);
 
-            //response.sendRedirect("registarprofesores.jsp");
-        } catch (Exception ex) {
-            alert += "<script type=\"text/javascript\">";
-            alert += "alertify.alert(\"Error\");";
-            alert += "</script>";
-            request.setAttribute("alert", alert);
-            getServletConfig().getServletContext().getRequestDispatcher("/registarprofesores.jsp").forward(request, response);
-
+            }
+        } else {
+            response.sendRedirect("index.jsp");
         }
     }
 

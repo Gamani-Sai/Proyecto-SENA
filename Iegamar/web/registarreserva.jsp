@@ -4,7 +4,6 @@
     Author     : MAÑANA
 --%>
 
-<%@page import="Controlador.RegistrarElemento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page session="true" %>
 <%

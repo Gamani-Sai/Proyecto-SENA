@@ -40,6 +40,7 @@
         <link href="bootstrap/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
 
@@ -136,38 +137,23 @@
                             <div class="form-group">
                                 <label for="disabledSelect">Apellido</label>
                                 <input type="text" id="Apellido" class="form-control" name="Apellido" placeholder="" onkeypress="sololetras()">
-                                <div id="validaApellido">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="disabledSelect">Identificación</label>
                                 <input type="text" id="Identificacion" class="form-control" name="Identificacion" placeholder=""  readonly="readonly">
-                                <div id="validaIdentificacion">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="disabledSelect">Dirección</label>
                                 <input type="text" id="Direccion" class="form-control" name="Direccion" placeholder="">
-                                <div id="validaDirecion">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="disabledSelect">Telefono</label>
                                 <input type="text" id="Telefono" class="form-control" name="Telefono" placeholder="" onkeypress="ValidaSoloNumeros()">
-                                <div id="validaTelefono">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="disabledSelect">Area</label>
                                 <input type="text" id="Perfil_Profesional" class="form-control" name="Perfil_Profesional" placeholder="" onkeypress="sololetras()">
-                                <div id="validaPerfil_Profesional">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -196,6 +182,7 @@
         <script src="bootstrap/js/dataTables.bootstrap.js" type="text/javascript"></script>
         <script src="js/mapeomod.js" type="text/javascript"></script>
         <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
+        <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
         <script type="text/javascript">
                                     // override defaults
                                     // alertify.defaults.transition = "slide";
@@ -276,55 +263,68 @@
 
                                     }
                                     $(document).ready(function validar() {
-                                        $("#validaNombre").hide();
-                                        $("#validaApellido").hide();
-                                        $("#validaIdentificacion").hide();
-                                        $("#validaDirecion").hide();
-                                        $("#validaTelefono").hide();
-                                        $("#validaPerfil_Profesional").hide();
                                         $("#Guardar").click(function () {
                                             if (($("#Nombre").val()) == "") {
-                                                $("#validaNombre").show();
+                                                new PNotify({
+                                                    title: 'Campo requerido',
+                                                    text: 'El nombre es necesario.',
+                                                    type: 'error'
+                                                });
                                                 return false;
                                             } else {
-                                                $("#validaNombre").hide();
+
                                                 if (($("#Apellido").val()) == "") {
-                                                    $("#validaApellido").show();
+                                                    new PNotify({
+                                                        title: 'Campo requerido',
+                                                        text: 'El apellido es necesario.',
+                                                        type: 'error'
+                                                    });
                                                     return false;
                                                 } else {
-                                                    $("#validaApellido").hide();
+
                                                     if (($("#Identificacion").val()) == "") {
-                                                        $("#validaIdentificacion").show();
+                                                        new PNotify({
+                                                            title: 'Campo requerido',
+                                                            text: 'La identificación es necesario.',
+                                                            type: 'error'
+                                                        });
                                                         return false;
                                                     } else {
-                                                        $("#validaIdentificacion").hide();
+
                                                         if (($("#Direccion").val()) == "") {
-                                                            $("#validaDirecion").show();
+                                                            new PNotify({
+                                                                title: 'Campo requerido',
+                                                                text: 'La dirección es necesario.',
+                                                                type: 'error'
+                                                            });
                                                             return false;
                                                         } else {
-                                                            $("#validaDirecion").hide();
+
                                                             if (($("#Telefono").val()) == "") {
-                                                                $("#validaTelefono").show();
+                                                                new PNotify({
+                                                                    title: 'Campo requerido',
+                                                                    text: 'El telefono es necesario.',
+                                                                    type: 'error'
+                                                                });
                                                                 return false;
                                                             }
-
                                                             else {
-                                                                $("#validaDirecion").hide();
+
                                                                 if (($("#Perfil_Profesional").val()) == "") {
-                                                                    $("#validaPerfil_Profesional").show();
+                                                                    new PNotify({
+                                                                        title: 'Campo requerido',
+                                                                        text: 'El area es necesario.',
+                                                                        type: 'error'
+                                                                    });
                                                                     return false;
                                                                 }
-
-
                                                             }
+
                                                         }
                                                     }
+
                                                 }
                                             }
-
-
-
-
                                         });
 
                                     });
