@@ -130,9 +130,6 @@
                             <div class="form-group">
                                 <label for="disabledSelect">Nombre</label>
                                 <input type="text" id="Nombre" class="form-control" name="Nombre" placeholder="" onkeypress="sololetras()">
-                                <div id="validaNombre">
-                                    <p>Campo nesesario</p>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="disabledSelect">Apellido</label>

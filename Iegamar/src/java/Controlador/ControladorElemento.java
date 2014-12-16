@@ -87,6 +87,12 @@ return Recorrertbl;
                 iconoEstado = "remove-circle";
                 nomFuncion = "Estado_noDisponible("+'"'+list_SER.getString("Seriales").toString().trim()+'"'+")";
                 }
+                    else if (list_SER.getString("Estado").toString().trim().equals("Prestamo"))
+                {
+                 colorEstado = "info";
+                iconoEstado = "ban-circle";
+                nomFuncion = "Estado_noDisponible("+'"'+list_SER.getString("Seriales").toString().trim()+'"'+")";
+                }
                 Recorrer_seriales += " <td><div id='cambio_est'><button  class='btn btn-"+ colorEstado +" glyphicon glyphicon-"+iconoEstado+"' onclick ='"+nomFuncion+"'></button></center></div></td>";
                 Recorrer_seriales += "</tr>";
 
