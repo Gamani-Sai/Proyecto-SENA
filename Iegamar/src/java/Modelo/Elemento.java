@@ -63,6 +63,27 @@ public class Elemento extends ConexionBD{
     
     }
     
+    public boolean varAnomalia(entidadElemento datos_elementos)
+    {
+        conectarse();
+        boolean retornarObj = false;
+        String est_anomalia = "update tbl_seriales set Estado_anomalia = ? where Seriales = ?";
+    try {
+            Stmp();
+            statement = conector.prepareStatement(est_anomalia);
+            statement.setString(1,datos_elementos.getEstado());
+            statement.setString(2, datos_elementos.getSerial());
+
+            int cont = statement.executeUpdate();
+            if (cont > 0) {
+                retornarObj = true;
+            }
+        } catch (Exception e) {
+        }
+        return retornarObj;
+    
+    
+    }
     public int traercodigo(){
     int codigo = 0;
         ResultSet rstraCod = null;
@@ -80,6 +101,40 @@ public class Elemento extends ConexionBD{
         }
         return codigo;
     }
+    
+    public ResultSet notificAnomalia(){
+    
+        ResultSet rs_cntAnm = null;
+        conectarse();
+        String traer_anomalia = "select count(Seriales) as anomalias from tbl_seriales where  Estado_anomalia = 'Ver'";
+         try {
+            consulta = conector.createStatement();
+            rs_cntAnm = consulta.executeQuery(traer_anomalia);
+            
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return rs_cntAnm;
+    }
+    
+    public ResultSet mostraranomolias(){
+    
+        ResultSet rs_mosAnm = null;
+        conectarse();
+        String cons_anomalia = "select Seriales,Anomalia  from tbl_seriales where  Estado_anomalia = 'Ver'";
+         try {
+            consulta = conector.createStatement();
+            rs_mosAnm = consulta.executeQuery(cons_anomalia);
+            
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return rs_mosAnm;
+    }
+    
+    
     public ResultSet consultarElementos(){
    ResultSet rs_elementos = null;
         conectarse();

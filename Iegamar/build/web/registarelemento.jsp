@@ -33,6 +33,9 @@
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/dashboard.css" rel="stylesheet">
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
+        <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
+        <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
 
     </head>
     <body>
@@ -40,16 +43,24 @@
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">IEGAMAR</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
                     <a class="navbar-brand" >IEGAMAR</a>
                 </div>
+
                 <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">           
+                    <ul class="nav navbar-nav" > 
+                        <%
+                            ControladorElemento crt = new ControladorElemento();
+                            int anomalias = crt.anomaliacont();
+                            if (anomalias <= 0) {
+                        %>
+                        <li><a class="btn btn-default"  ><img src="css/notifi1.png"></a> </li>
+                                <%
+                                } else {
+                                %>
+                        <li><a  class="btn btn-danger" id="mostrar" ><img src="css/notifi2.png"></a> </li>
+                                <%
+                                    }
+                                %>
                         <li><a href="consultarcuentas.jsp">Administar Cuentas</a></li>
                         <li><a href="registargradoygrupo.jsp">Grados</a></li>
                         <li><a href="consultarestudiante.jsp">Estudiantes</a></li>
@@ -64,7 +75,56 @@
                         <li class="active"><a href="CerrarSesion.jsp">Cerrar Sesión</a></li>
 
                     </ul>
+
+
                 </div><!--/.nav-collapse -->
+
+            </div>
+
+            <div hidden id="objetivo"  >
+                <table id="tblArea" class="table2 table-hover" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Seriales</th>
+                            <th class="text-center">Anomalia</th>
+                        </tr>
+                    </thead>
+                    <tbody id="traer">
+                        <%
+                            out.println(crt.listaranom());
+                        %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal fade bs-example-modal-sm"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header" >
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Registrar Anomalia</h4>
+                        </div>
+
+                        <div class="modal-body"  >
+                            <div class="form-group">
+                                <label for="disabledSelect">Serial</label>
+                                <input type="text"  class="form-control" name="Serial" id="Serial" readonly="readonly" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="disabledSelect">Descrición</label>
+
+                                <textarea rows="4" name="Anomalia" id="Anomalia" cols="50" class="form-control" readonly="readonly">
+
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" data-dismiss="modal" onclick="list_anomalias();"  class="btn btn-success">Guardar</button>
+                            <button type="reset" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </nav>
 
@@ -112,7 +172,7 @@
                                         <tbody></tbody> <!-- preview content goes here-->
                                     </table>
                                 </div> 
-                                <button type="submit" name="Guardar" value="insertar" onclick="xd();" class="btn btn-success" style="margin-left: 360px;">Guardar</button>
+                                <button type="submit" id="Guardar" name="Guardar" value="insertar" onclick="xd();" class="btn btn-success" style="margin-left: 360px;">Guardar</button>
                                 <input type="hidden"  class="form-control2" id="serial" name="serial" placeholder="">
                                 <button type="Reset" class="btn btn-default">Cancelar</button>
                             </div>
@@ -123,66 +183,207 @@
             </div>
             <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
             <script src="bootstrap/js/bootstrap.js"></script>
+            <script src="js/mapeomod.js" type="text/javascript"></script>
+            <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
+            <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
+
+            <%
+                String alerte = (String) request.getAttribute("alert");
+                if (alerte != null) {
+                    out.print(alerte);
+                }
+
+            %>
+
+            <script type="text/javascript">
+
+                                    function list_anomalias() {
+
+                                        var serial = $("#Serial").val();
+
+                                        $.ajax({
+                                            dataType: "html",
+                                            data: {
+                                                proceso: "listar_anom",
+                                                Serial: serial
+
+                                            },
+                                            type: "POST",
+                                            url: "ControladorElemento",
+                                            statusCode: {
+                                                404: function () {
+                                                    alert("page not found");
+                                                }
+                                            }
+                                        }).done(function (datos) {
+                                            $("#traer").empty();
+                                            $("#traer").append(datos);
+                                        });
+                                    }
+
+
+
+                                    var x;
+                                    x = $(document);
+                                    x.ready(inicializar);
+
+                                    function inicializar() {
+                                        var x = $("#mostrar");
+                                        x.click(muestrame);
+
+                                    }
+
+                                    function muestrame() {
+                                        var x = $("#objetivo");
+                                        x.slideToggle("slow");
+                                    }
+
+
+            </script>
+
+            <style type="text/css">
+                #objetivo{
+                    width: 257px;
+                    height: initial;
+                    padding: 13px;
+                    border-bottom-left-radius: 20px;
+                    border-bottom-right-radius: 20px;
+                    border-top-left-radius: 20px;
+                    background-color: rgba(253, 254, 255, 1);
+                    border: 2px solid rgb(137, 128, 128);
+                    position: fixed;
+                    z-index: 100;
+                }
+            </style>
+
+            <script>
+                alertify.defaults.theme.ok = "btn btn-success";
+                alertify.defaults.theme.cancel = "btn btn-danger";
+                alertify.defaults.theme.input = "form-control";
+            </script>
+
+            <script type="text/javascript">
+                // override defaults
+                // alertify.defaults.transition = "slide";
+
+
+                $(document).ready(function validar() {
+                    $("#Guardar").click(function () {
+                        if (($("#nombre").val()) == "") {
+                            new PNotify({
+                                title: 'Campo requerido',
+                                text: 'El nombre del elemento es necesario.',
+                                type: 'error'
+                            });
+                            return false;
+                        } else {
+
+                            if (($("#descripcion").val()) == "") {
+                                new PNotify({
+                                    title: 'Campo requerido',
+                                    text: 'La descripción es necesario.',
+                                    type: 'error'
+                                });
+                                return false;
+                            } else {
+
+                                if (($("#tbl1").val()) == "") {
+                                    new PNotify({
+                                        title: 'Campo requerido',
+                                        text: 'Los seriales son necesario.',
+                                        type: 'error'
+                                    });
+                                    return false;
+                                }
+
+                            }
+
+                        }
+                    });
+
+                });
+
+                function validarLetrasNumeros() {
+                    if ((event.keyCode < 48) || (event.keyCode > 57) || (event.keyCode < 41) || (event.keyCode > 90))
+                    {
+                        event.returnValue = false;
+                    }
+                }
+                function ValidaSoloNumeros() {
+                    if ((event.keyCode < 48) || (event.keyCode > 57))
+                        event.returnValue = false;
+                }
+                function sololetras() {
+                    if ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122))
+                        event.returnValue = false;
+                }
+                function pulsar(e) {
+                    tecla = (document.all) ? e.keyCode : e.which;
+                    return (tecla != 13);
+                }
+            </script>
 
 
             <script>
 
 
-                                    $(document).on('click', '.input-remove-row', function () {
-                                        var tr = $(this).closest('tr');
-                                        tr.fadeOut(200, function () {
-                                            tr.remove();
+                $(document).on('click', '.input-remove-row', function () {
+                    var tr = $(this).closest('tr');
+                    tr.fadeOut(200, function () {
+                        tr.remove();
 
-                                        });
-                                    });
+                    });
+                });
 
-                                    $(function () {
+                $(function () {
 
-                                        $('.preview-add-button').click(function () {
-                                            var form_data = {};
+                    $('.preview-add-button').click(function () {
+                        var form_data = {};
 
-                                            if ($('.payment-form input[name="Seriales"]').val() != "")
-                                            {
-
-
-                                                form_data["Seriales"] = $('.payment-form input[name="Seriales"]').val();
-
-                                                form_data["remove-row"] = '<span class="glyphicon glyphicon-remove"></span>';
-                                                var row = $('<tr></tr>');
-                                                $.each(form_data, function (type, value) {
-
-                                                    $('<td class="input-' + type + '"></td>').html(value).appendTo(row);
-
-                                                });
-                                                $('.preview-table > tbody:last').append(row);
-                                            }
-                                            document.getElementById("Seriales").value = "";
-                                        });
-
-                                    });
+                        if ($('.payment-form input[name="Seriales"]').val() != "")
+                        {
 
 
+                            form_data["Seriales"] = $('.payment-form input[name="Seriales"]').val();
 
-                                    function xd() {
-                                        var textos = '';
-                                        for (var i = 0; i < document.getElementById('tbl').rows.length; i++) {
-                                            for (var j = 0; j < document.getElementById('tbl').rows[i].cells.length; j++)
-                                            {
-                                                if (j == 0 && i != 0) {
-                                                    textos = textos + document.getElementById('tbl').rows[i].cells[j].innerHTML + '-';
-                                                }
-                                            }
-                                            textos = textos;
-                                        }
-                                        $("#serial").val(textos);
-                                    }
-                                    
-                                    function validarLetrasNumeros(){
-                                        if((event.keyCode < 48) || (event.keyCode > 57) || (event.keyCode < 41) || (event.keyCode > 90))
-                                        {
-                                            event.returnValue = false;
-                                        }
-                                    }
+                            form_data["remove-row"] = '<span class="glyphicon glyphicon-remove"></span>';
+                            var row = $('<tr></tr>');
+                            $.each(form_data, function (type, value) {
+
+                                $('<td class="input-' + type + '"></td>').html(value).appendTo(row);
+
+                            });
+                            $('.preview-table > tbody:last').append(row);
+                        }
+                        document.getElementById("Seriales").value = "";
+                    });
+
+                });
+
+
+
+                function xd() {
+                    var textos = '';
+                    for (var i = 0; i < document.getElementById('tbl').rows.length; i++) {
+                        for (var j = 0; j < document.getElementById('tbl').rows[i].cells.length; j++)
+                        {
+                            if (j == 0 && i != 0) {
+                                textos = textos + document.getElementById('tbl').rows[i].cells[j].innerHTML + '-';
+                            }
+                        }
+                        textos = textos;
+                    }
+                    $("#serial").val(textos);
+                    if (($("#serial").val()) == "") {
+                        new PNotify({
+                            title: 'No hay seriales',
+                            type: 'error'
+                        });
+                        return false;
+                    }
+                }
+
+
             </script>
     </body>
 </html>

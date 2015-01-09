@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.6
+-- version 4.0.9
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-12-2014 a las 19:40:06
--- Versión del servidor: 5.6.16
--- Versión de PHP: 5.5.9
+-- Tiempo de generación: 08-01-2015 a las 22:21:55
+-- Versión del servidor: 5.6.14
+-- Versión de PHP: 5.5.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -46,15 +46,19 @@ CREATE TABLE IF NOT EXISTS `tbl_cuentas_usuario` (
   `Password` varchar(255) DEFAULT NULL,
   `Tipo_rol` varchar(255) DEFAULT NULL,
   `Estado` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`Id_cuenta`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  PRIMARY KEY (`Id_cuenta`),
+  UNIQUE KEY `Login` (`Login`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Volcado de datos para la tabla `tbl_cuentas_usuario`
 --
 
 INSERT INTO `tbl_cuentas_usuario` (`Id_cuenta`, `Login`, `Password`, `Tipo_rol`, `Estado`) VALUES
-(1, 'Admin', 'Iegamar', 'Super', 'Habilitado');
+(1, 'Admin', 'iegamar', 'Super', 'Habilitado'),
+(2, '', '', 'Estudiante', 'Habilitado'),
+(3, 'Andres', '123', 'Estudiante', 'Habilitado'),
+(9, 'Duvan', '123', 'Estudiante', 'Habilitado');
 
 -- --------------------------------------------------------
 
@@ -69,6 +73,21 @@ CREATE TABLE IF NOT EXISTS `tbl_dtlls_cunetaxprestamo` (
   KEY `tbl_dtlls_estudiente*prestamo` (`Id_cuenta`),
   KEY `Id_prestamo` (`Id_prestamo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tbl_dtlls_cunetaxprestamo`
+--
+
+INSERT INTO `tbl_dtlls_cunetaxprestamo` (`Id_cuenta`, `Id_prestamo`, `Tipo`) VALUES
+(3, 1, 'Prestador'),
+(3, 2, 'Prestador'),
+(3, 3, 'Prestador'),
+(3, 1, 'Devolucion'),
+(3, 2, 'Devolucion'),
+(9, 3, 'Devolucion'),
+(3, 4, 'Prestador'),
+(3, 5, 'Prestador'),
+(3, 5, 'Devolucion');
 
 -- --------------------------------------------------------
 
@@ -96,6 +115,14 @@ CREATE TABLE IF NOT EXISTS `tbl_dtlls_empleadxprestamo` (
   KEY `Id_prestamo` (`Id_prestamo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `tbl_dtlls_empleadxprestamo`
+--
+
+INSERT INTO `tbl_dtlls_empleadxprestamo` (`Identificacion`, `Id_prestamo`) VALUES
+('981234251', 2),
+('981234251', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -109,6 +136,15 @@ CREATE TABLE IF NOT EXISTS `tbl_dtlls_estudiantesxcuentas` (
   KEY `Identificacion` (`Identificacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `tbl_dtlls_estudiantesxcuentas`
+--
+
+INSERT INTO `tbl_dtlls_estudiantesxcuentas` (`Identificacion`, `Id_cuenta`) VALUES
+(NULL, 2),
+('1234567891', 3),
+('1234567891', 9);
+
 -- --------------------------------------------------------
 
 --
@@ -121,6 +157,15 @@ CREATE TABLE IF NOT EXISTS `tbl_dtlls_estudiantexprestamo` (
   KEY `tbl_dtlls_empleado*prestamo` (`Identificacion`),
   KEY `Id_prestamo` (`Id_prestamo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tbl_dtlls_estudiantexprestamo`
+--
+
+INSERT INTO `tbl_dtlls_estudiantexprestamo` (`Identificacion`, `Id_prestamo`) VALUES
+('1234567891', 1),
+('49684944', 4),
+('12345678910', 5);
 
 -- --------------------------------------------------------
 
@@ -148,6 +193,17 @@ CREATE TABLE IF NOT EXISTS `tbl_dtlls_prestamo` (
   KEY `Seriales` (`Seriales`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `tbl_dtlls_prestamo`
+--
+
+INSERT INTO `tbl_dtlls_prestamo` (`Id_prestamo`, `Seriales`) VALUES
+(1, '2132121312'),
+(3, '2132121313'),
+(4, ''),
+(5, '2132121310'),
+(5, '2132121314');
+
 -- --------------------------------------------------------
 
 --
@@ -173,7 +229,17 @@ CREATE TABLE IF NOT EXISTS `tbl_elementos` (
   `Nombre_elemento` varchar(100) DEFAULT NULL,
   `Descripcion` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Codigo`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Volcado de datos para la tabla `tbl_elementos`
+--
+
+INSERT INTO `tbl_elementos` (`Codigo`, `Nombre_elemento`, `Descripcion`) VALUES
+(1, 'Dell Inspiron N4050', 'Portatil'),
+(2, '', ''),
+(3, '', ''),
+(4, 'dll', 'portatil');
 
 -- --------------------------------------------------------
 
@@ -193,6 +259,14 @@ CREATE TABLE IF NOT EXISTS `tbl_empleado` (
   `Perfil_profesional` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Identificacion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tbl_empleado`
+--
+
+INSERT INTO `tbl_empleado` (`Identificacion`, `Nombre`, `Apellido`, `Direccion`, `Telefono`, `Huella`, `Fecha_nacimiento`, `Estado`, `Perfil_profesional`) VALUES
+('', '', '', '', '', 'Por Hacer', '', 'Habilitado', ''),
+('981234251', 'Camilo Andres', 'Rojo Giraldo', 'cr2 n 56 11', '2221901', 'Por Hacer', '03 Febrero 1998', 'Habilitado', 'Matematicas');
 
 -- --------------------------------------------------------
 
@@ -214,6 +288,16 @@ CREATE TABLE IF NOT EXISTS `tbl_estudiante` (
   KEY `tbl_estudiante` (`Id_grado`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `tbl_estudiante`
+--
+
+INSERT INTO `tbl_estudiante` (`Identificacion`, `Nombre`, `Apellido`, `Direccion`, `Telefono`, `Huella`, `Fecha`, `Id_grado`, `Estado`) VALUES
+('1234567891', 'Duvan Andres', 'Lopez', 'cll34 n34-95', '2221901', 'no hay', '11 Abril 2007', 1, 'Habilitado'),
+('12345678910', 'alexander', 'rua', 'VCPDKMVPWR', '483948204', 'no hay', '15 Abril 1998', 1, 'Habilitado'),
+('483776284', 'alexander', 'rua', 'VCPDKMVPWR', '483948204', 'no hay', '08 Diciembre 2014', 1, 'Habilitado'),
+('49684944', 'alex', 'rua', 'VCPDKMVPWR', '483948204', 'no hay', '15 Octubre 2014', 1, 'Habilitado');
+
 -- --------------------------------------------------------
 
 --
@@ -226,7 +310,14 @@ CREATE TABLE IF NOT EXISTS `tbl_grado` (
   `Estado` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Id_grado`),
   UNIQUE KEY `UQ_Grado` (`Grado`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Volcado de datos para la tabla `tbl_grado`
+--
+
+INSERT INTO `tbl_grado` (`Id_grado`, `Grado`, `Estado`) VALUES
+(1, '6-1', 'Habilitado');
 
 -- --------------------------------------------------------
 
@@ -255,7 +346,18 @@ CREATE TABLE IF NOT EXISTS `tbl_prestamo` (
   `Hora_devolucion` varchar(255) DEFAULT NULL,
   `Tipo` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`Id_prestamo`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Volcado de datos para la tabla `tbl_prestamo`
+--
+
+INSERT INTO `tbl_prestamo` (`Id_prestamo`, `Fecha_prestamo`, `Hora_prestamo`, `Fecha_devolucion`, `Hora_devolucion`, `Tipo`) VALUES
+(1, '2014-12-15', '19:46', '2014-12-15', '19:56', 'Estudiante'),
+(2, '2014-12-15', '19:46', '2014-12-15', '19:56', 'Profesores'),
+(3, '2014-12-15', '19:46', '2014-12-15', '19:56', 'Profesores'),
+(4, '2015-01-08', '12:05', 'No Asinado', 'No Asinado', 'Estudiante'),
+(5, '2015-01-08', '12:06', '2015-01-08', '12:07', 'Estudiante');
 
 -- --------------------------------------------------------
 
@@ -285,9 +387,22 @@ CREATE TABLE IF NOT EXISTS `tbl_seriales` (
   `Estado` varchar(255) DEFAULT NULL,
   `Codigo` int(11) DEFAULT NULL,
   `Anomalia` varchar(255) DEFAULT NULL,
+  `Estado_anomalia` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Seriales`),
   KEY `Codigo` (`Codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tbl_seriales`
+--
+
+INSERT INTO `tbl_seriales` (`Seriales`, `Estado`, `Codigo`, `Anomalia`, `Estado_anomalia`) VALUES
+('', 'Prestamo', 4, NULL, ''),
+('2132121310', 'Disponible', 1, 'se Daño lo daño eliana\n                            ', 'Visto'),
+('2132121311', 'Disponible', 1, '', ''),
+('2132121312', 'Disponible', 1, 'malo\n                            ', 'Visto'),
+('2132121313', 'Disponible', 1, '', ''),
+('2132121314', 'Disponible', 1, NULL, '');
 
 --
 -- Restricciones para tablas volcadas
@@ -297,15 +412,15 @@ CREATE TABLE IF NOT EXISTS `tbl_seriales` (
 -- Filtros para la tabla `tbl_dtlls_cunetaxprestamo`
 --
 ALTER TABLE `tbl_dtlls_cunetaxprestamo`
-  ADD CONSTRAINT `tbl_dtlls_cunetaxprestamo_ibfk_2` FOREIGN KEY (`Id_prestamo`) REFERENCES `tbl_prestamo` (`Id_prestamo`),
-  ADD CONSTRAINT `tbl_dtlls_cunetaxprestamo_ibfk_1` FOREIGN KEY (`Id_cuenta`) REFERENCES `tbl_cuentas_usuario` (`Id_cuenta`);
+  ADD CONSTRAINT `tbl_dtlls_cunetaxprestamo_ibfk_1` FOREIGN KEY (`Id_cuenta`) REFERENCES `tbl_cuentas_usuario` (`Id_cuenta`),
+  ADD CONSTRAINT `tbl_dtlls_cunetaxprestamo_ibfk_2` FOREIGN KEY (`Id_prestamo`) REFERENCES `tbl_prestamo` (`Id_prestamo`);
 
 --
 -- Filtros para la tabla `tbl_dtlls_empleadosxcuentas`
 --
 ALTER TABLE `tbl_dtlls_empleadosxcuentas`
-  ADD CONSTRAINT `tbl_dtlls_empleadosxcuentas_ibfk_1` FOREIGN KEY (`Id_cuenta`) REFERENCES `tbl_cuentas_usuario` (`Id_cuenta`),
-  ADD CONSTRAINT `aa` FOREIGN KEY (`Identificacion`) REFERENCES `tbl_empleado` (`Identificacion`);
+  ADD CONSTRAINT `aa` FOREIGN KEY (`Identificacion`) REFERENCES `tbl_empleado` (`Identificacion`),
+  ADD CONSTRAINT `tbl_dtlls_empleadosxcuentas_ibfk_1` FOREIGN KEY (`Id_cuenta`) REFERENCES `tbl_cuentas_usuario` (`Id_cuenta`);
 
 --
 -- Filtros para la tabla `tbl_dtlls_empleadxprestamo`
@@ -318,8 +433,8 @@ ALTER TABLE `tbl_dtlls_empleadxprestamo`
 -- Filtros para la tabla `tbl_dtlls_estudiantesxcuentas`
 --
 ALTER TABLE `tbl_dtlls_estudiantesxcuentas`
-  ADD CONSTRAINT `tbl_dtlls_estudiantesxcuentas_ibfk_1` FOREIGN KEY (`Id_cuenta`) REFERENCES `tbl_cuentas_usuario` (`Id_cuenta`),
-  ADD CONSTRAINT `tbl_dtlls_estudiantes*cuentas` FOREIGN KEY (`Identificacion`) REFERENCES `tbl_estudiante` (`Identificacion`);
+  ADD CONSTRAINT `tbl_dtlls_estudiantes*cuentas` FOREIGN KEY (`Identificacion`) REFERENCES `tbl_estudiante` (`Identificacion`),
+  ADD CONSTRAINT `tbl_dtlls_estudiantesxcuentas_ibfk_1` FOREIGN KEY (`Id_cuenta`) REFERENCES `tbl_cuentas_usuario` (`Id_cuenta`);
 
 --
 -- Filtros para la tabla `tbl_dtlls_estudiantexprestamo`

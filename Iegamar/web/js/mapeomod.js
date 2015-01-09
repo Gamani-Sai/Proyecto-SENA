@@ -59,9 +59,11 @@ var mapear = {
     serial: function (codigo){
         $("#id_codigo").val(codigo);
         
+    },
+    anomalia: function (serial,anomalia)
+    {
+      $("#Serial").val(serial);
+      $("#Anomalia").val(anomalia);
     }
-    
-    
-    
 };
 

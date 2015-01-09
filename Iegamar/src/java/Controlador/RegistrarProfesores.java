@@ -70,7 +70,7 @@ public class RegistrarProfesores extends HttpServlet {
                 if (Pro.insertProfesores(datosProfesores)) {
 
                     alert += "<script type=\"text/javascript\">";
-                    alert += "alertify.alert(\"Registro exitoso\");";
+                    alert += "alertify.alert(\"Registro Exitoso\");";
                     alert += "</script>";
                     request.setAttribute("alert", alert);
                     getServletConfig().getServletContext().getRequestDispatcher("/registarprofesores.jsp").forward(request, response);

@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,6 +39,34 @@ public class ControladorElemento extends HttpServlet {
     entidadElemento datos_elemento = new entidadElemento();
     Elemento ele = new Elemento();
 
+    public int anomaliacont() throws SQLException{
+    int num_anoma = 0;
+    ResultSet cnt_anomalia = ele.notificAnomalia();
+     while(cnt_anomalia.next()){
+     num_anoma = cnt_anomalia.getInt("anomalias");
+         }
+    
+    return num_anoma;
+    }
+    
+     public String listaranom() throws SQLException {
+        String Recorrertbl = "";
+        ResultSet list_anom = ele.mostraranomolias();
+        try {
+            while (list_anom.next()) {
+                Recorrertbl += "<tr>";
+                Recorrertbl += "<td><center>" + list_anom.getString("Seriales").toString().trim() + "</center></td>";
+                Recorrertbl += " <td><center><button  class='btn btn-primary glyphicon glyphicon-eye-open' data-toggle='modal' data-target='.bs-example-modal-sm' onclick = 'mapear.anomalia(" + '\"' + list_anom.getString("Seriales").toString().trim() + '\"' + "," + '\"' + list_anom.getString("Anomalia").toString().trim() + '\"' + ")' ></button></center></td>";
+                Recorrertbl += "</tr>";
+                
+            }
+        } catch (Exception e) {
+            Recorrertbl = "error" + e.getMessage();
+        }
+
+        return Recorrertbl;
+    }
+    
     public ArrayList llenararray(String seriales) {
 
         String[] rrecorrercadena = seriales.split("-");
@@ -46,65 +76,65 @@ public class ControladorElemento extends HttpServlet {
         }
         return listar;
     }
-  public String listarElementos() throws SQLException{
-     String Recorrertbl = "";
-     ResultSet listElemen = ele.consultarElementos();
-      try {
+
+    public String listarElementos() throws SQLException {
+        String Recorrertbl = "";
+        ResultSet listElemen = ele.consultarElementos();
+        try {
             while (listElemen.next()) {
                 Recorrertbl += "<tr>";
                 Recorrertbl += "<td Style='display:none'><center>" + listElemen.getString("Codigo").toString().trim() + "</center></td>";
                 Recorrertbl += "<td><center>" + listElemen.getString("Nombre_elemento").toString().trim() + "</center></td>";
                 Recorrertbl += "<td><center>" + listElemen.getString("Descripcion").toString().trim() + "</center></td>";
                 Recorrertbl += " <td><center><button onclick ='recibir(" + listElemen.getString("Codigo").toString().trim() + ");mapear.serial(" + listElemen.getString("Codigo").toString().trim() + ")' class='btn btn-default glyphicon glyphicon-eye-open'  data-toggle='modal' data-target='#myModal1'></button></center></td>";
-                Recorrertbl += " <td><center><button  class='btn btn-primary glyphicon glyphicon-pencil' data-toggle='modal' data-target='#myModal' onclick = 'mapear.Elementos(" + listElemen.getString("Codigo").toString().trim() + "," + '\"'+listElemen.getString("Nombre_elemento").toString().trim()+ '\"' + "," + '\"'+listElemen.getString("Descripcion").toString().trim()+ '\"' + ")' ></button></center></td>";
+                Recorrertbl += " <td><center><button  class='btn btn-primary glyphicon glyphicon-pencil' data-toggle='modal' data-target='#myModal' onclick = 'mapear.Elementos(" + listElemen.getString("Codigo").toString().trim() + "," + '\"' + listElemen.getString("Nombre_elemento").toString().trim() + '\"' + "," + '\"' + listElemen.getString("Descripcion").toString().trim() + '\"' + ")' ></button></center></td>";
                 Recorrertbl += "</tr>";
             }
         } catch (Exception e) {
             Recorrertbl = "error" + e.getMessage();
         }
-     
-return Recorrertbl;
-}
-  public String listarSeriales(){
-    String Recorrer_seriales = "";
-    
-      try {
-    ResultSet list_SER = ele.consultarSeriales(datos_elemento);
-         String colorEstado = "";
-         String  iconoEstado = "";
-         String nomFuncion = "";
+
+        return Recorrertbl;
+    }
+
+    public String listarSeriales() {
+        String Recorrer_seriales = "";
+
+        try {
+            ResultSet list_SER = ele.consultarSeriales(datos_elemento);
+            String colorEstado = "";
+            String iconoEstado = "";
+            String nomFuncion = "";
             while (list_SER.next()) {
                 Recorrer_seriales += "<tr>";
                 Recorrer_seriales += "<td><center>" + list_SER.getString("Seriales").toString().trim() + "</center></td>";
-                    if(list_SER.getString("Estado").toString().trim().equals("Disponible"))
-                {
-                colorEstado = "success";
-                iconoEstado = "ok-circle";
-                nomFuncion = "Estado_disponible("+'"'+list_SER.getString("Seriales").toString().trim()+'"'+")";
-                } else if (list_SER.getString("Estado").toString().trim().equals("No disponible"))
-                {
-                 colorEstado = "danger";
-                iconoEstado = "remove-circle";
-                nomFuncion = "Estado_noDisponible("+'"'+list_SER.getString("Seriales").toString().trim()+'"'+")";
+                if (list_SER.getString("Estado").toString().trim().equals("Disponible")) {
+                    colorEstado = "success";
+                    iconoEstado = "ok-circle";
+                    nomFuncion = "Estado_disponible(" + '"' + list_SER.getString("Seriales").toString().trim() + '"' + ")";
+                } else if (list_SER.getString("Estado").toString().trim().equals("No disponible")) {
+                    colorEstado = "danger";
+                    iconoEstado = "remove-circle";
+                    nomFuncion = "Estado_noDisponible(" + '"' + list_SER.getString("Seriales").toString().trim() + '"' + ")";
+                } else if (list_SER.getString("Estado").toString().trim().equals("Prestamo")) {
+                    colorEstado = "info";
+                    iconoEstado = "ban-circle";
+                    nomFuncion = "Estado_noDisponible(" + '"' + list_SER.getString("Seriales").toString().trim() + '"' + ")";
                 }
-                    else if (list_SER.getString("Estado").toString().trim().equals("Prestamo"))
-                {
-                 colorEstado = "info";
-                iconoEstado = "ban-circle";
-                nomFuncion = "Estado_noDisponible("+'"'+list_SER.getString("Seriales").toString().trim()+'"'+")";
-                }
-                Recorrer_seriales += " <td><div id='cambio_est'><button  class='btn btn-"+ colorEstado +" glyphicon glyphicon-"+iconoEstado+"' onclick ='"+nomFuncion+"'></button></center></div></td>";
+                Recorrer_seriales += " <td><div id='cambio_est'><button  class='btn btn-" + colorEstado + " glyphicon glyphicon-" + iconoEstado + "' onclick ='" + nomFuncion + "'></button></center></div></td>";
                 Recorrer_seriales += "</tr>";
 
             }
         } catch (Exception e) {
             Recorrer_seriales = "error" + e.getMessage();
         }
-    
-    return Recorrer_seriales;
+
+        return Recorrer_seriales;
     }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
+        String alert = "";
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -125,14 +155,27 @@ return Recorrertbl;
                         datos_elemento.setDescripcion(Descripcion);
                         datos_elemento.setSeriales(arraySeri);
                         datos_elemento.setEstado(estado);
-                        ele.registrarElemento(datos_elemento);
-                        ele.registrarSeriales(datos_elemento);
+                        if (ele.registrarElemento(datos_elemento)) {
+                            //ele.registrarElemento(datos_elemento);
+                            ele.registrarSeriales(datos_elemento);
+
+                            alert += "<script type=\"text/javascript\">";
+                            alert += "alertify.alert(\"Registro Exitoso\");";
+                            alert += "</script>";
+                            request.setAttribute("alert", alert);
+                            getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
+                        } else {
+                            alert += "<script type=\"text/javascript\">";
+                            alert += "alertify.alert(\"Ya Existe\");";
+                            alert += "</script>";
+                            request.setAttribute("alert", alert);
+                            getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
+                        }
                     }
-                     response.sendRedirect("registarelemento.jsp");
-                }else if(proceso.equals("modificar"))
-                {
+                    response.sendRedirect("registarelemento.jsp");
+                } else if (proceso.equals("modificar")) {
                     String evento = request.getParameter("Guardar");
-                    if(evento.equals("modificar")){
+                    if (evento.equals("modificar")) {
                         String codigo = request.getParameter("codigo");
                         String nombre_ele = request.getParameter("nom_elemento");
                         String descripcion = request.getParameter("descripcion");
@@ -140,32 +183,37 @@ return Recorrertbl;
                         datos_elemento.setNombreEle(nombre_ele);
                         datos_elemento.setDescripcion(descripcion);
                         ele.actualizarElemento(datos_elemento);
-                        
+
                     }
-                     response.sendRedirect("consultarelemento.jsp");
-                }else if (proceso.equals("listar_ser"))
-                {
+                    response.sendRedirect("consultarelemento.jsp");
+                } else if (proceso.equals("listar_ser")) {
                     String codigo = request.getParameter("codigo");
                     datos_elemento.setCodigo(Integer.parseInt(codigo));
-                      out.println(listarSeriales()); 
-                
-                }else if (proceso.equals("agregar_serial"))
-                {
-                String codigo = request.getParameter("codigo_agg");
-                String serial = request.getParameter("serial");
-                String Estado = "Disponible";
-                datos_elemento.setCodigo(Integer.parseInt(codigo));
-                datos_elemento.setSerial(serial);
-                datos_elemento.setEstado(Estado);
-                ele.agregarSeriales(datos_elemento);
-                }else if(proceso.equals("Cambio_estado"))
-                {
+                    out.println(listarSeriales());
+
+                } else if (proceso.equals("agregar_serial")) {
+                    String codigo = request.getParameter("codigo_agg");
+                    String serial = request.getParameter("serial");
+                    String Estado = "Disponible";
+                    datos_elemento.setCodigo(Integer.parseInt(codigo));
+                    datos_elemento.setSerial(serial);
+                    datos_elemento.setEstado(Estado);
+                    ele.agregarSeriales(datos_elemento);
+                } else if (proceso.equals("Cambio_estado")) {
                     String serial = request.getParameter("serial");
                     String estado = request.getParameter("estado");
                     datos_elemento.setSerial(serial);
                     datos_elemento.setEstado(estado);
                     ele.cambio_estadoSerial(datos_elemento);
-                
+
+                } else if (proceso.equals("listar_anom"))
+                {
+                    String serial = request.getParameter("Serial");
+                    String estado_anom = "Visto";
+                    datos_elemento.setSerial(serial);
+                    datos_elemento.setEstado(estado_anom);
+                    ele.varAnomalia(datos_elemento);
+                    out.println(listaranom());
                 }
             }
         }
@@ -183,7 +231,11 @@ return Recorrertbl;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorElemento.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -197,7 +249,11 @@ return Recorrertbl;
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorElemento.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
