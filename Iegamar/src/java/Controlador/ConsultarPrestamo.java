@@ -128,6 +128,7 @@ public class ConsultarPrestamo extends HttpServlet {
                     String id_prestamo = request.getParameter("Id_prestamo");
                     String tipoCuenta = "Devolucion";
                     String estado = "Disponible";
+                    String estAnomalia ="Ver";
                     HttpSession sesionOk = request.getSession();
                     int Cuenta = Integer.parseInt(sesionOk.getAttribute("Id_cuenta").toString());
                     datosPrestamo.setFecha_devolucion(Fecha_Devolucion);
@@ -136,6 +137,7 @@ public class ConsultarPrestamo extends HttpServlet {
                     datosPrestamo.setId_cuenta(Cuenta);
                     datosPrestamo.setTipocuenta(tipoCuenta);
                     datosPrestamo.setEstado(estado);
+                    datosPrestamo.setEstaAnomali(estAnomalia);
 
                     boolean objejecutar = false;
                     objejecutar = Pres.registarDevolucion(datosPrestamo);
@@ -150,7 +152,7 @@ public class ConsultarPrestamo extends HttpServlet {
                     out.println(listarSeriales());
                 }else   if (proceso.equals("agregar_anomalia")) {
                     String Serial = request.getParameter("serial");
-                    String Descricion_anomalia = request.getParameter("anomalia");
+                    String Descricion_anomalia = request.getParameter("anomalia").trim();
                     datosPrestamo.setSerialesUP(Serial);
                     datosPrestamo.setDescricion_anomalia(Descricion_anomalia);
                     boolean objejecutar = false;

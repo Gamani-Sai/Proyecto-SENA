@@ -36,6 +36,7 @@
         <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
         <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
+        <link href="css/style_light.css" rel="stylesheet" type="text/css"/>
 
     </head>
     <body>
@@ -47,20 +48,20 @@
                 </div>
 
                 <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav" > 
+                    <ul class="nav navbar-nav" >
+                        <%-- 
+                        <div id="actualizar">
+                            <%
+                                ControladorElemento crt = new ControladorElemento();
+                                out.println(crt.anomaliacont());
+                            %>
+                        </div>
+                        --%>
+
                         <%
                             ControladorElemento crt = new ControladorElemento();
-                            int anomalias = crt.anomaliacont();
-                            if (anomalias <= 0) {
+                            out.println(crt.anomaliacont());
                         %>
-                        <li><a class="btn btn-default"  ><img src="css/notifi1.png"></a> </li>
-                                <%
-                                } else {
-                                %>
-                        <li><a  class="btn btn-danger" id="mostrar" ><img src="css/notifi2.png"></a> </li>
-                                <%
-                                    }
-                                %>
                         <li><a href="consultarcuentas.jsp">Administar Cuentas</a></li>
                         <li><a href="registargradoygrupo.jsp">Grados</a></li>
                         <li><a href="consultarestudiante.jsp">Estudiantes</a></li>
@@ -81,20 +82,30 @@
 
             </div>
 
-            <div hidden id="objetivo"  >
-                <table id="tblArea" class="table2 table-hover" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th class="text-center">Seriales</th>
-                            <th class="text-center">Anomalia</th>
-                        </tr>
-                    </thead>
-                    <tbody id="traer">
-                        <%
-                            out.println(crt.listaranom());
-                        %>
-                    </tbody>
-                </table>
+              <div hidden="true" class="notification-list-wrapper" id="objetivo" style="top: 65px; left: 100px;  opacity: 1;">
+
+                <ul class="notification-list-menu">
+                </ul>
+
+                <ul class="notification-list" data-type="unread">
+
+                    <table id="tblArea" class="table2 table-hover" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Seriales</th>
+                                <th class="text-center">Anomalia</th>
+                            </tr>
+                        </thead>
+                        <tbody id="traer1">
+                            <%
+                                out.println(crt.listaranom());
+                            %>
+                        </tbody>
+                    </table>
+
+
+
+                </ul>
             </div>
 
             <div class="modal fade bs-example-modal-sm"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -102,7 +113,7 @@
                     <div class="modal-content">
                         <div class="modal-header" >
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Registrar Anomalia</h4>
+                            <h4 class="modal-title" id="myModalLabel">Anomalia</h4>
                         </div>
 
                         <div class="modal-body"  >
@@ -111,7 +122,7 @@
                                 <input type="text"  class="form-control" name="Serial" id="Serial" readonly="readonly" placeholder="">
                             </div>
                             <div class="form-group">
-                                <label for="disabledSelect">Descrición</label>
+                                <label for="disabledSelect">Descripción</label>
 
                                 <textarea rows="4" name="Anomalia" id="Anomalia" cols="50" class="form-control" readonly="readonly">
 
@@ -120,7 +131,6 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" data-dismiss="modal" onclick="list_anomalias();"  class="btn btn-success">Guardar</button>
-                            <button type="reset" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
 
@@ -196,6 +206,34 @@
             %>
 
             <script type="text/javascript">
+                
+                var actualizacion =setInterval(function () {actualizar_anomalias()}, 3000);
+                
+                                  function actualizar_anomalias() {
+
+                                        var serial = $("#Serial").val();
+
+                                        $.ajax({
+                                            dataType: "html",
+                                            data: {
+                                                proceso: "actualizar_anom"
+                                                
+
+                                            },
+                                            type: "POST",
+                                            url: "ControladorElemento",
+                                            statusCode: {
+                                                404: function () {
+                                                    alert("page not found");
+                                                }
+                                            }
+                                        }).done(function (datos) {
+                                            $("#actualizar").empty();
+                                            $("#actualizar").append(datos);
+                                        });
+                                    }
+
+                
 
                                     function list_anomalias() {
 
@@ -240,21 +278,6 @@
 
 
             </script>
-
-            <style type="text/css">
-                #objetivo{
-                    width: 257px;
-                    height: initial;
-                    padding: 13px;
-                    border-bottom-left-radius: 20px;
-                    border-bottom-right-radius: 20px;
-                    border-top-left-radius: 20px;
-                    background-color: rgba(253, 254, 255, 1);
-                    border: 2px solid rgb(137, 128, 128);
-                    position: fixed;
-                    z-index: 100;
-                }
-            </style>
 
             <script>
                 alertify.defaults.theme.ok = "btn btn-success";

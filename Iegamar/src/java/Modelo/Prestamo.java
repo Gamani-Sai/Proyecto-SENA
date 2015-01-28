@@ -333,12 +333,13 @@ public class Prestamo extends ConexionBD {
     public boolean registarAnomalia(entidadPrestamo datosPrestamo) {
         conectarse();
         boolean retornarObj = false;
-        String regDevolucion = "update tbl_seriales set Anomalia = ?   where Seriales = ?";
+        String regDevolucion = "update tbl_seriales set Anomalia = ? , Estado_anomalia = ?   where Seriales = ?";
         try {
             Stmp();
             statement = conector.prepareStatement(regDevolucion);
             statement.setString(1, datosPrestamo.getDescricion_anomalia());
-            statement.setString(2, datosPrestamo.getSerialesUP());
+            statement.setString(2, datosPrestamo.getEstaAnomali());
+            statement.setString(3, datosPrestamo.getSerialesUP());
 
             int cont = statement.executeUpdate();
             if (cont > 0) {

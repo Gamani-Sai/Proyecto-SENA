@@ -26,6 +26,7 @@ public class entidadPrestamo {
     private String Estado = "";
     private String descricion_anomalia="";
     private String SerialesUP="";
+    private String estaAnomali ="";
 
     /**
      * @return the Fecha_prestamo
@@ -207,6 +208,20 @@ public class entidadPrestamo {
      */
     public void setSerialesUP(String SerialesUP) {
         this.SerialesUP = SerialesUP;
+    }
+
+    /**
+     * @return the estaAnomali
+     */
+    public String getEstaAnomali() {
+        return estaAnomali;
+    }
+
+    /**
+     * @param estaAnomali the estaAnomali to set
+     */
+    public void setEstaAnomali(String estaAnomali) {
+        this.estaAnomali = estaAnomali;
     }
 
 }
