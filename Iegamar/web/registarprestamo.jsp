@@ -26,7 +26,6 @@
 <%
     java.util.Date Fecha = new java.util.Date();
     SimpleDateFormat Formato = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat Hora = new SimpleDateFormat("HH:mm");
 %>
 
 <!DOCTYPE html>
@@ -49,7 +48,7 @@
         <link href="css/style_light.css" rel="stylesheet" type="text/css"/>
 
     </head>
-    <body>
+    <body onload="mueveReloj()">
 
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
@@ -158,7 +157,7 @@
                 </div>
 
                 <section class="container">
-                    <form role="form" action="RegistarPrestamo" method="POST" class="payment-form">
+                    <form role="form" action="RegistarPrestamo" method="POST" name="form_reloj" class="payment-form">
                         <div class="container-page">        
                             <div class="col-md-6">
                                 <h3 class="dark-grey">Registro De Prestamo</h3>
@@ -188,7 +187,7 @@
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Hora</label>
-                                    <input type="text" id="disabledTextInput" class="form-control" placeholder="" name="Hora" readonly="readonly" value="<%=Hora.format(Fecha)%>">
+                                    <input type="text" id="disabledTextInput" class="form-control" placeholder="" name="Hora" readonly="readonly" >
                                 </div>
 
                                 <div class="form-group col-lg-12">
@@ -226,12 +225,52 @@
             <script src="js/select2.js" type="text/javascript"></script>
             <script src="js/ajax.js" type="text/javascript"></script>
             <script src="js/mapeomod.js" type="text/javascript"></script>
+            <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
+            <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
+
+            <%
+                String alerte = (String) request.getAttribute("alert");
+                if (alerte != null) {
+                    out.print(alerte);
+                }
+            %>
+            
+            <script>
+                alertify.defaults.theme.ok = "btn btn-success";
+                alertify.defaults.theme.cancel = "btn btn-danger";
+                alertify.defaults.theme.input = "form-control";
+            </script>
+
+
+
+
 
             <script>
-                                    $("#selectSerial").select2({
-                                        minimumInputLength: 2
-                                    });
+                $("#selectSerial").select2({
+                    minimumInputLength: 2
+                });
             </script>
+
+            <script language="JavaScript">
+
+                function addZero(i) {
+                    if (i < 10) {
+                        i = "0" + i;
+                    }
+                    return i;
+                }
+
+                function mueveReloj() {
+                    momentoActual = new Date();
+                    hora = momentoActual.getHours();
+                    minuto = addZero(momentoActual.getMinutes())
+
+                    horaImprimible = hora + ":" + minuto;
+                    document.form_reloj.Hora.value = horaImprimible;
+
+                    setTimeout("mueveReloj()", 1000);
+                }
+            </script> 
 
             <script>
 
@@ -348,6 +387,13 @@
                         textos = textos;
                     }
                     $("#serial").val(textos);
+                    if (($("#serial").val()) == "") {
+                        new PNotify({
+                            title: 'No hay seriales',
+                            type: 'error'
+                        });
+                        return false;
+                    }
                 }
 
 

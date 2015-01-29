@@ -39,23 +39,23 @@ public class ControladorElemento extends HttpServlet {
     entidadElemento datos_elemento = new entidadElemento();
     Elemento ele = new Elemento();
 
-    public String anomaliacont() throws SQLException{
-    int num_anoma = 0;
-    String pintar = "";
-    ResultSet cnt_anomalia = ele.notificAnomalia();
-     while(cnt_anomalia.next()){
-     num_anoma = cnt_anomalia.getInt("anomalias");
-         }
-      if (num_anoma <= 0) {
-        pintar +="<li><a class=\"btn btn-default\" id=\"mostrar\" style=\" margin-top: -5.9px;\" > <img src=\"css/notifi1.png\"></a> </li>";  
-      } else {
-      pintar += "<li><a  class=\"btn btn-danger\" id=\"mostrar\" style=\" margin-top: -5.9px;\" ><img src=\"css/notifi2.png\"></a> </li>";
-      }
-    
-    return pintar;
+    public String anomaliacont() throws SQLException {
+        int num_anoma = 0;
+        String pintar = "";
+        ResultSet cnt_anomalia = ele.notificAnomalia();
+        while (cnt_anomalia.next()) {
+            num_anoma = cnt_anomalia.getInt("anomalias");
+        }
+        if (num_anoma <= 0) {
+            pintar += "<li><a class=\"btn btn-default\" id=\"mostrar\" style=\" margin-top: -5.9px;\" > <img src=\"css/notifi1.png\"></a> </li>";
+        } else {
+            pintar += "<li><a  class=\"btn btn-danger\" id=\"mostrar\" style=\" margin-top: -5.9px;\" ><img src=\"css/notifi2.png\"></a> </li>";
+        }
+
+        return pintar;
     }
-    
-     public String listaranom() throws SQLException {
+
+    public String listaranom() throws SQLException {
         String Recorrertbl = "";
         ResultSet list_anom = ele.mostraranomolias();
         try {
@@ -64,7 +64,7 @@ public class ControladorElemento extends HttpServlet {
                 Recorrertbl += "<td><center>" + list_anom.getString("Seriales").toString().trim() + "</center></td>";
                 Recorrertbl += " <td><center><button  class='btn btn-info glyphicon glyphicon-eye-open' data-toggle='modal' data-target='.bs-example-modal-sm' onclick = 'mapear.anomalia(" + '\"' + list_anom.getString("Seriales").toString().trim() + '\"' + "," + '\"' + list_anom.getString("Anomalia").toString().trim() + '\"' + ")' ></button></center></td>";
                 Recorrertbl += "</tr>";
-                
+
             }
         } catch (Exception e) {
             Recorrertbl = "error" + e.getMessage();
@@ -72,9 +72,9 @@ public class ControladorElemento extends HttpServlet {
 
         return Recorrertbl;
     }
-    
+
     public ArrayList llenararray(String seriales) {
- 
+
         String[] rrecorrercadena = seriales.split("-");
         ArrayList listar = new ArrayList();
         for (int i = 0; i < rrecorrercadena.length; i++) {
@@ -161,34 +161,34 @@ public class ControladorElemento extends HttpServlet {
                         datos_elemento.setDescripcion(Descripcion);
                         datos_elemento.setSeriales(arraySeri);
                         datos_elemento.setEstado(estado);
-                        if (seriales.equals("")){
-                             alert += "<script type=\"text/javascript\">";
-                            alert += "alertify.alert(\"no a ingresado seriales\");";
+                        if (seriales.equals("")) {
+                            alert += "<script type=\"text/javascript\">";
+                            alert += "alertify.alert(\"No a ingresado seriales\");";
                             alert += "</script>";
                             request.setAttribute("alert", alert);
                             getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
-                    
-                       
-                    }else {
-                      if (ele.registrarElemento(datos_elemento)) {
-                            //ele.registrarElemento(datos_elemento);
-                            ele.registrarSeriales(datos_elemento);
 
-                            alert += "<script type=\"text/javascript\">";
-                            alert += "alertify.alert(\"Registro Exitoso\");";
-                            alert += "</script>";
-                            request.setAttribute("alert", alert);
-                            getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
                         } else {
-                            alert += "<script type=\"text/javascript\">";
-                            alert += "alertify.alert(\"Ya Existe\");";
-                            alert += "</script>";
-                            request.setAttribute("alert", alert);
-                            getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
+                            if (ele.registrarElemento(datos_elemento)) {
+                                //ele.registrarElemento(datos_elemento);
+                                ele.registrarSeriales(datos_elemento);
+
+                                alert += "<script type=\"text/javascript\">";
+                                alert += "alertify.alert(\"Registro Exitoso\");";
+                                alert += "</script>";
+                                request.setAttribute("alert", alert);
+                                getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
+                            } else {
+                                alert += "<script type=\"text/javascript\">";
+                                alert += "alertify.alert(\"Ya Existe\");";
+                                alert += "</script>";
+                                request.setAttribute("alert", alert);
+                                getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
+                            }
                         }
+                        response.sendRedirect("registarelemento.jsp");
                     }
-                    response.sendRedirect("registarelemento.jsp");
-                }} else if (proceso.equals("modificar")) {
+                } else if (proceso.equals("modificar")) {
                     String evento = request.getParameter("Guardar");
                     if (evento.equals("modificar")) {
                         String codigo = request.getParameter("codigo");
@@ -221,17 +221,15 @@ public class ControladorElemento extends HttpServlet {
                     datos_elemento.setEstado(estado);
                     ele.cambio_estadoSerial(datos_elemento);
 
-                } else if (proceso.equals("listar_anom"))
-                {
+                } else if (proceso.equals("listar_anom")) {
                     String serial = request.getParameter("Serial");
                     String estado_anom = "Visto";
                     datos_elemento.setSerial(serial);
                     datos_elemento.setEstado(estado_anom);
                     ele.varAnomalia(datos_elemento);
                     out.println(listaranom());
-                } else if (proceso.equals("actualizar_anom"))
-                {
-                out.println(anomaliacont());
+                } else if (proceso.equals("actualizar_anom")) {
+                    out.println(anomaliacont());
                 }
             }
         }

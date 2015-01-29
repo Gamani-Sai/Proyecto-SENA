@@ -202,7 +202,6 @@
                 if (alerte != null) {
                     out.print(alerte);
                 }
-
             %>
 
             <script type="text/javascript">
@@ -396,7 +395,7 @@
                         }
                         textos = textos;
                     }
-                    $("#serial").val(textos);
+                   $("#serial").val(textos);
                     if (($("#serial").val()) == "") {
                         new PNotify({
                             title: 'No hay seriales',

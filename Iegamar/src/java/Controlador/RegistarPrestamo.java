@@ -71,6 +71,7 @@ public class RegistarPrestamo extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
+        String alert = "";
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
 
@@ -104,16 +105,40 @@ public class RegistarPrestamo extends HttpServlet {
 
                     boolean objejecutar = false;
 
-                    objejecutar = Pres.insertPrestamo(datosPrestamo);
-                    datosPrestamo.setId_prestamo(traerId_prestamo());
-                    if (Tipo.equals("Profesores")) {
-                        objejecutar = Pres.insertIdentificacionPro(datosPrestamo);
-                    } else if (Tipo.equals("Estudiante")) {
-                        objejecutar = Pres.insertIdentificacionEst(datosPrestamo);
+                    if (seriales.equals("")) {
+                        alert += "<script type=\"text/javascript\">";
+                        alert += "alertify.alert(\"No a ingresado seriales\");";
+                        alert += "</script>";
+                        request.setAttribute("alert", alert);
+                        getServletConfig().getServletContext().getRequestDispatcher("/registarprestamo.jsp").forward(request, response);
+
+                    } else {
+                        if (Pres.insertPrestamo(datosPrestamo)) {
+                            //ele.registrarElemento(datos_elemento);
+
+                            alert += "<script type=\"text/javascript\">";
+                            alert += "alertify.alert(\"Registro Exitoso\");";
+                            alert += "</script>";
+                            request.setAttribute("alert", alert);
+                            getServletConfig().getServletContext().getRequestDispatcher("/registarprestamo.jsp").forward(request, response);
+
+                            datosPrestamo.setId_prestamo(traerId_prestamo());
+                            if (Tipo.equals("Profesores")) {
+                                objejecutar = Pres.insertIdentificacionPro(datosPrestamo);
+                            } else if (Tipo.equals("Estudiante")) {
+                                objejecutar = Pres.insertIdentificacionEst(datosPrestamo);
+                            }
+                            Pres.insertId_cuentaxId_cuenta(datosPrestamo);
+                            Pres.registrarSeriales(datosPrestamo);
+                            Pres.cambiarestadoSeriales(datosPrestamo);
+                        } else {
+                            alert += "<script type=\"text/javascript\">";
+                            alert += "alertify.alert(\"Error\");";
+                            alert += "</script>";
+                            request.setAttribute("alert", alert);
+                            getServletConfig().getServletContext().getRequestDispatcher("/registarprestamo.jsp").forward(request, response);
+                        }
                     }
-                    Pres.insertId_cuentaxId_cuenta(datosPrestamo);
-                    Pres.registrarSeriales(datosPrestamo);
-                    Pres.cambiarestadoSeriales(datosPrestamo);
                 }
             }
             response.sendRedirect("registarprestamo.jsp");
