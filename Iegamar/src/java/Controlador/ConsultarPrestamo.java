@@ -61,8 +61,8 @@ public class ConsultarPrestamo extends HttpServlet {
                 }
                 Recorrertbl += "</tr>";
             }
-            
-             while (listPrestamo1.next()) {
+
+            while (listPrestamo1.next()) {
                 Recorrertbl += "<tr>";
                 Recorrertbl += "<td Style='display:none'><center>" + listPrestamo1.getString("Id_prestamo").toString().trim() + "</center></td>";
                 Recorrertbl += "<td><center>" + listPrestamo1.getString("Prestador").toString().trim() + "</center></td>";
@@ -80,8 +80,7 @@ public class ConsultarPrestamo extends HttpServlet {
                 }
                 Recorrertbl += "</tr>";
             }
-            
-            
+
         } catch (Exception e) {
             Recorrertbl = "error" + e.getMessage();
         }
@@ -114,55 +113,59 @@ public class ConsultarPrestamo extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+        HttpSession sesionOk = request.getSession();
+        if (sesionOk.getAttribute("usuario") != null) {
+            response.setContentType("text/html;charset=UTF-8");
+            try (PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
 
-            String Evento = request.getParameter("Guardar");
-            String proceso = request.getParameter("proceso");
-            if (Evento != null) {
-                if (Evento.equals("modificar")) {
+                String Evento = request.getParameter("Guardar");
+                String proceso = request.getParameter("proceso");
+                if (Evento != null) {
+                    if (Evento.equals("modificar")) {
 
-                    String Fecha_Devolucion = request.getParameter("Fecha");
-                    String Hora_Devolucion = request.getParameter("Hora");
-                    String id_prestamo = request.getParameter("Id_prestamo");
-                    String tipoCuenta = "Devolucion";
-                    String estado = "Disponible";
-                    String estAnomalia ="Ver";
-                    HttpSession sesionOk = request.getSession();
-                    int Cuenta = Integer.parseInt(sesionOk.getAttribute("Id_cuenta").toString());
-                    datosPrestamo.setFecha_devolucion(Fecha_Devolucion);
-                    datosPrestamo.setHora_devolucion(Hora_Devolucion);
-                    datosPrestamo.setId_prestamo(Integer.parseInt(id_prestamo));
-                    datosPrestamo.setId_cuenta(Cuenta);
-                    datosPrestamo.setTipocuenta(tipoCuenta);
-                    datosPrestamo.setEstado(estado);
-                    datosPrestamo.setEstaAnomali(estAnomalia);
+                        String Fecha_Devolucion = request.getParameter("Fecha");
+                        String Hora_Devolucion = request.getParameter("Hora");
+                        String id_prestamo = request.getParameter("Id_prestamo");
+                        String tipoCuenta = "Devolucion";
+                        String estado = "Disponible";
+                        String estAnomalia = "Ver";
 
-                    boolean objejecutar = false;
-                    objejecutar = Pres.registarDevolucion(datosPrestamo);
-                    Pres.insertId_cuentaxId_cuenta(datosPrestamo);
-                    Pres.estadoSeriales(datosPrestamo);
-                    response.sendRedirect("consultarprestamo.jsp");
+                        int Cuenta = Integer.parseInt(sesionOk.getAttribute("Id_cuenta").toString());
+                        datosPrestamo.setFecha_devolucion(Fecha_Devolucion);
+                        datosPrestamo.setHora_devolucion(Hora_Devolucion);
+                        datosPrestamo.setId_prestamo(Integer.parseInt(id_prestamo));
+                        datosPrestamo.setId_cuenta(Cuenta);
+                        datosPrestamo.setTipocuenta(tipoCuenta);
+                        datosPrestamo.setEstado(estado);
+                        datosPrestamo.setEstaAnomali(estAnomalia);
+
+                        boolean objejecutar = false;
+                        objejecutar = Pres.registarDevolucion(datosPrestamo);
+                        Pres.insertId_cuentaxId_cuenta(datosPrestamo);
+                        Pres.estadoSeriales(datosPrestamo);
+                        response.sendRedirect("consultarprestamo.jsp");
+                    }
+                } else if (proceso != null) {
+                    if (proceso.equals("listar_ser")) {
+                        String id_prestamo = request.getParameter("id_prestamo");
+                        datosPrestamo.setId_prestamo(Integer.parseInt(id_prestamo));
+                        out.println(listarSeriales());
+                    } else if (proceso.equals("agregar_anomalia")) {
+                        String Serial = request.getParameter("serial");
+                        String Descricion_anomalia = request.getParameter("anomalia").trim();
+                        datosPrestamo.setSerialesUP(Serial);
+                        datosPrestamo.setDescricion_anomalia(Descricion_anomalia);
+                        boolean objejecutar = false;
+                        objejecutar = Pres.registarAnomalia(datosPrestamo);
+
+                    }
                 }
-            } else if (proceso != null) {
-                if (proceso.equals("listar_ser")) {
-                    String id_prestamo = request.getParameter("id_prestamo");
-                    datosPrestamo.setId_prestamo(Integer.parseInt(id_prestamo));
-                    out.println(listarSeriales());
-                }else   if (proceso.equals("agregar_anomalia")) {
-                    String Serial = request.getParameter("serial");
-                    String Descricion_anomalia = request.getParameter("anomalia").trim();
-                    datosPrestamo.setSerialesUP(Serial);
-                    datosPrestamo.setDescricion_anomalia(Descricion_anomalia);
-                    boolean objejecutar = false;
-                    objejecutar = Pres.registarAnomalia(datosPrestamo);
-                     
-                }
-            } 
 
+            }
+        } else {
+            response.sendRedirect("index.jsp");
         }
-
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Modelo.Estudiantes;
 import Entidad.entidadEstudiantes;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -54,54 +55,58 @@ public class RegistrarEstudiante extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        response.setContentType("text/html;charset=UTF-8");
-        String alert = "";
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String Identificacion = request.getParameter("identificacion");
-            String Nombre = request.getParameter("nombre");
-            String Apellido = request.getParameter("apellido");
-            String Direccion = request.getParameter("direccion");
-            String Telefono = request.getParameter("Telefono");
-            String Fecha = request.getParameter("Fecha_Nacimiento");
-            String huella = "no hay";
-            String id_grado = request.getParameter("grado");
-            String Estado = "Habilitado";
-            datosEstudiantes.setIdentificacion(Identificacion);
-            datosEstudiantes.setNombre(Nombre);
-            datosEstudiantes.setApellido(Apellido);
-            datosEstudiantes.setDireccion(Direccion);
-            datosEstudiantes.setTelefono(Telefono);
-            datosEstudiantes.setHuella(huella);
-            datosEstudiantes.setFecha(Fecha);
-            datosEstudiantes.setId_grado(id_grado);
-            datosEstudiantes.setEstado(Estado);
+        HttpSession sesionOk = request.getSession();
+        if (sesionOk.getAttribute("usuario") != null) {
+            response.setContentType("text/html;charset=UTF-8");
+            String alert = "";
+            try (PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+                String Identificacion = request.getParameter("identificacion");
+                String Nombre = request.getParameter("nombre");
+                String Apellido = request.getParameter("apellido");
+                String Direccion = request.getParameter("direccion");
+                String Telefono = request.getParameter("Telefono");
+                String Fecha = request.getParameter("Fecha_Nacimiento");
+                String huella = "no hay";
+                String id_grado = request.getParameter("grado");
+                String Estado = "Habilitado";
+                datosEstudiantes.setIdentificacion(Identificacion);
+                datosEstudiantes.setNombre(Nombre);
+                datosEstudiantes.setApellido(Apellido);
+                datosEstudiantes.setDireccion(Direccion);
+                datosEstudiantes.setTelefono(Telefono);
+                datosEstudiantes.setHuella(huella);
+                datosEstudiantes.setFecha(Fecha);
+                datosEstudiantes.setId_grado(id_grado);
+                datosEstudiantes.setEstado(Estado);
 
             //boolean objejecutar = false;
-         //   objejecutar = Est.inserEstudiantes(datosEstudiantes);
-            if (Est.inserEstudiantes(datosEstudiantes)) {                
+                //   objejecutar = Est.inserEstudiantes(datosEstudiantes);
+                if (Est.inserEstudiantes(datosEstudiantes)) {
+                    alert += "<script type=\"text/javascript\">";
+                    alert += "alertify.alert(\"Registro Exitoso\");";
+                    alert += "</script>";
+                    request.setAttribute("alert", alert);
+                    getServletConfig().getServletContext().getRequestDispatcher("/registarestudiante.jsp").forward(request, response);
+
+                } else {
+                    alert += "<script type=\"text/javascript\">";
+                    alert += "alertify.alert(\"Ya Existe\");";
+                    alert += "</script>";
+                    request.setAttribute("alert", alert);
+                    getServletConfig().getServletContext().getRequestDispatcher("/registarestudiante.jsp").forward(request, response);
+                }
+                // response.sendRedirect("registarestudiante.jsp");
+            } catch (Exception ex) {
                 alert += "<script type=\"text/javascript\">";
-                alert += "alertify.alert(\"Registro Exitoso\");";
-                alert += "</script>";
-                request.setAttribute("alert", alert);
-                getServletConfig().getServletContext().getRequestDispatcher("/registarestudiante.jsp").forward(request, response); 
-                
-            } else  {
-                alert += "<script type=\"text/javascript\">";
-                alert += "alertify.alert(\"Ya Existe\");";
+                alert += "alertify.alert(\"Error\");";
                 alert += "</script>";
                 request.setAttribute("alert", alert);
                 getServletConfig().getServletContext().getRequestDispatcher("/registarestudiante.jsp").forward(request, response);
             }
-            // response.sendRedirect("registarestudiante.jsp");
-        } catch (Exception ex) {
-            alert += "<script type=\"text/javascript\">";
-            alert += "alertify.alert(\"Error\");";
-            alert += "</script>";
-            request.setAttribute("alert", alert);
-            getServletConfig().getServletContext().getRequestDispatcher("/registarestudiante.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("index.jsp");
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

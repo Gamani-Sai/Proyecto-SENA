@@ -181,7 +181,7 @@
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Dirección</label>
-                                    <input type="text" id="direcion" class="form-control" name="direccion" placeholder="" onkeypress="validarLetrasNumeros()">
+                                    <input type="text" id="direcion" class="form-control" name="direccion" placeholder="" onkeypress="return validarn(event)">
                                 </div>      
 
 
@@ -237,7 +237,18 @@
                                         alertify.defaults.theme.cancel = "btn btn-danger";
                                         alertify.defaults.theme.input = "form-control";
 
-
+                                        function validarn(e) {
+                                            tecla = (document.all) ? e.keyCode : e.which;
+                                            if (tecla == 8)
+                                                return true;
+                                            if (tecla == 9)
+                                                return true;
+                                            if (tecla == 11)
+                                                return true;
+                                            patron = /[0-9A-Za-zñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛÑñäëïöüÄËÏÖÜ\s\t]/;
+                                            te = String.fromCharCode(tecla);
+                                            return patron.test(te);
+                                        }
 
                                         var actualizacion = setInterval(function () {
                                             actualizar_anomalias()

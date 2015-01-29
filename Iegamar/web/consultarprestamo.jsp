@@ -23,7 +23,6 @@
 <%
     java.util.Date Fecha = new java.util.Date();
     SimpleDateFormat Formato = new SimpleDateFormat("yyyy-MM-dd");
-    SimpleDateFormat Hora = new SimpleDateFormat("HH:mm");
 %>
 
 <!DOCTYPE html>
@@ -44,7 +43,7 @@
         <link href="css/style_light.css" rel="stylesheet" type="text/css"/>
 
     </head>
-    <body>
+    <body onload="mueveReloj()">
 
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
@@ -193,7 +192,7 @@
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title" id="myModalLabel">Registar Devolucion</h4>
                     </div>
-                    <form action="ConsultarPrestamo" method="POST" >
+                    <form name="form_reloj" action="ConsultarPrestamo" method="POST" >
 
                         <div class="modal-body">
                             <div class="form-group">
@@ -209,7 +208,7 @@
 
                             <div class="form-group ">
                                 <label for="disabledSelect">Hora De Devolución</label>
-                                <input type="text" id="Hora" class="form-control" placeholder="" name="Hora" readonly="readonly" value="<%=Hora.format(Fecha)%>">
+                                <input type="text" id="Hora" class="form-control" placeholder="" name="Hora" readonly="readonly">
                             </div>    
                         </div>
                         <div class="modal-footer">
@@ -290,125 +289,149 @@
         <script src="bootstrap/js/dataTables.bootstrap.js" type="text/javascript"></script>
         <script src="js/mapeomod.js" type="text/javascript"></script>
         <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
+
+
+        <script language="JavaScript">
+
+                            function addZero(i) {
+                                if (i < 10) {
+                                    i = "0" + i;
+                                }
+                                return i;
+                            }
+
+                            function mueveReloj() {
+                                momentoActual = new Date();
+                                hora = momentoActual.getHours();
+                                minuto = addZero(momentoActual.getMinutes())
+
+                                horaImprimible = hora + ":" + minuto;
+                                document.form_reloj.Hora.value = horaImprimible;
+
+                                setTimeout("mueveReloj()", 1000);
+                            }
+        </script> 
+
+
         <script type="text/javascript" charset="utf-8">
 
 
-                            var actualizacion = setInterval(function () {
-                                actualizar_anomalias()
-                            }, 3000);
+            var actualizacion = setInterval(function () {
+                actualizar_anomalias()
+            }, 3000);
 
-                            function actualizar_anomalias() {
+            function actualizar_anomalias() {
 
-                                var serial = $("#Serial").val();
+                var serial = $("#Serial").val();
 
-                                $.ajax({
-                                    dataType: "html",
-                                    data: {
-                                        proceso: "actualizar_anom"
-
-
-                                    },
-                                    type: "POST",
-                                    url: "ControladorElemento",
-                                    statusCode: {
-                                        404: function () {
-                                            alert("page not found");
-                                        }
-                                    }
-                                }).done(function (datos) {
-                                    $("#actualizar").empty();
-                                    $("#actualizar").append(datos);
-                                });
-                            }
-
-                            function list_anomalias() {
-
-                                var serial = $("#Serial").val();
-
-                                $.ajax({
-                                    dataType: "html",
-                                    data: {
-                                        proceso: "listar_anom",
-                                        Serial: serial
-
-                                    },
-                                    type: "POST",
-                                    url: "ControladorElemento",
-                                    statusCode: {
-                                        404: function () {
-                                            alert("page not found");
-                                        }
-                                    }
-                                }).done(function (datos) {
-                                    $("#traer1").empty();
-                                    $("#traer1").append(datos);
-                                });
-                            }
-
-                            var x;
-                            x = $(document);
-                            x.ready(inicializar);
-
-                            function inicializar() {
-                                var x = $("#mostrar");
-                                x.click(muestrame);
-
-                            }
-
-                            function muestrame() {
-                                var x = $("#objetivo");
-                                x.slideToggle("slow");
-                            }
+                $.ajax({
+                    dataType: "html",
+                    data: {
+                        proceso: "actualizar_anom"
 
 
-                            function recibir(id_pres) {
+                    },
+                    type: "POST",
+                    url: "ControladorElemento",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (datos) {
+                    $("#actualizar").empty();
+                    $("#actualizar").append(datos);
+                });
+            }
 
-                                var valor = id_pres;
-                                localStorage.setItem("codigoElm", valor);
-                                $.ajax({
-                                    dataType: "html",
-                                    data: {
-                                        proceso: "listar_ser",
-                                        id_prestamo: valor
+            function list_anomalias() {
 
-                                    },
-                                    type: "POST",
-                                    url: "ConsultarPrestamo",
-                                    statusCode: {
-                                        404: function () {
-                                            alert("page not found");
-                                        }
-                                    }
-                                }).done(function (datos) {
-                                    $("#traer").empty();
-                                    $("#traer").append(datos);
-                                });
-                            }
-                            function anomalia() {
+                var serial = $("#Serial").val();
+
+                $.ajax({
+                    dataType: "html",
+                    data: {
+                        proceso: "listar_anom",
+                        Serial: serial
+
+                    },
+                    type: "POST",
+                    url: "ControladorElemento",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (datos) {
+                    $("#traer1").empty();
+                    $("#traer1").append(datos);
+                });
+            }
+
+            var x;
+            x = $(document);
+            x.ready(inicializar);
+
+            function inicializar() {
+                var x = $("#mostrar");
+                x.click(muestrame);
+
+            }
+
+            function muestrame() {
+                var x = $("#objetivo");
+                x.slideToggle("slow");
+            }
+
+
+            function recibir(id_pres) {
+
+                var valor = id_pres;
+                localStorage.setItem("codigoElm", valor);
+                $.ajax({
+                    dataType: "html",
+                    data: {
+                        proceso: "listar_ser",
+                        id_prestamo: valor
+
+                    },
+                    type: "POST",
+                    url: "ConsultarPrestamo",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (datos) {
+                    $("#traer").empty();
+                    $("#traer").append(datos);
+                });
+            }
+            function anomalia() {
 
 
 
-                                $.ajax({
-                                    dataType: "html",
-                                    data: {
-                                        proceso: "agregar_anomalia",
-                                        serial: $("#Serial").val(),
-                                        anomalia: $("#Anomalia").val()
+                $.ajax({
+                    dataType: "html",
+                    data: {
+                        proceso: "agregar_anomalia",
+                        serial: $("#Serial").val(),
+                        anomalia: $("#Anomalia").val()
 
-                                    },
-                                    type: "POST",
-                                    url: "ConsultarPrestamo",
-                                    statusCode: {
-                                        404: function () {
-                                            alert("page not found");
-                                        }
-                                    }
-                                }).done(function (datos) {
+                    },
+                    type: "POST",
+                    url: "ConsultarPrestamo",
+                    statusCode: {
+                        404: function () {
+                            alert("page not found");
+                        }
+                    }
+                }).done(function (datos) {
 
-                                    recibir(localStorage.getItem("codigoElm"));
-                                });
-                                $("#Anomalia").val("");
-                            }
+                    recibir(localStorage.getItem("codigoElm"));
+                });
+                $("#Anomalia").val("");
+            }
 
 
 

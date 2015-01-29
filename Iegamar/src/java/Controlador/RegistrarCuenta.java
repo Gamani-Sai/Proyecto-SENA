@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -54,58 +55,63 @@ public class RegistrarCuenta extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        response.setContentType("text/html;charset=UTF-8");
-        String alert = "";
+        HttpSession sesionOk = request.getSession();
+        if (sesionOk.getAttribute("usuario") != null) {
+            response.setContentType("text/html;charset=UTF-8");
+            String alert = "";
 
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            try (PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
 
-            String evento = request.getParameter("guardar");
-            if (evento != null) {
+                String evento = request.getParameter("guardar");
+                if (evento != null) {
 
-                if (evento.equals("insertar")) {
-                    String Nombre = request.getParameter("nombreU");
-                    String Contra = request.getParameter("contra");
-                    String Tipo = request.getParameter("opciones");
-                    String Estado = "Habilitado";
-                    String Identificacion = request.getParameter("identificacion");
-                    boolean objejecutar = false;
-                    datosCuenta.setLogin(Nombre);
-                    datosCuenta.setPassword(Contra);
-                    datosCuenta.setTipo_rol(Tipo);
-                    datosCuenta.setEstado(Estado);
+                    if (evento.equals("insertar")) {
+                        String Nombre = request.getParameter("nombreU");
+                        String Contra = request.getParameter("contra");
+                        String Tipo = request.getParameter("opciones");
+                        String Estado = "Habilitado";
+                        String Identificacion = request.getParameter("identificacion");
+                        boolean objejecutar = false;
+                        datosCuenta.setLogin(Nombre);
+                        datosCuenta.setPassword(Contra);
+                        datosCuenta.setTipo_rol(Tipo);
+                        datosCuenta.setEstado(Estado);
 
-                    if (Cuen.insertCuenta(datosCuenta)) {
-                        datosCuenta.setIdentificacion(Identificacion);
-                        datosCuenta.setId_cuenta(traerId_Cuenta());
+                        if (Cuen.insertCuenta(datosCuenta)) {
+                            datosCuenta.setIdentificacion(Identificacion);
+                            datosCuenta.setId_cuenta(traerId_Cuenta());
 
-                        if (Tipo.equals("Profesores")) {
-                            objejecutar = Cuen.insertIdentificacionPro(datosCuenta);
-                        } else if (Tipo.equals("Estudiante")) {
-                            objejecutar = Cuen.insertIdentificacionEst(datosCuenta);
+                            if (Tipo.equals("Profesores")) {
+                                objejecutar = Cuen.insertIdentificacionPro(datosCuenta);
+                            } else if (Tipo.equals("Estudiante")) {
+                                objejecutar = Cuen.insertIdentificacionEst(datosCuenta);
+                            }
+                            alert += "<script type=\"text/javascript\">";
+                            alert += "alertify.alert(\"Registro Exitoso\");";
+                            alert += "</script>";
+                            request.setAttribute("alert", alert);
+                            getServletConfig().getServletContext().getRequestDispatcher("/registarcuentas.jsp").forward(request, response);
+                        } else {
+                            alert += "<script type=\"text/javascript\">";
+                            alert += "alertify.alert(\"Ya Existe\");";
+                            alert += "</script>";
+                            request.setAttribute("alert", alert);
+                            getServletConfig().getServletContext().getRequestDispatcher("/registarcuentas.jsp").forward(request, response);
                         }
-                        alert += "<script type=\"text/javascript\">";
-                        alert += "alertify.alert(\"Registro Exitoso\");";
-                        alert += "</script>";
-                        request.setAttribute("alert", alert);
-                        getServletConfig().getServletContext().getRequestDispatcher("/registarcuentas.jsp").forward(request, response);
-                    } else {
-                        alert += "<script type=\"text/javascript\">";
-                        alert += "alertify.alert(\"Ya Existe\");";
-                        alert += "</script>";
-                        request.setAttribute("alert", alert);
-                        getServletConfig().getServletContext().getRequestDispatcher("/registarcuentas.jsp").forward(request, response);
-                    }
 
+                    }
                 }
+                // response.sendRedirect("registarcuentas.jsp");
+            } catch (Exception ex) {
+                alert += "<script type=\"text/javascript\">";
+                alert += "alertify.alert(\"Error\");";
+                alert += "</script>";
+                request.setAttribute("alert", alert);
+                getServletConfig().getServletContext().getRequestDispatcher("/registarcuentas.jsp").forward(request, response);
             }
-           // response.sendRedirect("registarcuentas.jsp");
-        } catch (Exception ex) {
-            alert += "<script type=\"text/javascript\">";
-            alert += "alertify.alert(\"Error\");";
-            alert += "</script>";
-            request.setAttribute("alert", alert);
-            getServletConfig().getServletContext().getRequestDispatcher("/registarcuentas.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("index.jsp");
         }
     }
 

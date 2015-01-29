@@ -82,7 +82,7 @@
 
             </div>
 
-              <div hidden="true" class="notification-list-wrapper" id="objetivo" style="top: 65px; left: 100px;  opacity: 1;">
+            <div hidden="true" class="notification-list-wrapper" id="objetivo" style="top: 65px; left: 100px;  opacity: 1;">
 
                 <ul class="notification-list-menu">
                 </ul>
@@ -158,17 +158,17 @@
                                 <div class="form-group col-lg-6">
                                     <input type="hidden" name="proceso" value="Registrar">
                                     <label for="disabledSelect">Nombre de elemento</label>
-                                    <input type="text" id="nombre" class="form-control" name="nombre" placeholder="">
+                                    <input type="text" id="nombre" class="form-control" name="nombre" placeholder="" onkeypress="sololetras()">
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Descripción</label>
-                                    <input type="text" id="descripcion" class="form-control" name="descripcion" placeholder="">
+                                    <input type="text" id="descripcion" class="form-control" name="descripcion" placeholder="" onkeypress="sololetras()">
                                 </div>
 
                                 <div class="form-group col-lg-12">
                                     <label for="disabledSelect">Seriales</label>
-                                    <input type="text"   class="form-control" id="Seriales" name="Seriales" onkeypress="validarLetrasNumeros()">
+                                    <input type="text"   class="form-control" id="Seriales" name="Seriales" onkeypress="return validarn(event)">
                                     <button type="button" class="btn btn-default preview-add-button">
                                         <span class="glyphicon glyphicon-plus"></span>Mas
                                     </button>
@@ -205,10 +205,28 @@
             %>
 
             <script type="text/javascript">
-                
-                var actualizacion =setInterval(function () {actualizar_anomalias()}, 3000);
-                
-                                  function actualizar_anomalias() {
+
+
+                                    function validarn(e) {
+                                        tecla = (document.all) ? e.keyCode : e.which;
+                                        if (tecla == 8)
+                                            return true;
+                                        if (tecla == 9)
+                                            return true;
+                                        if (tecla == 11)
+                                            return true;
+                                        patron = /[0-9A-Za-zñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛÑñäëïöüÄËÏÖÜ\s\t]/;
+                                        te = String.fromCharCode(tecla);
+                                        return patron.test(te);
+                                    }
+
+
+
+                                    var actualizacion = setInterval(function () {
+                                        actualizar_anomalias()
+                                    }, 3000);
+
+                                    function actualizar_anomalias() {
 
                                         var serial = $("#Serial").val();
 
@@ -216,7 +234,7 @@
                                             dataType: "html",
                                             data: {
                                                 proceso: "actualizar_anom"
-                                                
+
 
                                             },
                                             type: "POST",
@@ -232,7 +250,7 @@
                                         });
                                     }
 
-                
+
 
                                     function list_anomalias() {
 
@@ -395,7 +413,7 @@
                         }
                         textos = textos;
                     }
-                   $("#serial").val(textos);
+                    $("#serial").val(textos);
                     if (($("#serial").val()) == "") {
                         new PNotify({
                             title: 'No hay seriales',

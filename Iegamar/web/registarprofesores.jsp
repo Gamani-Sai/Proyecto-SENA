@@ -177,21 +177,21 @@
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Dirección</label>
-                                    <input type="text" id="Dirección" name="Direccion" class="form-control" placeholder="">
+                                    <input type="text" id="Dirección" name="Direccion" class="form-control" placeholder="" onkeypress="return validarn(event)">
                                 </div>
 
                                 <div class="form-group">
 
                                     <label for="disabledSelect" style="margin-left: 19px;">Fecha nacimiento</label>
                                     <div class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                        <input class="form-control" size="16" type="text" id="Fecha_Nacimiento" name="Fecha_Nacimiento" readonly>
+                                        <input class="form-control" size="16" type="text" id="Fecha_Nacimiento" name="Fecha_Nacimiento"  readonly>
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                     </div>
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Telefono</label>
-                                    <input type="text" id="Telefono" name="Telefono" class="form-control" placeholder="" onkeypress="ValidaSoloNumeros()">
+                                    <input type="text" id="Telefono" name="Telefono" class="form-control" placeholder="" onkeypress="ValidaSoloNumeros()" maxlength="10">
                                 </div>
 
                                 <div class="form-group col-lg-6">
@@ -223,6 +223,20 @@
                                         alertify.defaults.theme.ok = "btn btn-success";
                                         alertify.defaults.theme.cancel = "btn btn-danger";
                                         alertify.defaults.theme.input = "form-control";
+
+
+                                        function validarn(e) {
+                                            tecla = (document.all) ? e.keyCode : e.which;
+                                            if (tecla == 8)
+                                                return true;
+                                            if (tecla == 9)
+                                                return true;
+                                            if (tecla == 11)
+                                                return true;
+                                            patron = /[0-9A-Za-zñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛÑñäëïöüÄËÏÖÜ\s\t]/;
+                                            te = String.fromCharCode(tecla);
+                                            return patron.test(te);
+                                        }
 
                                         var actualizacion = setInterval(function () {
                                             actualizar_anomalias()
@@ -426,6 +440,8 @@
                 maxView: 1,
                 forceParse: 0
             });
+
+
         </script>
 
     </body>

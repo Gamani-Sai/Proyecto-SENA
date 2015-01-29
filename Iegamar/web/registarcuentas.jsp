@@ -172,14 +172,14 @@
                                 <div class="form-group col-lg-12">
                                     <label for="disabledSelect" >Nombre</label>
                                 </div>
-                                <div class="form-group col-lg-12" id="traer" >
+                                <div class="form-group col-lg-12" id="traer" onkeypress="return validarn(event)" >
                                 </div>
 
 
 
                                 <div class="form-group col-lg-6">
                                     <label>Nombre de usuario</label>
-                                    <input type="" name="nombreU" class="form-control" id="nombreU" value="">
+                                    <input type="" name="nombreU" class="form-control" id="nombreU" onkeypress="return validarn(event)">
                                 </div>
 
                                 <div class="form-group col-lg-6">
@@ -205,9 +205,9 @@
         <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
         <script src="js/mapeomod.js" type="text/javascript"></script>
         <script>
-                                            alertify.defaults.theme.ok = "btn btn-success";
-                                            alertify.defaults.theme.cancel = "btn btn-danger";
-                                            alertify.defaults.theme.input = "form-control";
+                                        alertify.defaults.theme.ok = "btn btn-success";
+                                        alertify.defaults.theme.cancel = "btn btn-danger";
+                                        alertify.defaults.theme.input = "form-control";
         </script>
         <%            String alerte = (String) request.getAttribute("alert");
             if (alerte != null) {
@@ -217,6 +217,20 @@
         %>
 
         <script>
+
+
+            function validarn(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 8)
+                    return true;
+                if (tecla == 9)
+                    return true;
+                if (tecla == 11)
+                    return true;
+                patron = /[0-9A-Za-zñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛÑñäëïöüÄËÏÖÜ\s\t]/;
+                te = String.fromCharCode(tecla);
+                return patron.test(te);
+            }
 
             var actualizacion = setInterval(function () {
                 actualizar_anomalias()

@@ -46,6 +46,9 @@
         <link href="css/select2-bootstrap.css" rel="stylesheet" type="text/css"/>
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
         <link href="css/style_light.css" rel="stylesheet" type="text/css"/>
+        <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
+        <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
 
     </head>
     <body onload="mueveReloj()">

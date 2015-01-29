@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -140,98 +141,103 @@ public class ControladorElemento extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        String alert = "";
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String proceso = request.getParameter("proceso");
+        HttpSession sesionOk = request.getSession();
+        if (sesionOk.getAttribute("usuario") != null) {
+            String alert = "";
+            response.setContentType("text/html;charset=UTF-8");
+            try (PrintWriter out = response.getWriter()) {
+                /* TODO output your page here. You may use following sample code. */
+                String proceso = request.getParameter("proceso");
 
-            if (proceso != null) {
+                if (proceso != null) {
 
-                if (proceso.equals("Registrar")) {
-                    String evento = request.getParameter("Guardar");
+                    if (proceso.equals("Registrar")) {
+                        String evento = request.getParameter("Guardar");
 
-                    if (evento.equals("insertar")) {
-                        String Nombre = request.getParameter("nombre");
-                        String Descripcion = request.getParameter("descripcion");
-                        String seriales = request.getParameter("serial");
-                        ArrayList arraySeri = llenararray(seriales);
-                        String estado = "Disponible";
-                        datos_elemento.setNombreEle(Nombre);
-                        datos_elemento.setDescripcion(Descripcion);
-                        datos_elemento.setSeriales(arraySeri);
-                        datos_elemento.setEstado(estado);
-                        if (seriales.equals("")) {
-                            alert += "<script type=\"text/javascript\">";
-                            alert += "alertify.alert(\"No a ingresado seriales\");";
-                            alert += "</script>";
-                            request.setAttribute("alert", alert);
-                            getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
-
-                        } else {
-                            if (ele.registrarElemento(datos_elemento)) {
-                                //ele.registrarElemento(datos_elemento);
-                                ele.registrarSeriales(datos_elemento);
-
+                        if (evento.equals("insertar")) {
+                            String Nombre = request.getParameter("nombre");
+                            String Descripcion = request.getParameter("descripcion");
+                            String seriales = request.getParameter("serial");
+                            ArrayList arraySeri = llenararray(seriales);
+                            String estado = "Disponible";
+                            datos_elemento.setNombreEle(Nombre);
+                            datos_elemento.setDescripcion(Descripcion);
+                            datos_elemento.setSeriales(arraySeri);
+                            datos_elemento.setEstado(estado);
+                            if (seriales.equals("")) {
                                 alert += "<script type=\"text/javascript\">";
-                                alert += "alertify.alert(\"Registro Exitoso\");";
+                                alert += "alertify.alert(\"No a ingresado seriales\");";
                                 alert += "</script>";
                                 request.setAttribute("alert", alert);
                                 getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
+
                             } else {
-                                alert += "<script type=\"text/javascript\">";
-                                alert += "alertify.alert(\"Ya Existe\");";
-                                alert += "</script>";
-                                request.setAttribute("alert", alert);
-                                getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
+                                if (ele.registrarElemento(datos_elemento)) {
+                                    //ele.registrarElemento(datos_elemento);
+                                    ele.registrarSeriales(datos_elemento);
+
+                                    alert += "<script type=\"text/javascript\">";
+                                    alert += "alertify.alert(\"Registro Exitoso\");";
+                                    alert += "</script>";
+                                    request.setAttribute("alert", alert);
+                                    getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
+                                } else {
+                                    alert += "<script type=\"text/javascript\">";
+                                    alert += "alertify.alert(\"Ya Existe\");";
+                                    alert += "</script>";
+                                    request.setAttribute("alert", alert);
+                                    getServletConfig().getServletContext().getRequestDispatcher("/registarelemento.jsp").forward(request, response);
+                                }
                             }
+                            response.sendRedirect("registarelemento.jsp");
                         }
-                        response.sendRedirect("registarelemento.jsp");
-                    }
-                } else if (proceso.equals("modificar")) {
-                    String evento = request.getParameter("Guardar");
-                    if (evento.equals("modificar")) {
+                    } else if (proceso.equals("modificar")) {
+                        String evento = request.getParameter("Guardar");
+                        if (evento.equals("modificar")) {
+                            String codigo = request.getParameter("codigo");
+                            String nombre_ele = request.getParameter("nom_elemento");
+                            String descripcion = request.getParameter("descripcion");
+                            datos_elemento.setCodigo(Integer.parseInt(codigo));
+                            datos_elemento.setNombreEle(nombre_ele);
+                            datos_elemento.setDescripcion(descripcion);
+                            ele.actualizarElemento(datos_elemento);
+
+                        }
+                        response.sendRedirect("consultarelemento.jsp");
+                    } else if (proceso.equals("listar_ser")) {
                         String codigo = request.getParameter("codigo");
-                        String nombre_ele = request.getParameter("nom_elemento");
-                        String descripcion = request.getParameter("descripcion");
                         datos_elemento.setCodigo(Integer.parseInt(codigo));
-                        datos_elemento.setNombreEle(nombre_ele);
-                        datos_elemento.setDescripcion(descripcion);
-                        ele.actualizarElemento(datos_elemento);
+                        out.println(listarSeriales());
 
+                    } else if (proceso.equals("agregar_serial")) {
+                        String codigo = request.getParameter("codigo_agg");
+                        String serial = request.getParameter("serial");
+                        String Estado = "Disponible";
+                        datos_elemento.setCodigo(Integer.parseInt(codigo));
+                        datos_elemento.setSerial(serial);
+                        datos_elemento.setEstado(Estado);
+                        ele.agregarSeriales(datos_elemento);
+                    } else if (proceso.equals("Cambio_estado")) {
+                        String serial = request.getParameter("serial");
+                        String estado = request.getParameter("estado");
+                        datos_elemento.setSerial(serial);
+                        datos_elemento.setEstado(estado);
+                        ele.cambio_estadoSerial(datos_elemento);
+
+                    } else if (proceso.equals("listar_anom")) {
+                        String serial = request.getParameter("Serial");
+                        String estado_anom = "Visto";
+                        datos_elemento.setSerial(serial);
+                        datos_elemento.setEstado(estado_anom);
+                        ele.varAnomalia(datos_elemento);
+                        out.println(listaranom());
+                    } else if (proceso.equals("actualizar_anom")) {
+                        out.println(anomaliacont());
                     }
-                    response.sendRedirect("consultarelemento.jsp");
-                } else if (proceso.equals("listar_ser")) {
-                    String codigo = request.getParameter("codigo");
-                    datos_elemento.setCodigo(Integer.parseInt(codigo));
-                    out.println(listarSeriales());
-
-                } else if (proceso.equals("agregar_serial")) {
-                    String codigo = request.getParameter("codigo_agg");
-                    String serial = request.getParameter("serial");
-                    String Estado = "Disponible";
-                    datos_elemento.setCodigo(Integer.parseInt(codigo));
-                    datos_elemento.setSerial(serial);
-                    datos_elemento.setEstado(Estado);
-                    ele.agregarSeriales(datos_elemento);
-                } else if (proceso.equals("Cambio_estado")) {
-                    String serial = request.getParameter("serial");
-                    String estado = request.getParameter("estado");
-                    datos_elemento.setSerial(serial);
-                    datos_elemento.setEstado(estado);
-                    ele.cambio_estadoSerial(datos_elemento);
-
-                } else if (proceso.equals("listar_anom")) {
-                    String serial = request.getParameter("Serial");
-                    String estado_anom = "Visto";
-                    datos_elemento.setSerial(serial);
-                    datos_elemento.setEstado(estado_anom);
-                    ele.varAnomalia(datos_elemento);
-                    out.println(listaranom());
-                } else if (proceso.equals("actualizar_anom")) {
-                    out.println(anomaliacont());
                 }
             }
+        } else {
+            response.sendRedirect("index.jsp");
         }
     }
 
