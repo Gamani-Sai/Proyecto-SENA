@@ -30,22 +30,26 @@ public class Foto extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String id=request.getParameter("documento");
-            String ruta="http://localhost:8040/Fotos/Naruto.jpg";
-            // out.print("<div>");
-             
+           String id=request.getParameter("documento");
+           
+          
+             String consulta="";
             
-          // String id=request.getParameter("selector"); 
-            String consulta="";
-            String imagen="";
-            String radio=request.getParameter("opciones");
+             String imagen="";//Captura la foto de la persona
+            
+            String radio=request.getParameter("opciones"); //Captura la opcion para saber si es estudiante o profesor
+         
+            consulta="select Foto from  tbl_estudiante where Identificacion = '"+id+"'";
+            
             if(radio.equals("Estudiante"))
             {
-                consulta="select Huella from  tbl_estudiante where Identificacion = '"+id+"'";;
+             consulta="select Foto from  tbl_estudiante where Identificacion = '"+id+"'";;
+           
             }else if(radio.equals("Profesores"))
+            
             {
             
-              consulta="select Huella from tbl_empleado  where Identificacion = '"+id+"'";
+              consulta="select Foto from tbl_empleado  where Identificacion = '"+id+"'";
             
             }
                
@@ -57,23 +61,23 @@ public class Foto extends HttpServlet {
             if( cnx.resultado.next())
             {
                 
-               imagen= cnx.resultado.getString("Huella");
+               imagen= cnx.resultado.getString("Foto");
             
-                 request.setAttribute("id", id);
-              // request.setAttribute("imagen", imagen);
-               getServletConfig().getServletContext().getRequestDispatcher("/Fotico.jsp").forward(request, response);
+                
+              
             }
             
-            out.print("<div>");
+          
              
-             out.print("   <input type=\"hidden\" name=\"documento\" value='"+id+"'  />");
-             
-               
-             out.print("<img  src='"+ruta+"'  width='250' height='250'  >");
-             
-              out.print("</form>");
-             out.print("</div>");
             
+             out.print("  <input type=\"Hidden\" name=\"documento\" value='"+id+"'/> ");
+          
+               
+             
+             out.print("<Center> <img  src='"+imagen+"'  width='250' height='250' </Center> ");
+              
+             
+             
         }
     }
 

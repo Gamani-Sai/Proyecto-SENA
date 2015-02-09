@@ -5,7 +5,7 @@
  */
 package Controlador;
 
-import Entidad.*;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import Modelo.*;
 import Entidad.*;
+import java.sql.ResultSet;
 import java.util.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -41,7 +42,7 @@ public class RegistrarControl extends HttpServlet {
     ArrayList<entidadControl> lista2=new ArrayList<entidadControl>();
     
       Date dato=new Date();
-       DateFormat tiempo=new SimpleDateFormat("HH:mm:ss");
+       DateFormat hora=new SimpleDateFormat("HH:mm:ss");
    DateFormat fecha= new SimpleDateFormat("YYYY/MM/dd");
        
    public boolean Registrar(String parametro) throws SQLException
@@ -55,7 +56,7 @@ public class RegistrarControl extends HttpServlet {
            
            
            
-int count = cnx.consulta.executeUpdate("INSERT INTO control_llegada_tarde (Fecha,Hora,Identificacion) VALUES ('"+ fecha.format(dato)+"','"+ tiempo.format(dato)+"','"+informacion+"')");
+int count = cnx.consulta.executeUpdate("INSERT INTO control_llegada_tarde (Fecha,Hora,Identificacion) VALUES ('"+ fecha.format(dato)+"','"+ hora.format(dato)+"','"+informacion+"')");
    if(count > 0)
    { 
        verificar=true;
@@ -70,68 +71,57 @@ int count = cnx.consulta.executeUpdate("INSERT INTO control_llegada_tarde (Fecha
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+         
             
-          String Boton=request.getParameter("boton") ;
+            //Este objeto es usado para saber si la inserción fue exitosa
+            Control datoControl=new Control();
+            
+            //Este objeto es usado para setear
+             entidadControl objcontrol=new entidadControl();
+            
+         
+             String Boton=request.getParameter("boton") ;
         String id= request.getParameter("documento");
          
-        if(Boton.equals("Cancelar"))
-        {
+        ConexionBD cnx=new ConexionBD();
+        ResultSet  result=null;
+       
+        boolean Dato= false;//Esta variable captura el resultado del metodo invocado
         
-        getServletConfig().getServletContext().getRequestDispatcher("/registarcontrol.jsp").forward(request, response);
+                  objcontrol.setFecha(fecha.format(dato)); 
+                   objcontrol.setHora( hora.format(dato));          
+                  objcontrol.setIdentificacion(id);
         
-        }
-        else if(Boton.equals("Guardar"))
-        {
-        
-       //Aqui el metodo recibe el parametro   
-        Registrar(id);
+     
+            
+         if(Boton.equals("Guardar")){
+         //out.print("Hola");
+             
+          
+             
+             //Este metodo consulta si la persona existe en la tabla Control_llegada_tarde
+             Dato= datoControl.ConsultarExistencia(objcontrol);
+             
+             if(Dato){ 
+             
+             out.print("La persona existe");
+             }else
+             {
+              out.print("La pesrosna no existe, se procedara para registrarla");
+              datoControl.RegistrarControl(objcontrol);
+             }
+             
+         }
         
             
-      ConexionBD cnx=new ConexionBD();
-            cnx.conectarse();
-           cnx.consulta = cnx.conector.createStatement();
-           cnx.resultado= cnx.consulta.executeQuery("select Extract(day from Fecha) as Fecha  from control_llegada_tarde where year(Fecha)=2014");
-        
-        while(cnx.resultado.next())  
-        {
             
-         control.setFecha( cnx.resultado.getString("Fecha"));
-        lista.add(control);
-        } 
-         formula=lista.size() -3;
-         if(formula < 0)
-         {
-         out.print("Registro exitoso");
-         }
-         else
-         {
-         for(int i=lista.size()-1;i >= formula; i --)
-        {
-         lista2.add(lista.get(i));
-        
-        } 
-        
-     a=Integer.parseInt( lista2.get(0).getFecha().toString());
-          b= Integer.parseInt(lista2.get(1).getFecha().toString());
-         c= Integer.parseInt(lista2.get(2).getFecha().toString());
-         
-         
-         
-         if( a -1 == b &&  b -1== c)
-         {
-         out.print("El estudiante con el numero de documento:" + id +"Tiene 3 o más llegadas tardes consecutivas");
-         }
-         else 
-         {
-        
-         
-//          request.setAttribute( "x1",x1);
-//         request.setAttribute( "x",x);
-         //getServletConfig().getServletContext().getRequestDispatcher("/Fotico.jsp").forward(request, response);
-         out.print("Se Registro con exito");
-         }
-         }
-        }
+            
+            
+            
+            
+            
+            
+        //-------------
         }
     }
 

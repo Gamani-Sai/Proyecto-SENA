@@ -89,6 +89,7 @@
 
 
                                 <div class="radio col-lg-6">
+                                    <Center>WELCOME </Cemter>
                                     <label>
                                         <input type="radio" name="opciones" value="Estudiante" onchange="recibir2()" checked="recibir2()">
                                         Estudiante
@@ -103,8 +104,9 @@
                                 </div>
 
                                 <div class="form-group col-lg-12" id="traer" >
+                                    
                                 </div>
-
+                              
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Identidicación</label>
@@ -121,7 +123,7 @@
                                     <input type="time" id="disabledTextInput" class="form-control" placeholder="Hora">
                                 </div>             
 
-                                <button type="reset" class="btn btn-success" style="margin-left: 360px;" data-toggle='modal' data-target='#myModal'onclick="recibir3()"> Confirmar</button>
+                                <button type="reset" class="btn btn-success" style="margin-left: 360px;" data-toggle='modal' data-target='#myModal'onclick="ConsultarFoto()"> Confirmar</button>
                                 <button type="reset" class="btn btn-default" >Cancelar</button>
                             </div>
                         </div> 
@@ -143,8 +145,8 @@
 
                         <div class="modal-body">
 
-
-                            <div id="traerr"  class="form-group"> </div>
+                            
+                            <div id="ObtenerFoto"  class="form-group"> </div>
 
                         </div>
                         <div class="modal-footer">
@@ -162,60 +164,58 @@
         <script src="js/ajax.js" type="text/javascript"></script>
 
 
+        
+  
         <script>
-
-
-                                    function recibir3() {
-
-                                        var variable = $("#ConProEsT").val();
-
-                                        $.ajax({
-                                            dataType: "html",
-                                            data: {
-                                                documento: variable
-                                            },
-                                            type: "POST",
-                                            url: "Foto",
-                                            statusCode: {
-                                                404: function () {
-                                                    alert("page not found");
-                                                }
-                                            }
-                                        }).done(function (datos) {
-
-                                            $("#traerr").empty();
-                                            $("#traerr").append(datos);
-
-                                            $("#ConProEsT").select2({
-                                                minimumInputLength: 2
-                                            });
-
-                                        });
-
-                                    }
-
-
-
-
-
-
-
-
-        </script>
-
-
-
-
-
-
-
-
-        <script>
-
+         //Este Script permite que la funcion Ajax se recargue constantemente
+         //Osea la etiqueta   <Select> se pueda recargar
             $(function () {
                 recibir2();
+                
             });
+           
+           //--------------------------
+           
+           
+           function ConsultarFoto() {
+                       
+  var valor = $("#ConProEsT").val();
+  var variable = $("input[name='opciones']:checked").val();
+    $.ajax({
+        dataType: "html",
+        data: {
+            documento: valor ,
+            opciones: variable
+        },
+        type: "POST",
+        url: "Foto",
+        statusCode: {
+            404: function () {
+                alert("page not found");
+            }
+        }
+    }).done(function (datos) {
 
+        $("#ObtenerFoto").empty();
+        $("#ObtenerFoto").append(datos);
+
+      
+
+    });
+    
+ }
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
+           
 
         </script>
 
