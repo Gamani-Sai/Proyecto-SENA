@@ -49,19 +49,16 @@
 
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav" >
-                        <%-- 
+
                         <div id="actualizar">
                             <%
                                 ControladorElemento crt = new ControladorElemento();
                                 out.println(crt.anomaliacont());
                             %>
                         </div>
-                        --%>
 
-                        <%
-                            ControladorElemento crt = new ControladorElemento();
-                            out.println(crt.anomaliacont());
-                        %>
+
+
                         <li><a href="consultarcuentas.jsp">Administar Cuentas</a></li>
                         <li><a href="registargradoygrupo.jsp">Grados</a></li>
                         <li><a href="consultarestudiante.jsp">Estudiantes</a></li>
@@ -245,8 +242,10 @@
                                                 }
                                             }
                                         }).done(function (datos) {
+
                                             $("#actualizar").empty();
                                             $("#actualizar").append(datos);
+                                            inicializar()
                                         });
                                     }
 
@@ -343,12 +342,12 @@
 
                 });
 
-                function validarLetrasNumeros() {
-                    if ((event.keyCode < 48) || (event.keyCode > 57) || (event.keyCode < 41) || (event.keyCode > 90))
-                    {
-                        event.returnValue = false;
-                    }
-                }
+                /*    function validarLetrasNumeros() {
+                 if ((event.keyCode < 48) || (event.keyCode > 57) || (event.keyCode < 41) || (event.keyCode > 90))
+                 {
+                 event.returnValue = false;
+                 }
+                 }*/
                 function ValidaSoloNumeros() {
                     if ((event.keyCode < 48) || (event.keyCode > 57))
                         event.returnValue = false;
@@ -374,31 +373,75 @@
 
                     });
                 });
-
+                var mySerialArray = new Array();
+                //var row = "";
                 $(function () {
-
                     $('.preview-add-button').click(function () {
-                        var form_data = {};
+                        //var form_data = {};
+                        //var miArray = new Array ();
 
                         if ($('.payment-form input[name="Seriales"]').val() != "")
                         {
+                            /*
+                             
+                             form_data["Seriales"] = $('.payment-form input[name="Seriales"]').val();
+                             
+                             form_data["remove-row"] = '<span class="glyphicon glyphicon-remove"></span>';
+                             var row = $('<tr></tr>');
+                             $.each(form_data, function (type, value) {
+                             
+                             $('<td class="input-' + type + '"></td>').html(value).appendTo(row);
+                             } */
+                            //ESTA VARIABLE DEBE SER GLOBAL NO DEBE ESTAR DENTRO DEL CLICK
 
+                            $('.payment-form').find('[name="Seriales"]').each(function (index, element) {
+                                //AQUI LE DICES QUE TE BUSQUE TODO LOS OBJETOS CON EL ATRIBUTO NAME Y SU VALOR SERIALES
+                                //por cada objeto con atributo name y valor SERIALES va a buscar su valor 
 
-                            form_data["Seriales"] = $('.payment-form input[name="Seriales"]').val();
+                                //aqui podemos obtener el valor
 
-                            form_data["remove-row"] = '<span class="glyphicon glyphicon-remove"></span>';
-                            var row = $('<tr></tr>');
-                            $.each(form_data, function (type, value) {
+                                var serialDelCampo = $('[name="Seriales"]').val();
+                                link = $('<a href="javascript:void(0)" class="input-remove-row glyphicon glyphicon-remove"></a>').html(serialDelCampo);
+                                // serialDelCampo.appendTo(link);
+                                //SI NO ESTAS SEGURO DEL VALOR DE LA VARIABLE ENTONCES DESCOMENTA ESTA LINEA Y FIJATE EN LA CONSOLA
+                                // console.log(serialDelCampo);
 
-                                $('<td class="input-' + type + '"></td>').html(value).appendTo(row);
+                                miSerial = validarSerial(serialDelCampo);
+                                console.log(miSerial);
+                                // console.log(miSerial);
+                                if (miSerial == true)
+                                {
+                                    var newtd = $('<tr><td class="input-' + index + '"></td></tr>').html(link);
+                                    $('.preview-table tbody').append(newtd);
+                                } else {
+                                    new PNotify({
+                                        title: 'Campo requerido',
+                                        text: 'El serial ya esta Registrado.',
+                                        type: 'error'
+                                    });
+                                }
 
                             });
-                            $('.preview-table > tbody:last').append(row);
+
+
                         }
-                        document.getElementById("Seriales").value = "";
+                        $('[name="Seriales"]').val("");
                     });
 
                 });
+                function validarSerial(numSerial) {
+                    // console.log(currentArray.length);
+                    var bandera = true;
+                    $("#tbl tbody tr").each(function () {
+                        if ($(this).find("a").text() == numSerial) {
+                            bandera = false;
+                        }
+                    });
+
+
+                    return bandera;
+                }
+
 
 
 
@@ -414,13 +457,7 @@
                         textos = textos;
                     }
                     $("#serial").val(textos);
-                    if (($("#serial").val()) == "") {
-                        new PNotify({
-                            title: 'No hay seriales',
-                            type: 'error'
-                        });
-                        return false;
-                    }
+
                 }
 
 

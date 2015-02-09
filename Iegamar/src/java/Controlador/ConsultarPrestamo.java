@@ -100,7 +100,7 @@ public class ConsultarPrestamo extends HttpServlet {
             while (list_SER.next()) {
                 Recorrer_seriales += "<tr>";
                 Recorrer_seriales += "<td><center>" + list_SER.getString("Seriales").toString().trim() + "</center></td>";
-                Recorrer_seriales += "<td><center><button type='button' class='btn btn-primary glyphicon glyphicon-bell' data-toggle='modal' data-target='.bs-example-modal-sm' onclick='mapear.serialAnom(" + '\"' + list_SER.getString("Seriales").toString().trim() + '\"' + ")' ></button></center></td>";
+                Recorrer_seriales += "<td><center><button type='button' class='btn btn-primary glyphicon glyphicon-bell' data-toggle='modal' data-target='.bs-example-modal-sm1' onclick='mapear.serialAnom(" + '\"' + list_SER.getString("Seriales").toString().trim() + '\"' + ")' ></button></center></td>";
                 Recorrer_seriales += "</tr>";
 
             }
@@ -129,7 +129,6 @@ public class ConsultarPrestamo extends HttpServlet {
                         String id_prestamo = request.getParameter("Id_prestamo");
                         String tipoCuenta = "Devolucion";
                         String estado = "Disponible";
-                        String estAnomalia = "Ver";
 
                         int Cuenta = Integer.parseInt(sesionOk.getAttribute("Id_cuenta").toString());
                         datosPrestamo.setFecha_devolucion(Fecha_Devolucion);
@@ -138,7 +137,6 @@ public class ConsultarPrestamo extends HttpServlet {
                         datosPrestamo.setId_cuenta(Cuenta);
                         datosPrestamo.setTipocuenta(tipoCuenta);
                         datosPrestamo.setEstado(estado);
-                        datosPrestamo.setEstaAnomali(estAnomalia);
 
                         boolean objejecutar = false;
                         objejecutar = Pres.registarDevolucion(datosPrestamo);
@@ -154,6 +152,9 @@ public class ConsultarPrestamo extends HttpServlet {
                     } else if (proceso.equals("agregar_anomalia")) {
                         String Serial = request.getParameter("serial");
                         String Descricion_anomalia = request.getParameter("anomalia").trim();
+                        String estAnomalia = "Ver";
+                        datosPrestamo.setEstaAnomali(estAnomalia);
+
                         datosPrestamo.setSerialesUP(Serial);
                         datosPrestamo.setDescricion_anomalia(Descricion_anomalia);
                         boolean objejecutar = false;

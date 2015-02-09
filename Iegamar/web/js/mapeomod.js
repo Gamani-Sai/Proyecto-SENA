@@ -37,7 +37,7 @@ var mapear = {
         $("#Cuenta").val(Cuenta);
     },
     serialAnom: function (NombrePrestador,Id_prestamo){
-        $("#Serial").val(NombrePrestador);
+        $("#Serial1").val(NombrePrestador);
         $("#Id_prestamo").val(Id_prestamo);
     },
       estudiantes: function (Identificacion, Nombre, Apellido, Direccion, Telefono,Grado)

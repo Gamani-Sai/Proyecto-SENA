@@ -248,7 +248,7 @@
             </div>
         </div> 
 
-        <div class="modal fade bs-example-modal-sm"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal fade bs-example-modal-sm1"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header" >
@@ -259,12 +259,12 @@
                     <div class="modal-body"  >
                         <div class="form-group">
                             <label for="disabledSelect">Serial</label>
-                            <input type="text"  class="form-control" name="Serial" id="Serial" readonly="readonly" placeholder="">
+                            <input type="text"  class="form-control" name="Serial" id="Serial1" readonly="readonly" placeholder="">
                         </div>
                         <div class="form-group">
                             <label for="disabledSelect">Descrición</label>
 
-                            <textarea rows="4" name="Anomalia" id="Anomalia" cols="50" class="form-control">
+                            <textarea rows="4" name="Anomalia" id="Anomalia1" cols="50" class="form-control">
 
                             </textarea>
                         </div>
@@ -415,8 +415,8 @@
                     dataType: "html",
                     data: {
                         proceso: "agregar_anomalia",
-                        serial: $("#Serial").val(),
-                        anomalia: $("#Anomalia").val()
+                        serial: $("#Serial1").val(),
+                        anomalia: $("#Anomalia1").val()
 
                     },
                     type: "POST",
