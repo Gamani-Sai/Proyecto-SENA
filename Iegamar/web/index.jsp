@@ -16,7 +16,7 @@
 
     </head>
     <body>        
-
+                          
         <form class="form-signin" role="form" action="ValidarUsuario" method="Post">
             <h2 class="form-signin-heading">Inicio de Sesión</h2>
             <input type="text" class="form-control" placeholder="Usuario" name="usuario" required autofocus>
