@@ -49,7 +49,7 @@ public class ValidarUsuario extends HttpServlet {
             if (request.getParameter("Contra") != null) {
                 contra = request.getParameter("Contra");
             }
-            
+
             datosUsuario.setLogin(usuario);
             datosUsuario.setPassword(contra);
 
@@ -60,17 +60,23 @@ public class ValidarUsuario extends HttpServlet {
 
                 tipo = rs.getString("Tipo_rol").toString().trim();
                 id = rs.getString(1).toString().trim();
-                
+
                 HttpSession sesionOk = request.getSession();
                 sesionOk.setAttribute("usuario", usuario);
                 sesionOk.setAttribute("Id_cuenta", id);
+                sesionOk.setAttribute("Rol", tipo);
             }
 
             if (tipo.equals("Super")) {
-                response.sendRedirect("Menu.jsp");
-            } else if (tipo.equals("Estudiante")) {
                 response.sendRedirect("consultarcuentas.jsp");
-            } else {
+            } else if (tipo.equals("Estudiante")) {
+                response.sendRedirect("consultarprestamo.jsp");
+            } else if (tipo.equals("Profesores")) {
+                response.sendRedirect("registarcuentas.jsp");
+            }else if (tipo.equals("Control")) {
+                response.sendRedirect("registargradoygrupo.jsp");
+            } 
+            else {
                 alert += "<script type=\"text/javascript\">";
                 alert += "alertify.alert(\"Nombre de usuario y/o contraseña incorrectos\");";
                 alert += "</script>";

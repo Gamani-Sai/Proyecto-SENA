@@ -9,8 +9,58 @@
 <%
     HttpSession sesionOk = request.getSession();
     String usuario = "";
-    if (sesionOk.getAttribute("usuario") != null) {
+    String tipo = "";
+
+    String OGrado = "<li><a href=\"registargradoygrupo.jsp\">Grados</a></li>";
+
+    String OEstudiante = "<li><a href=\"consultarestudiante.jsp\">Estudiantes</a></li>";
+
+    String OProfesores = "<li><a href=\"consultarprofesores.jsp\">Profesores</a></li>";
+
+    String OPrestamo = " <li><a href=\"consultarprestamo.jsp\">Préstamo</a></li>";
+
+    String OReserva = "<li><a href=\"consultarreserva.jsp\">Reserva</a></li>  ";
+
+    String OControl = "<li><a href=\"consultarcontrol.jsp\">Control de llegadas</a></li> ";
+
+    String OElementos = "<li><a href=\"consultarelemento.jsp\">Elementos</a></li>";
+
+    String OCuenta = "<li class=\"active\"><a href=\"consultarcuentas.jsp\">Administar Cuentas</a></li>";
+
+    if (sesionOk.getAttribute("usuario") != null && sesionOk.getAttribute("Rol") != null) {
         usuario = sesionOk.getAttribute("usuario").toString();
+        tipo = sesionOk.getAttribute("Rol").toString();
+
+        if (tipo.equals("Super")) {
+            OPrestamo = "";
+        }
+
+        if (tipo.equals("Control")) {
+            OCuenta = "";
+            OElementos = "";
+            OPrestamo = "";
+            OReserva = "";
+        }
+
+        if (tipo.equals("Profesores")) {
+            OGrado = "";
+            OEstudiante = "";
+            OProfesores = "";
+            OPrestamo = "";
+            OReserva = "";
+            OControl = "";
+        }
+
+        if (tipo.equals("Estudiante")) {
+
+            OGrado = "";
+            OEstudiante = "";
+            OProfesores = "";
+            OCuenta = "";
+            OControl = "";
+            OElementos = "";
+        }
+
     } else {
         response.sendRedirect("index.jsp");
     }
@@ -53,28 +103,24 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">  
 
-                        <%-- 
+
                         <div id="actualizar">
                             <%
                                 ControladorElemento crt = new ControladorElemento();
                                 out.println(crt.anomaliacont());
                             %>
                         </div>
-                        --%>
 
-                        <%
-                            ControladorElemento crt = new ControladorElemento();
-                            out.println(crt.anomaliacont());
-                        %>
+                        <%=OCuenta%>
+                        <%=OGrado%>
+                        <%=OEstudiante%>
+                        <%=OProfesores%>
+                        <%=OElementos%>
+                        <%=OPrestamo%>
+                        <%=OControl%>
+                        <%=OReserva%>
 
-                        <li class="active"><a href="consultarcuentas.jsp">Administar Cuentas</a></li>
-                        <li><a href="registargradoygrupo.jsp">Grados</a></li>
-                        <li><a href="consultarestudiante.jsp">Estudiantes</a></li>
-                        <li><a href="consultarprofesores.jsp">Profesores</a></li>
-                        <li><a href="consultarelemento.jsp">Elementos</a></li>
-                        <li><a href="consultarprestamo.jsp">Préstamo</a></li>
-                        <li><a href="consultarreserva.jsp">Reserva</a></li>  
-                        <li ><a href="consultarcontrol.jsp">Control de llegadas</a></li>                           
+
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="active"><a href="CerrarSesion.jsp">Cerrar Sesión</a></li>
@@ -257,6 +303,7 @@
                 }).done(function (datos) {
                     $("#actualizar").empty();
                     $("#actualizar").append(datos);
+                    inicializar()
                 });
             }
 

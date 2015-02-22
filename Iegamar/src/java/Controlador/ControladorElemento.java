@@ -48,9 +48,9 @@ public class ControladorElemento extends HttpServlet {
             num_anoma = cnt_anomalia.getInt("anomalias");
         }
         if (num_anoma <= 0) {
-            pintar += "<li><a class=\"btn btn-default\" id=\"mostrar\" style=\" margin-top: -5.9px;\" > <img src=\"css/notifi1.png\"></a> </li>";
+            pintar += "<li><a class=\"btn btn-default\" id=\"mostrar\"  > <img src=\"css/notifi1.png\"></a> </li>";
         } else {
-            pintar += "<li><a  class=\"btn btn-danger\" id=\"mostrar\" style=\" margin-top: -5.9px;\" ><img src=\"css/notifi2.png\"></a> </li>";
+            pintar += "<li><a  class=\"btn btn-danger\" id=\"mostrar\"  ><img src=\"css/notifi2.png\"></a> </li>";
         }
 
         return pintar;

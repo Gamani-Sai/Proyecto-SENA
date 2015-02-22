@@ -10,16 +10,62 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page session="true" %>
 <%
-    String usuario = "";
     HttpSession sesionOk = request.getSession();
-    if (sesionOk.getAttribute("usuario") == null) {
-%>
-<jsp:forward page="index.jsp">
-    <jsp:param name="error" value="Nombre de Usuario Obligatorio"/>
-</jsp:forward>
-<%
+    String usuario = "";
+    String tipo = "";
+
+    String OGrado = "<li class=\"active\"><a href=\"registargradoygrupo.jsp\">Grados</a></li>";
+
+    String OEstudiante = "<li><a href=\"consultarestudiante.jsp\">Estudiantes</a></li>";
+
+    String OProfesores = "<li><a href=\"consultarprofesores.jsp\">Profesores</a></li>";
+
+    String OPrestamo = " <li><a href=\"consultarprestamo.jsp\">Préstamo</a></li>";
+
+    String OReserva = "<li><a href=\"consultarreserva.jsp\">Reserva</a></li>  ";
+
+    String OControl = "<li><a href=\"consultarcontrol.jsp\">Control de llegadas</a></li> ";
+
+    String OElementos = "<li><a href=\"consultarelemento.jsp\">Elementos</a></li>";
+
+    String OCuenta = "<li><a href=\"consultarcuentas.jsp\">Administar Cuentas</a></li>";
+
+    if (sesionOk.getAttribute("usuario") != null && sesionOk.getAttribute("Rol") != null) {
+        usuario = sesionOk.getAttribute("usuario").toString();
+        tipo = sesionOk.getAttribute("Rol").toString();
+
+        if (tipo.equals("Super")) {
+            OPrestamo = "";
+        }
+
+        if (tipo.equals("Control")) {
+            OCuenta = "";
+            OElementos = "";
+            OPrestamo = "";
+            OReserva = "";
+        }
+
+        if (tipo.equals("Profesores")) {
+            OGrado = "";
+            OEstudiante = "";
+            OProfesores = "";
+            OPrestamo = "";
+            OReserva = "";
+            OControl = "";
+        }
+
+        if (tipo.equals("Estudiante")) {
+
+            OGrado = "";
+            OEstudiante = "";
+            OProfesores = "";
+            OCuenta = "";
+            OControl = "";
+            OElementos = "";
+        }
+
     } else {
-        usuario = (String) sesionOk.getAttribute("usuario");
+        response.sendRedirect("index.jsp");
     }
 %>
 
@@ -55,29 +101,23 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">  
-                        
-                         <%-- 
+
+
                         <div id="actualizar">
                             <%
                                 ControladorElemento crt = new ControladorElemento();
                                 out.println(crt.anomaliacont());
                             %>
                         </div>
-                        --%>
 
-                        <%
-                            ControladorElemento crt = new ControladorElemento();
-                            out.println(crt.anomaliacont());
-                        %>
-                        
-                        <li><a href="consultarcuentas.jsp">Administar Cuentas</a></li>
-                        <li class="active"><a href="registargradoygrupo.jsp">Grados</a></li>
-                        <li><a href="consultarestudiante.jsp">Estudiantes</a></li>
-                        <li><a href="consultarprofesores.jsp">Profesores</a></li>
-                        <li><a href="consultarelemento.jsp">Elementos</a></li>
-                        <li><a href="consultarprestamo.jsp">Préstamo</a></li>
-                        <li><a href="consultarreserva.jsp">Reserva</a></li>  
-                        <li ><a href="consultarcontrol.jsp">Control de llegadas</a></li>                           
+                        <%=OCuenta%>
+                        <%=OGrado%>
+                        <%=OEstudiante%>
+                        <%=OProfesores%>
+                        <%=OElementos%>
+                        <%=OPrestamo%>
+                        <%=OControl%>
+                        <%=OReserva%>                             
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
 
@@ -86,8 +126,8 @@
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
-                        
-                        <div hidden="true" class="notification-list-wrapper" id="objetivo" style="top: 65px; left: 100px;  opacity: 1;">
+
+            <div hidden="true" class="notification-list-wrapper" id="objetivo" style="top: 65px; left: 100px;  opacity: 1;">
 
                 <ul class="notification-list-menu">
                 </ul>
@@ -141,7 +181,7 @@
 
                 </div>
             </div>
-                        
+
         </nav>
 
         <div class="container-fluid" id="GradoForm">
@@ -196,11 +236,11 @@
         <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
         <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
         <script type="text/javascript">
-            // override defaults
-            // alertify.defaults.transition = "slide";
-            alertify.defaults.theme.ok = "btn btn-success";
-            alertify.defaults.theme.cancel = "btn btn-danger";
-            alertify.defaults.theme.input = "form-control";
+                                // override defaults
+                                // alertify.defaults.transition = "slide";
+                                alertify.defaults.theme.ok = "btn btn-success";
+                                alertify.defaults.theme.cancel = "btn btn-danger";
+                                alertify.defaults.theme.input = "form-control";
         </script>
         <script>
             function cargar() {
@@ -307,9 +347,9 @@
 
 
         <script type="text/javascript" charset="utf-8">
-            
-            
-             var actualizacion = setInterval(function () {
+
+
+            var actualizacion = setInterval(function () {
                 actualizar_anomalias()
             }, 3000);
 
@@ -334,6 +374,7 @@
                 }).done(function (datos) {
                     $("#actualizar").empty();
                     $("#actualizar").append(datos);
+                    inicializar()
                 });
             }
 
@@ -377,7 +418,7 @@
             }
 
 
-            
+
             $(document).ready(function () {
                 $('#tblArea').dataTable({
                     "oLanguage": {

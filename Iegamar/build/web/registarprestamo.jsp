@@ -14,10 +14,58 @@
 <%
     HttpSession sesionOk = request.getSession();
     String usuario = "";
-    int id_cuenta = 0;
-    if (sesionOk.getAttribute("usuario") != null && sesionOk.getAttribute("Id_cuenta") != null) {
+    String tipo = "";
+
+    String OGrado = "<li><a href=\"registargradoygrupo.jsp\">Grados</a></li>";
+
+    String OEstudiante = "<li><a href=\"consultarestudiante.jsp\">Estudiantes</a></li>";
+
+    String OProfesores = "<li><a href=\"consultarprofesores.jsp\">Profesores</a></li>";
+
+    String OPrestamo = " <li class=\"active\"><a href=\"consultarprestamo.jsp\">Préstamo</a></li>";
+
+    String OReserva = "<li><a href=\"consultarreserva.jsp\">Reserva</a></li>  ";
+
+    String OControl = "<li><a href=\"consultarcontrol.jsp\">Control de llegadas</a></li> ";
+
+    String OElementos = "<li><a href=\"consultarelemento.jsp\">Elementos</a></li>";
+
+    String OCuenta = "<li><a href=\"consultarcuentas.jsp\">Administar Cuentas</a></li>";
+
+    if (sesionOk.getAttribute("usuario") != null && sesionOk.getAttribute("Rol") != null) {
         usuario = sesionOk.getAttribute("usuario").toString();
-        id_cuenta = Integer.parseInt(sesionOk.getAttribute("Id_cuenta").toString());
+        tipo = sesionOk.getAttribute("Rol").toString();
+
+        if (tipo.equals("Super")) {
+            OPrestamo = "";
+        }
+
+        if (tipo.equals("Control")) {
+            OCuenta = "";
+            OElementos = "";
+            OPrestamo = "";
+            OReserva = "";
+        }
+
+        if (tipo.equals("Profesores")) {
+            OGrado = "";
+            OEstudiante = "";
+            OProfesores = "";
+            OPrestamo = "";
+            OReserva = "";
+            OControl = "";
+        }
+
+        if (tipo.equals("Estudiante")) {
+
+            OGrado = "";
+            OEstudiante = "";
+            OProfesores = "";
+            OCuenta = "";
+            OControl = "";
+            OElementos = "";
+        }
+
     } else {
         response.sendRedirect("index.jsp");
     }
@@ -61,28 +109,22 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">  
 
-                        <%-- 
+
                         <div id="actualizar">
                             <%
                                 ControladorElemento crt = new ControladorElemento();
                                 out.println(crt.anomaliacont());
                             %>
                         </div>
-                        --%>
 
-                        <%
-                            ControladorElemento crt = new ControladorElemento();
-                            out.println(crt.anomaliacont());
-                        %>
-
-                        <li><a href="consultarcuentas.jsp">Administar Cuentas</a></li>
-                        <li><a href="registargradoygrupo.jsp">Grados</a></li>
-                        <li><a href="consultarestudiante.jsp">Estudiantes</a></li>
-                        <li><a href="consultarprofesores.jsp">Profesores</a></li>
-                        <li><a href="consultarelemento.jsp">Elementos</a></li>
-                        <li  class="active"><a href="consultarprestamo.jsp">Préstamo</a></li>
-                        <li><a href="consultarreserva.jsp">Reserva</a></li>  
-                        <li ><a href="consultarcontrol.jsp">Control de llegadas</a></li>                           
+                        <%=OCuenta%>
+                        <%=OGrado%>
+                        <%=OEstudiante%>
+                        <%=OProfesores%>
+                        <%=OElementos%>
+                        <%=OPrestamo%>
+                        <%=OControl%>
+                        <%=OReserva%>                             
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
 
@@ -237,11 +279,11 @@
                     out.print(alerte);
                 }
             %>
-            
+
             <script>
-                alertify.defaults.theme.ok = "btn btn-success";
-                alertify.defaults.theme.cancel = "btn btn-danger";
-                alertify.defaults.theme.input = "form-control";
+                                    alertify.defaults.theme.ok = "btn btn-success";
+                                    alertify.defaults.theme.cancel = "btn btn-danger";
+                                    alertify.defaults.theme.input = "form-control";
             </script>
 
 
@@ -302,6 +344,7 @@
                     }).done(function (datos) {
                         $("#actualizar").empty();
                         $("#actualizar").append(datos);
+                        inicializar()
                     });
                 }
 
@@ -352,31 +395,84 @@
                     });
                 });
 
-                $(function () {
-                    recibir();
+                  $(document).on('click', '.input-remove-row', function () {
+                    var tr = $(this).closest('tr');
+                    tr.fadeOut(200, function () {
+                        tr.remove();
 
+                    });
+                });
+                var mySerialArray = new Array();
+                //var row = "";
+                $(function () {
                     $('.preview-add-button').click(function () {
-                        var form_data = {};
+                        //var form_data = {};
+                        //var miArray = new Array ();
 
                         if ($('.payment-form select[name="Seriales"]').val() != "")
                         {
+                            /*
+                             
+                             form_data["Seriales"] = $('.payment-form input[name="Seriales"]').val();
+                             
+                             form_data["remove-row"] = '<span class="glyphicon glyphicon-remove"></span>';
+                             var row = $('<tr></tr>');
+                             $.each(form_data, function (type, value) {
+                             
+                             $('<td class="input-' + type + '"></td>').html(value).appendTo(row);
+                             } */
+                            //ESTA VARIABLE DEBE SER GLOBAL NO DEBE ESTAR DENTRO DEL CLICK
 
+                            $('.payment-form').find('[name="Seriales"]').each(function (index, element) {
+                                //AQUI LE DICES QUE TE BUSQUE TODO LOS OBJETOS CON EL ATRIBUTO NAME Y SU VALOR SERIALES
+                                //por cada objeto con atributo name y valor SERIALES va a buscar su valor 
 
-                            form_data["Seriales"] = $('.payment-form select[name="Seriales"]').val();
+                                //aqui podemos obtener el valor
 
-                            form_data["remove-row"] = '<span class="glyphicon glyphicon-remove"></span>';
-                            var row = $('<tr></tr>');
-                            $.each(form_data, function (type, value) {
+                                var serialDelCampo = $('[name="Seriales"]').val();
+                                link = $('<a href="javascript:void(0)" class="input-remove-row glyphicon glyphicon-remove"></a>').html(serialDelCampo);
+                                // serialDelCampo.appendTo(link);
+                                //SI NO ESTAS SEGURO DEL VALOR DE LA VARIABLE ENTONCES DESCOMENTA ESTA LINEA Y FIJATE EN LA CONSOLA
+                                // console.log(serialDelCampo);
 
-                                $('<td class="input-' + type + '"></td>').html(value).appendTo(row);
+                                miSerial = validarSerial(serialDelCampo);
+                                console.log(miSerial);
+                                // console.log(miSerial);
+                                if (miSerial == true)
+                                {
+                                    var newtd = $('<tr><td class="input-' + index + '"></td></tr>').html(link);
+                                    $('.preview-table tbody').append(newtd);
+                                } else {
+                                    new PNotify({
+                                        title: 'Campo requerido',
+                                        text: 'El serial ya esta.',
+                                        type: 'error'
+                                    });
+                                }
 
                             });
-                            $('.preview-table > tbody:last').append(row);
+
+
                         }
-                        document.getElementById("Seriales").value = "";
+                        $('[name="Seriales"]').val("");
                     });
 
                 });
+                function validarSerial(numSerial) {
+                    // console.log(currentArray.length);
+                    var bandera = true;
+                    $("#tbl tbody tr").each(function () {
+                        if ($(this).find("a").text() == numSerial) {
+                            bandera = false;
+                        }
+                    });
+
+
+                    return bandera;
+                }
+
+
+
 
                 function xd() {
                     var textos = '';
@@ -390,13 +486,7 @@
                         textos = textos;
                     }
                     $("#serial").val(textos);
-                    if (($("#serial").val()) == "") {
-                        new PNotify({
-                            title: 'No hay seriales',
-                            type: 'error'
-                        });
-                        return false;
-                    }
+
                 }
 
 
