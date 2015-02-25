@@ -38,7 +38,7 @@ public class Estudiantes extends ConexionBD {
     public boolean inserEstudiantes(entidadEstudiantes datosestudiantes) {
         conectarse();
         boolean retornarObj = false;
-        String regEstudiante = "insert into tbl_estudiante (Identificacion,Nombre,Apellido,Direccion,Telefono,Huella,Fecha,Id_grado,Estado) values (?,?,?,?,?,?,?,?,?)";
+        String regEstudiante = "insert into tbl_estudiante (Identificacion,Nombre,Apellido,Direccion,Telefono,Fecha,Id_grado,Estado) values (?,?,?,?,?,?,?,?)";
 
         try {
             Stmp();
@@ -48,10 +48,9 @@ public class Estudiantes extends ConexionBD {
             statement.setString(3, datosestudiantes.getApellido());
             statement.setString(4, datosestudiantes.getDireccion());
             statement.setString(5, datosestudiantes.getTelefono());
-            statement.setString(6, datosestudiantes.getHuella());
-            statement.setString(7, datosestudiantes.getFecha());
-            statement.setString(8, datosestudiantes.getId_grado());
-            statement.setString(9, datosestudiantes.getEstado());
+            statement.setString(6, datosestudiantes.getFecha());
+            statement.setString(7, datosestudiantes.getId_grado());
+            statement.setString(8, datosestudiantes.getEstado());
 
             int cont = statement.executeUpdate();
             if (cont > 0) {

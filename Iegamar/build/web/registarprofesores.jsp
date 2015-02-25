@@ -44,22 +44,13 @@
         }
 
         if (tipo.equals("Profesores")) {
-            OGrado = "";
-            OEstudiante = "";
-            OProfesores = "";
-            OPrestamo = "";
-            OReserva = "";
-            OControl = "";
+
+            response.sendRedirect("index.jsp");
         }
 
         if (tipo.equals("Estudiante")) {
 
-            OGrado = "";
-            OEstudiante = "";
-            OProfesores = "";
-            OCuenta = "";
-            OControl = "";
-            OElementos = "";
+            response.sendRedirect("index.jsp");
         }
 
     } else {
@@ -85,7 +76,8 @@
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
-        <link href="bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+        <link href="css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css"/>
+        <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/style_light.css" rel="stylesheet" type="text/css"/>
 
@@ -221,12 +213,9 @@
                                 </div>
 
                                 <div class="form-group">
-
                                     <label for="disabledSelect" style="margin-left: 19px;">Fecha nacimiento</label>
-                                    <div class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                        <input class="form-control" size="16" type="text" id="Fecha_Nacimiento" name="Fecha_Nacimiento"  readonly>
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                    </div>
+                                    <input class="form-control" size="16" type="text" id="Fecha_Nacimiento" name="Fecha_Nacimiento" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 </div>
 
                                 <div class="form-group col-lg-6">
@@ -251,20 +240,19 @@
         </div>
 
         <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
+        <script src="js/jquery-ui.js" type="text/javascript"></script>
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
-        <script src="bootstrap/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+        <script src="js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+        <script src="js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
         <script src="bootstrap/js/bootstrap-datetimepicker.es.js" type="text/javascript"></script>
         <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
-
         <script type="text/javascript">
                                         // override defaults
                                         // alertify.defaults.transition = "slide";
                                         alertify.defaults.theme.ok = "btn btn-success";
                                         alertify.defaults.theme.cancel = "btn btn-danger";
                                         alertify.defaults.theme.input = "form-control";
-
-
                                         function validarn(e) {
                                             tecla = (document.all) ? e.keyCode : e.which;
                                             if (tecla == 8)
@@ -281,11 +269,9 @@
                                         var actualizacion = setInterval(function () {
                                             actualizar_anomalias()
                                         }, 3000);
-
                                         function actualizar_anomalias() {
 
                                             var serial = $("#Serial").val();
-
                                             $.ajax({
                                                 dataType: "html",
                                                 data: {
@@ -310,7 +296,6 @@
                                         function list_anomalias() {
 
                                             var serial = $("#Serial").val();
-
                                             $.ajax({
                                                 dataType: "html",
                                                 data: {
@@ -334,11 +319,9 @@
                                         var x;
                                         x = $(document);
                                         x.ready(inicializar);
-
                                         function inicializar() {
                                             var x = $("#mostrar");
                                             x.click(muestrame);
-
                                         }
 
                                         function muestrame() {
@@ -425,7 +408,6 @@
 
 
                                             });
-
                                         });
                                         function ValidaSoloNumeros() {
                                             if ((event.keyCode < 48) || (event.keyCode > 57))
@@ -450,38 +432,50 @@
         %>
 
         <script type="text/javascript">
-            $('.form_datetime').datetimepicker({
-                //language:  'fr',
-                weekStart: 1,
-                todayBtn: 1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                forceParse: 0,
-                showMeridian: 1
-            });
-            $('.form_date').datetimepicker({
-                language: 'es',
-                weekStart: 1,
-                todayBtn: 1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                minView: 2,
-                forceParse: 0
-            });
-            $('.form_time').datetimepicker({
-                language: 'es',
-                weekStart: 1,
-                todayBtn: 1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 1,
-                minView: 0,
-                maxView: 1,
-                forceParse: 0
-            });
+            $(function () {
 
+
+                $("#Fecha_Nacimiento").datepicker({
+                    dateFormat: "dd/mm/yy",
+                    language: 'es',
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    minView: 2,
+                    forceParse: 0,
+                    onSelect: function (textoFecha, objDatepicker) {
+
+                        var dateDay = textoFecha;
+
+
+                        Sistema = new Date;
+                        dia = Sistema.getDate();
+                        if (dia < 10)
+                            dia = '0' + dia;
+                        mes = Sistema.getMonth();
+                        if (mes < 10)
+                            mes = '0' + mes;
+                        anio = Sistema.getFullYear();
+                        fechahoy = dia + '/' + mes + '/' + anio;
+
+                        if (dateDay >= fechahoy) {
+                            new PNotify({
+                                title: 'Campo requerido',
+                                text: 'Fecha invalida.',
+                                type: 'error'
+                            });
+
+                            return false;
+                        }
+                        else {
+                            return true;
+                        }
+
+                    },
+                });
+            });
 
         </script>
 

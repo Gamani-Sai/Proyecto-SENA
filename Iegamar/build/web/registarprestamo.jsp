@@ -48,12 +48,8 @@
         }
 
         if (tipo.equals("Profesores")) {
-            OGrado = "";
-            OEstudiante = "";
-            OProfesores = "";
-            OPrestamo = "";
-            OReserva = "";
-            OControl = "";
+
+            response.sendRedirect("index.jsp");
         }
 
         if (tipo.equals("Estudiante")) {

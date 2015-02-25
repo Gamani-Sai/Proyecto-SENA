@@ -52,7 +52,6 @@ public class RegistrarProfesores extends HttpServlet {
                 String Apellido = request.getParameter("Apellido");
                 String Direccion = request.getParameter("Direccion");
                 String Telefono = request.getParameter("Telefono");
-                String huella = "Por Hacer";
                 String Fecha_Nacimiento = request.getParameter("Fecha_Nacimiento");
                 String Perfil_Profesional = request.getParameter("Perfil_Profesional");
                 String Estado = "Habilitado";
@@ -62,7 +61,6 @@ public class RegistrarProfesores extends HttpServlet {
                 datosProfesores.setApellido(Apellido);
                 datosProfesores.setDireccion(Direccion);
                 datosProfesores.setTelefono(Telefono);
-                datosProfesores.setHuella(huella);
                 datosProfesores.setFecha_Nacimiento(Fecha_Nacimiento);
                 datosProfesores.setPerfil_Profesional(Perfil_Profesional);
                 datosProfesores.setEstado(Estado);

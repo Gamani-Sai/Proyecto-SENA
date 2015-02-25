@@ -53,12 +53,7 @@
 
         if (tipo.equals("Estudiante")) {
 
-            OGrado = "";
-            OEstudiante = "";
-            OProfesores = "";
-            OCuenta = "";
-            OControl = "";
-            OElementos = "";
+           response.sendRedirect("index.jsp");
         }
 
     } else {

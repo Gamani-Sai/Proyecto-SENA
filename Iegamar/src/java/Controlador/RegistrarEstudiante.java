@@ -67,7 +67,6 @@ public class RegistrarEstudiante extends HttpServlet {
                 String Direccion = request.getParameter("direccion");
                 String Telefono = request.getParameter("Telefono");
                 String Fecha = request.getParameter("Fecha_Nacimiento");
-                String huella = "no hay";
                 String id_grado = request.getParameter("grado");
                 String Estado = "Habilitado";
                 datosEstudiantes.setIdentificacion(Identificacion);
@@ -75,7 +74,6 @@ public class RegistrarEstudiante extends HttpServlet {
                 datosEstudiantes.setApellido(Apellido);
                 datosEstudiantes.setDireccion(Direccion);
                 datosEstudiantes.setTelefono(Telefono);
-                datosEstudiantes.setHuella(huella);
                 datosEstudiantes.setFecha(Fecha);
                 datosEstudiantes.setId_grado(id_grado);
                 datosEstudiantes.setEstado(Estado);

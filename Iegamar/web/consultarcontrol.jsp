@@ -42,23 +42,14 @@
             OReserva = "";
         }
 
-        if (tipo.equals("Profesores")) {
-            OGrado = "";
-            OEstudiante = "";
-            OProfesores = "";
-            OPrestamo = "";
-            OReserva = "";
-            OControl = "";
+       if (tipo.equals("Profesores")) {
+
+            response.sendRedirect("index.jsp");
         }
 
         if (tipo.equals("Estudiante")) {
 
-            OGrado = "";
-            OEstudiante = "";
-            OProfesores = "";
-            OCuenta = "";
-            OControl = "";
-            OElementos = "";
+           response.sendRedirect("index.jsp");
         }
 
     } else {
