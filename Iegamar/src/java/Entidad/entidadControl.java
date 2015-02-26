@@ -15,7 +15,18 @@ public class entidadControl {
     private String fecha;
     private String hora; 
     private String identificacion;
+    private String mes;//Esta variable sirve para los metodos de tiempo de consulta
 
+    public String getMes() {
+        return mes;
+    }
+
+    public void setMes(String mes) {
+        this.mes = mes;
+    }
+       
+       
+       
     public String getFecha() {
         return fecha;
     }

@@ -72,7 +72,19 @@
         <link href="css/dashboard.css" rel="stylesheet"> 
         <link href="css/select2.css" rel="stylesheet" type="text/css"/>
         <link href="css/select2-bootstrap.css" rel="stylesheet" type="text/css"/> 
-        <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
+        <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
+        <link href="css/formulario.css" rel="stylesheet" type="text/css"/> 
+        <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
+         <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>     
+           <link href="css/style_light.css" rel="stylesheet" type="text/css"/>
+           
+     
+  
+        <link href="bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+        
+        
+        
+       
 
 
     </head>
@@ -130,7 +142,7 @@
 
 
                                 <div class="radio col-lg-6">
-                                    <Center>WELCOME </Cemter>
+                                  
                                     <label>
                                         <input type="radio" name="opciones" value="Estudiante" onchange="recibir2()" checked="recibir2()">
                                         Estudiante
@@ -197,15 +209,24 @@
                     </form>
                 </div>
             </div>
-        </div>
+        </div> 
+        
+        
 
         <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="js/select2.js" type="text/javascript"></script>
         <script src="js/ajax.js" type="text/javascript"></script>
+         <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
+ 
 
+        <%
+            String alerta = (String) request.getAttribute("alerta");
+            if (alerta != null) {
+                out.print(alerta);
+            }
 
-        
+        %>
   
         <script>
          //Este Script permite que la funcion Ajax se recargue constantemente

@@ -5,11 +5,15 @@
  */
 package Modelo;
 
-
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import Entidad.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
+
 /**
  *
  * @author Cleiman
@@ -17,6 +21,9 @@ import java.sql.SQLException;
 public class Control extends ConexionBD {
     
     
+    entidadControl objcontrol=new entidadControl();
+    
+        int n=0;
     public Control() {
            
            conectarse();
@@ -24,36 +31,44 @@ public class Control extends ConexionBD {
          }
         PreparedStatement pstmt;
     
-    
-   
-    
-        public boolean ConsultarExistencia(entidadControl objcontrol) throws SQLException
-        {
+               
         
-               boolean objconsulta= false;
+     /*Recodar que el formato para tiempo del RELOJ del año es ("HH:mm:ss") y para frcha del AÑO ("YYYY/MM/dd")*/
+            
+             Date dato = new Date();  //Se instacia el Objeto Date
+            // DateFormat mes= new SimpleDateFormat("MM");// Aqui se captura el mes con el Objeto Mes 
+          
+            
+            DateFormat anio= new SimpleDateFormat("YYYY");//Objeto dataformt
+             String Anio=  anio.format(dato);
+               
+               
+             
+             
+             
+    
+        public ResultSet ConsultarExistencia(String parametro,String doc) throws SQLException
+        { 
+           String Document = doc;
+            String Mes= parametro;
+        
+               //boolean objconsulta= false;
                 
               conectarse();
                
-            String Query="SELECT Identificacion FROM  control_llegada_tarde WHERE Identificacion =  %s ";
+            String Query="select Extract(day from Fecha) as Fecha  "
+                    + ""
+                    + "from control_llegada_tarde where Identificacion= %s and year(Fecha)= %s  and "
+                    + "month(Fecha)= %s";
              
-                 String Sql= String.format(Query,objcontrol.getIdentificacion());
+                 String Sql= String.format(Query,Document,Anio,Mes);
 
          
         consulta= conector.createStatement();
-          resultado = consulta.executeQuery(Sql);
+          resultado=  consulta.executeQuery(Sql);
           
-          if(resultado.first())
-          {
-            resultado.getString("Identificacion");
-         
-         objconsulta =  true; 
-          
-         
-         
-          }
-          
-           
-            return objconsulta;
+            
+            return resultado;
         
         
         
@@ -88,20 +103,34 @@ public class Control extends ConexionBD {
       // ResultSet rs = null;
     String Query="Select Fecha,Hora,Identificacion from control_llegada_tarde";
   
-     ConexionBD cnx=new ConexionBD();
+     /*ConexionBD cnx=new ConexionBD();
             cnx.conectarse();
            cnx.consulta = cnx.conector.createStatement();
-          cnx.resultado= cnx.consulta.executeQuery(Query);
-
-
-
-return  cnx.resultado;
+          cnx.resultado= cnx.consulta.executeQuery(Query);*/
+         conectarse();
+                consulta = conector.createStatement();
+                resultado= consulta.executeQuery(Query);    
+                
+                
+return  resultado;
 
 } 
 
+     public String DiaSemana() {
+            
+      String[] dias={"Domingo","Lunes","Martes", "Miercoles","Jueves","Viernes","Sábado"};
+        Date hoy=new Date();
+        int numeroDia=0;
+       Calendar cal= Calendar.getInstance();
+      cal.setTime(hoy);
+      numeroDia=cal.get(Calendar.DAY_OF_WEEK);
+      String dia = dias[numeroDia-1];
+        
+       return dia;
+             
+        
     
-    
-    
+     }
     
     
     
