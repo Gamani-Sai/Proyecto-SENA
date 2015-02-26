@@ -41,6 +41,7 @@ public class ValidarUsuario extends HttpServlet {
             String usuario = "";
             String contra = "";
             String id = "";
+            String cuenta = "";
 
             //validamos que el usuario haya ingresado la información
             if (request.getParameter("usuario") != null) {
@@ -54,6 +55,7 @@ public class ValidarUsuario extends HttpServlet {
             datosUsuario.setPassword(contra);
 
             ResultSet rs = Usu.validar(datosUsuario);
+            ResultSet rsidcuenta = Usu.Ingreso(datosUsuario);
 
             //Verificamos que el usuario corresponda a uno registrado
             while (rs.next()) {
@@ -66,22 +68,23 @@ public class ValidarUsuario extends HttpServlet {
                 sesionOk.setAttribute("Id_cuenta", id);
                 sesionOk.setAttribute("Rol", tipo);
             }
-            
-            if(rs==null)
-            {
-              
+
+            while (rsidcuenta.next()) {
+                cuenta = rsidcuenta.getString("Id_cuenta").toString();
+
             }
 
-            if (tipo.equals("Super")) {
+            if (cuenta.equals("0")) {
+                response.sendRedirect("Menu.jsp");
+            } else if (tipo.equals("Super")) {
                 response.sendRedirect("consultarcuentas.jsp");
             } else if (tipo.equals("Estudiante")) {
                 response.sendRedirect("consultarprestamo.jsp");
             } else if (tipo.equals("Profesores")) {
                 response.sendRedirect("registarcuentas.jsp");
-            }else if (tipo.equals("Control")) {
+            } else if (tipo.equals("Control")) {
                 response.sendRedirect("registargradoygrupo.jsp");
-            } 
-            else {
+            } else {
                 alert += "<script type=\"text/javascript\">";
                 alert += "alertify.alert(\"Nombre de usuario y/o contraseña incorrectos\");";
                 alert += "</script>";

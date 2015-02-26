@@ -7,15 +7,7 @@
 <%@page import="Controlador.ControladorElemento"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page session="true" %>
-<%
-    HttpSession sesionOk = request.getSession();
-    String usuario = "";
-    if (sesionOk.getAttribute("usuario") != null) {
-        usuario = sesionOk.getAttribute("usuario").toString();
-    } else {
-        response.sendRedirect("index.jsp");
-    }
-%>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -30,185 +22,106 @@
 
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/navbar-fixed-top.css" rel="stylesheet">
-
+        <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
 
     </head>
 
     <body>
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" >IEGAMAR</a>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav"> 
+        <div class="container-fluid" id="formulario">
 
-                        <div id="actualizar">
-                            <%
-                                ControladorElemento crt = new ControladorElemento();
-                                out.println(crt.anomaliacont());
-                            %>
-                        </div>
+            <div class="row">
 
-                        <li><a href="consultarcuentas.jsp">Administar cuentas</a></li>
-                        <li><a href="registargradoygrupo.jsp">Grados</a></li>
-                        <li><a href="consultarestudiante.jsp">Estudiantes</a></li>
-                        <li><a href="consultarprofesores.jsp">Profesores</a></li>
-                        <li><a href="consultarelemento.jsp">Elementos</a></li>
-                        <li><a href="consultarprestamo.jsp">Préstamo</a></li>
-                        <li><a href="consultarreserva.jsp">Reserva</a></li>  
-                        <li ><a href="consultarcontrol.jsp">Control de llegadas</a></li>                           
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                <section class="container">
+                    <form role="form" action="NewAdmin" method="POST" class="payment-form">
+                        <div class="container-page">        
+                            <div class="col-md-6">
+                                <h3 class="dark-grey">Registro De Cuentas </h3>
+                                <div class="form-group col-lg-6">
+                                    <label>Nombre de usuario</label>
+                                    <input type="" name="nombreUsuario" class="form-control" id="nombreU" onkeypress="return validarn(event)">
+                                </div>
 
+                                <div class="form-group col-lg-6">
+                                    <label>Contraseña</label>
+                                    <input type="password" name="contrasena" class="form-control" id="contra" value="">
+                                </div>   
 
-                        <li class="active"><a href="CerrarSesion.jsp">Cerrar Sesión</a></li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-
-            <div class="notification-list-wrapper" id="objetivo" style="top: 124px; left: 507px; display: block; opacity: 1;">
-
-                <ul class="notification-list-menu">
-
-                    <li id="unread-menu-item" class="notification-list-menu-item">
-                    </li><li id="all-menu-item" class="notification-list-menu-item">
-                    </li><li class="close-notification-list">
-                    </li>
-
-                </ul>
-
-                <ul class="notification-list" data-type="unread">
-                    <li class="notification-list-item empty-list"></li>
-                    <table id="tblArea" class="table2 table-hover" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th class="text-center">Seriales</th>
-                            <th class="text-center">Anomalia</th>
-                        </tr>
-                    </thead>
-                    <tbody id="traer1">
-                        <%
-                            out.println(crt.listaranom());
-                        %>
-                    </tbody>
-                </table>
-                    
-                </ul>
-            </div>
-
-          
-
-            <div class="modal fade bs-example-modal-sm"  tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header" >
-                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Registrar Anomalia</h4>
-                        </div>
-
-                        <div class="modal-body"  >
-                            <div class="form-group">
-                                <label for="disabledSelect">Serial</label>
-                                <input type="text"  class="form-control" name="Serial" id="Serial" readonly="readonly" placeholder="">
+                                <button type="submit" id="Guardar" name="guardar" value="insertar" class="btn btn-success" style="margin-left: 446px;">Guardar</button>
                             </div>
-                            <div class="form-group">
-                                <label for="disabledSelect">Descrición</label>
 
-                                <textarea rows="4" name="Anomalia" id="Anomalia" cols="50" class="form-control" readonly="readonly">
 
-                                </textarea>
-                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" data-dismiss="modal" onclick="list_anomalias();"  class="btn btn-success">Guardar</button>
-                            <button type="reset" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        </div>
-                    </div>
+                    </form>
+                </section>
 
-                </div>
             </div>
-
-        </nav>
+        </div>
 
 
 
         <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
         <script src="bootstrap/js/bootstrap.js"></script>
+        <script src="bootstrap/js/alertify.js" type="text/javascript"></script>       
+        <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
 
-       
+
+        <script>
+                                        alertify.defaults.theme.ok = "btn btn-success";
+                                        alertify.defaults.theme.cancel = "btn btn-danger";
+                                        alertify.defaults.theme.input = "form-control";
+        </script>
+        <%            String alerte = (String) request.getAttribute("alert");
+            if (alerte != null) {
+                out.print(alerte);
+            }
+
+        %>
 
         <script>
 
-                                var actualizacion = setInterval(function () {
-                                    actualizar_anomalias()
-                                }, 3000);
 
-                                function actualizar_anomalias() {
+            function validarn(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 8)
+                    return true;
+                if (tecla == 9)
+                    return true;
+                if (tecla == 11)
+                    return true;
+                patron = /[0-9A-Za-zñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛÑñäëïöüÄËÏÖÜ\s\t]/;
+                te = String.fromCharCode(tecla);
+                return patron.test(te);
+            }
 
-                                    var serial = $("#Serial").val();
+            $(document).ready(function validar() {
 
-                                    $.ajax({
-                                        dataType: "html",
-                                        data: {
-                                            proceso: "actualizar_anom"
+                $("#Guardar").click(function () {
+                    if (($("#nombreU").val()) == "") {
 
-
-                                        },
-                                        type: "POST",
-                                        url: "ControladorElemento",
-                                        statusCode: {
-                                            404: function () {
-                                                alert("page not found");
-                                            }
-                                        }
-                                    }).done(function (datos) {
-                                        $("#actualizar").empty();
-                                        $("#actualizar").append(datos);
-                                    });
-                                }
-
-                                function list_anomalias() {
-
-                                    var serial = $("#Serial").val();
-
-                                    $.ajax({
-                                        dataType: "html",
-                                        data: {
-                                            proceso: "listar_anom",
-                                            Serial: serial
-
-                                        },
-                                        type: "POST",
-                                        url: "ControladorElemento",
-                                        statusCode: {
-                                            404: function () {
-                                                alert("page not found");
-                                            }
-                                        }
-                                    }).done(function (datos) {
-                                        $("#traer1").empty();
-                                        $("#traer1").append(datos);
-                                    });
-                                }
-
-                                var x;
-                                x = $(document);
-                                x.ready(inicializar);
-
-                                function inicializar() {
-                                    var x = $("#mostrar");
-                                    x.click(muestrame);
-
-                                }
-
-                                function muestrame() {
-                                    var x = $("#objetivo");
-                                    x.slideToggle("slow");
-                                }
+                        new PNotify({
+                            title: 'Campo requerido',
+                            text: 'El nombre de usuario es necesario.',
+                            type: 'error'
+                        });
 
 
+                        return false;
+                    } else {
+                        if (($("#contra").val()) == "") {
+                            new PNotify({
+                                title: 'Campo requerido',
+                                text: 'La contraseña es necesario.',
+                                type: 'error'
+                            });
+                            return false;
+                        }
+
+                    }
+                });
+            });
         </script>
+
+
 
     </body>
 </html>
