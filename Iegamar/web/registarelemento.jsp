@@ -12,22 +12,22 @@
     String usuario = "";
     String tipo = "";
 
-    String OGrado = "<li><a href=\"registargradoygrupo.jsp\">Grados</a></li>";
+       String OGrado = "<li><a href=\"registargradoygrupo.jsp\" style=\"margin-top: -46px;\">Grados</a></li>";
 
-    String OEstudiante = "<li><a href=\"consultarestudiante.jsp\">Estudiantes</a></li>";
+    String OEstudiante = "<li><a href=\"consultarestudiante.jsp\" style=\"margin-top: -46px;\">Estudiantes</a></li>";
 
-    String OProfesores = "<li><a href=\"consultarprofesores.jsp\">Profesores</a></li>";
+    String OProfesores = "<li><a href=\"consultarprofesores.jsp\" style=\"margin-top: -46px;\">Profesores</a></li>";
 
-    String OPrestamo = " <li><a href=\"consultarprestamo.jsp\">Préstamo</a></li>";
+    String OPrestamo = " <li><a href=\"consultarprestamo.jsp\" style=\"margin-top: -46px;\">Préstamo</a></li>";
 
-    String OReserva = "<li><a href=\"consultarreserva.jsp\">Reserva</a></li>  ";
+    String OReserva = "<li><a href=\"consultarreserva.jsp\" style=\"margin-top: -46px;\">Reserva</a></li>  ";
 
-    String OControl = "<li><a href=\"consultarcontrol.jsp\">Control de llegadas</a></li> ";
+    String OControl = "<li><a href=\"consultarcontrol.jsp\" style=\"margin-top: -46px;\">Control de llegadas</a></li> ";
 
-    String OElementos = "<li class=\"active\"><a href=\"consultarelemento.jsp\">Elementos</a></li>";
+    String OElementos = "<li  class=\"active\"><a href=\"consultarelemento.jsp\" style=\"margin-top: -46px;\">Elementos</a></li>";
 
-    String OCuenta = "<li><a href=\"consultarcuentas.jsp\">Administar Cuentas</a></li>";
-
+    String OCuenta = "<li><a href=\"consultarcuentas.jsp\" style=\"margin-left: 55px; margin-top: -46px;\">Administar Cuentas</a></li>";
+    
     if (sesionOk.getAttribute("usuario") != null && sesionOk.getAttribute("Rol") != null) {
         usuario = sesionOk.getAttribute("usuario").toString();
         tipo = sesionOk.getAttribute("Rol").toString();
@@ -95,7 +95,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav" >
 
-                        <div id="actualizar">
+                       <div id="actualizar" style="margin-top: 8px;" >
                             <%
                                 ControladorElemento crt = new ControladorElemento();
                                 out.println(crt.anomaliacont());

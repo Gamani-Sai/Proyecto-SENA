@@ -12,21 +12,21 @@
     String usuario = "";
     String tipo = "";
 
-    String OGrado = "<li><a href=\"registargradoygrupo.jsp\">Grados</a></li>";
+    String OGrado = "<li><a href=\"registargradoygrupo.jsp\" style=\"margin-top: -46px;\">Grados</a></li>";
 
-    String OEstudiante = "<li><a href=\"consultarestudiante.jsp\">Estudiantes</a></li>";
+    String OEstudiante = "<li><a href=\"consultarestudiante.jsp\" style=\"margin-top: -46px;\">Estudiantes</a></li>";
 
-    String OProfesores = "<li class=\"active\"><a href=\"consultarprofesores.jsp\">Profesores</a></li>";
+    String OProfesores = "<li class=\"active\"><a href=\"consultarprofesores.jsp\" style=\"margin-top: -46px;\">Profesores</a></li>";
 
-    String OPrestamo = " <li><a href=\"consultarprestamo.jsp\">Préstamo</a></li>";
+    String OPrestamo = " <li><a href=\"consultarprestamo.jsp\" style=\"margin-top: -46px;\">Préstamo</a></li>";
 
-    String OReserva = "<li><a href=\"consultarreserva.jsp\">Reserva</a></li>  ";
+    String OReserva = "<li><a href=\"consultarreserva.jsp\" style=\"margin-top: -46px;\">Reserva</a></li>  ";
 
-    String OControl = "<li><a href=\"consultarcontrol.jsp\">Control de llegadas</a></li> ";
+    String OControl = "<li><a href=\"consultarcontrol.jsp\" style=\"margin-top: -46px;\">Control de llegadas</a></li> ";
 
-    String OElementos = "<li><a href=\"consultarelemento.jsp\">Elementos</a></li>";
+    String OElementos = "<li><a href=\"consultarelemento.jsp\" style=\"margin-top: -46px;\">Elementos</a></li>";
 
-    String OCuenta = "<li><a href=\"consultarcuentas.jsp\">Administar Cuentas</a></li>";
+    String OCuenta = "<li><a href=\"consultarcuentas.jsp\" style=\"margin-left: 55px; margin-top: -46px;\">Administar Cuentas</a></li>";
 
     if (sesionOk.getAttribute("usuario") != null && sesionOk.getAttribute("Rol") != null) {
         usuario = sesionOk.getAttribute("usuario").toString();
@@ -76,8 +76,7 @@
         <link href="css/formulario.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/alertify.css" rel="stylesheet" type="text/css"/>
         <link href="bootstrap/css/themes/bootstrap.css" rel="stylesheet" type="text/css"/>
-        <link href="css/bootstrap-datetimepicker.css" rel="stylesheet" type="text/css"/>
-        <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+        <link href="bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/pnotify.custom.min.css" rel="stylesheet" type="text/css"/>
         <link href="css/style_light.css" rel="stylesheet" type="text/css"/>
 
@@ -93,7 +92,7 @@
                     <ul class="nav navbar-nav">           
 
 
-                        <div id="actualizar">
+                        <div id="actualizar" style="margin-top: 8px;" >
                             <%
                                 ControladorElemento crt = new ControladorElemento();
                                 out.println(crt.anomaliacont());
@@ -214,8 +213,12 @@
 
                                 <div class="form-group">
                                     <label for="disabledSelect" style="margin-left: 19px;">Fecha nacimiento</label>
-                                    <input class="form-control" size="16" type="text" id="Fecha_Nacimiento" name="Fecha_Nacimiento" readonly>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    <div class="input-group date form_date col-md-5" data-date="" id="datepicker" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                        <input class="form-control" size="16" type="text"  name="Fecha_Nacimiento" id="Fecha_Nacimiento" readonly>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+
+
                                 </div>
 
                                 <div class="form-group col-lg-6">
@@ -240,11 +243,9 @@
         </div>
 
         <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
-        <script src="js/jquery-ui.js" type="text/javascript"></script>
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
-        <script src="js/bootstrap-datetimepicker.js" type="text/javascript"></script>
-        <script src="js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+        <script src="bootstrap/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
         <script src="bootstrap/js/bootstrap-datetimepicker.es.js" type="text/javascript"></script>
         <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
         <script type="text/javascript">
@@ -432,49 +433,42 @@
         %>
 
         <script type="text/javascript">
-            $(function () {
+            $("#datepicker").datetimepicker({
+                language: 'es',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0,
+                onSelect: function (textoFecha, objDatepicker) {
+                    dateDay = textoFecha;
 
-
-                $("#Fecha_Nacimiento").datepicker({
-                    dateFormat: "dd/mm/yy",
-                    language: 'es',
-                    weekStart: 1,
-                    todayBtn: 1,
-                    autoclose: 1,
-                    todayHighlight: 1,
-                    startView: 2,
-                    minView: 2,
-                    forceParse: 0,
-                    onSelect: function (textoFecha, objDatepicker) {
-
-                        var dateDay = textoFecha;
-
-
-                        Sistema = new Date;
-                        dia = Sistema.getDate();
-                        if (dia < 10)
-                            dia = '0' + dia;
-                        mes = Sistema.getMonth();
-                        if (mes < 10)
-                            mes = '0' + mes;
-                        anio = Sistema.getFullYear();
-                        fechahoy = dia + '/' + mes + '/' + anio;
-
-                        if (dateDay >= fechahoy) {
-                            new PNotify({
-                                title: 'Campo requerido',
-                                text: 'Fecha invalida.',
-                                type: 'error'
-                            });
-
-                            return false;
+                    Sistema = new Date;
+                    function addZero(i) {
+                        if (i < 10) {
+                            i = "0" + i;
                         }
-                        else {
-                            return true;
-                        }
+                        return i;
+                    }
 
-                    },
-                });
+                    console.log(dateDay);
+
+                    dia = addZero(Sistema.getDate());
+                    mes = addZero(Sistema.getMonth() + 1);
+                    anio = Sistema.getFullYear();
+                    fechahoy = dia + '/' + mes + '/' + anio;
+
+                    if (dateDay == fechahoy) {
+                        new PNotify({
+                            title: 'Fecha invalida',
+                            text: '',
+                            type: 'error'
+                        });
+                    }
+
+                },
             });
 
         </script>

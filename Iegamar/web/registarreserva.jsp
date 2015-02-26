@@ -19,7 +19,7 @@
 
     String OPrestamo = " <li><a href=\"consultarprestamo.jsp\">Préstamo</a></li>";
 
-    String OReserva = "<li class=\"active\"><a href=\"consultarreserva.jsp\">Reserva</a></li>  ";
+    String OReserva = "<li  class=\"active\"><a href=\"consultarreserva.jsp\">Reserva</a></li>  ";
 
     String OControl = "<li><a href=\"consultarcontrol.jsp\">Control de llegadas</a></li> ";
 
@@ -43,17 +43,18 @@
         }
 
         if (tipo.equals("Profesores")) {
+
+            response.sendRedirect("index.jsp");
+        }
+
+        if (tipo.equals("Estudiante")) {
+
             OGrado = "";
             OEstudiante = "";
             OProfesores = "";
-            OPrestamo = "";
-            OReserva = "";
+            OCuenta = "";
             OControl = "";
-        }
-
-        if (tipo.equals("Profesores")) {
-
-            response.sendRedirect("index.jsp");
+            OElementos = "";
         }
 
     } else {
