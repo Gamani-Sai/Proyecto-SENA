@@ -8,6 +8,7 @@ package Modelo;
 import java.sql.ResultSet;
 import Entidad.entidadUsuario;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
@@ -36,4 +37,19 @@ public class Usuario extends ConexionBD {
         }
         return rs;
     }
+    
+     public ResultSet Ingreso(entidadUsuario datosUsuario) {
+        conectarse();
+        ResultSet rs = null;
+        String consulta_tipo = "select  Id_cuenta from tbl_cuentas_usuario ";
+
+       try {
+            consulta = conector.createStatement();
+            rs = consulta.executeQuery(consulta_tipo);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return rs;
+    }
+    
 }

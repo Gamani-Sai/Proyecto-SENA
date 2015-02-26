@@ -36,7 +36,8 @@
         tipo = sesionOk.getAttribute("Rol").toString();
 
         if (tipo.equals("Super")) {
-            OPrestamo = "";
+
+            response.sendRedirect("index.jsp");
         }
 
         if (tipo.equals("Control")) {

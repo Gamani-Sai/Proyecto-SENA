@@ -37,7 +37,8 @@
         tipo = sesionOk.getAttribute("Rol").toString();
 
         if (tipo.equals("Super")) {
-            OPrestamo = "";
+
+            response.sendRedirect("index.jsp");
         }
 
         if (tipo.equals("Control")) {
@@ -211,9 +212,9 @@
             %>
 
             <script>
-                alertify.defaults.theme.ok = "btn btn-success";
-                alertify.defaults.theme.cancel = "btn btn-danger";
-                alertify.defaults.theme.input = "form-control";
+                                    alertify.defaults.theme.ok = "btn btn-success";
+                                    alertify.defaults.theme.cancel = "btn btn-danger";
+                                    alertify.defaults.theme.input = "form-control";
             </script>
 
             <script>

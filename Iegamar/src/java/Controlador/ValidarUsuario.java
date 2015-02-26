@@ -66,6 +66,11 @@ public class ValidarUsuario extends HttpServlet {
                 sesionOk.setAttribute("Id_cuenta", id);
                 sesionOk.setAttribute("Rol", tipo);
             }
+            
+            if(rs==null)
+            {
+              
+            }
 
             if (tipo.equals("Super")) {
                 response.sendRedirect("consultarcuentas.jsp");
