@@ -131,7 +131,7 @@
 
                 <ul class="notification-list" data-type="unread">
 
-                    <table id="tblArea" class="table2 table-hover" cellspacing="0" width="100%">
+                    <table class="table2 table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th class="text-center">Seriales</th>

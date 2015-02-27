@@ -38,7 +38,7 @@ public class Estudiantes extends ConexionBD {
     public boolean inserEstudiantes(entidadEstudiantes datosestudiantes) {
         conectarse();
         boolean retornarObj = false;
-        String regEstudiante = "insert into tbl_estudiante (Identificacion,Nombre,Apellido,Direccion,Telefono,Fecha,Id_grado,Estado) values (?,?,?,?,?,?,?,?)";
+        String regEstudiante = "insert into tbl_estudiante (Identificacion,Nombre,Apellido,Direccion,Telefono,Id_grado,Estado) values (?,?,?,?,?,?,?)";
 
         try {
             Stmp();
@@ -48,9 +48,8 @@ public class Estudiantes extends ConexionBD {
             statement.setString(3, datosestudiantes.getApellido());
             statement.setString(4, datosestudiantes.getDireccion());
             statement.setString(5, datosestudiantes.getTelefono());
-            statement.setString(6, datosestudiantes.getFecha());
-            statement.setString(7, datosestudiantes.getId_grado());
-            statement.setString(8, datosestudiantes.getEstado());
+            statement.setString(6, datosestudiantes.getId_grado());
+            statement.setString(7, datosestudiantes.getEstado());
 
             int cont = statement.executeUpdate();
             if (cont > 0) {
@@ -64,7 +63,7 @@ public class Estudiantes extends ConexionBD {
     public ResultSet consultarEstudiante()  {
         ResultSet rsp = null;
         conectarse();
-        String consultaestudiante = "select e.Identificacion,e.Nombre,e.Apellido,e.Direccion,e.Telefono,e.Fecha,g.Grado,g.Id_Grado,e.Estado  from tbl_estudiante e join tbl_grado g\n"
+        String consultaestudiante = "select e.Identificacion,e.Nombre,e.Apellido,e.Direccion,e.Telefono,g.Grado,g.Id_Grado,e.Estado  from tbl_estudiante e join tbl_grado g\n"
                 + "on (g.Id_grado = e.Id_grado)";
         try {
             consulta = conector.createStatement();

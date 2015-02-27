@@ -211,22 +211,12 @@
                                     <input type="text" id="Dirección" name="Direccion" class="form-control" placeholder="" onkeypress="return validarn(event)">
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="disabledSelect" style="margin-left: 19px;">Fecha nacimiento</label>
-                                    <div class="input-group date form_date col-md-5" data-date="" id="datepicker" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                        <input class="form-control" size="16" type="text"  name="Fecha_Nacimiento" id="Fecha_Nacimiento" readonly>
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                    </div>
-
-
-                                </div>
-
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Telefono</label>
                                     <input type="text" id="Telefono" name="Telefono" class="form-control" placeholder="" onkeypress="ValidaSoloNumeros()" maxlength="10">
                                 </div>
 
-                                <div class="form-group col-lg-6">
+                                <div class="form-group col-lg-12">
                                     <label for="disabledSelect">Area</label>
                                     <input type="text" id="Perfil_Profesional" name="Perfil_Profesional" class="form-control" placeholder="" onkeypress="sololetras()">
                                 </div>       
@@ -243,9 +233,10 @@
         </div>
 
         <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
+        <script src="js/jquery-ui.js" type="text/javascript"></script>
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
-        <script src="bootstrap/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+        <script src="js/bootstrap-datepicker.js" type="text/javascript"></script>
         <script src="bootstrap/js/bootstrap-datetimepicker.es.js" type="text/javascript"></script>
         <script src="js/pnotify.custom.min.js" type="text/javascript"></script>
         <script type="text/javascript">
@@ -370,40 +361,28 @@
                                                                 return false;
                                                             } else {
 
-                                                                if (($("#Fecha_Nacimiento").val()) == "") {
+                                                                if (($("#Telefono").val()) == "") {
                                                                     new PNotify({
                                                                         title: 'Campo requerido',
-                                                                        text: 'La fecha es necesario.',
+                                                                        text: 'El telefono es necesario.',
                                                                         type: 'error'
                                                                     });
                                                                     return false;
-                                                                } else {
+                                                                }
+                                                                else {
 
-                                                                    if (($("#Telefono").val()) == "") {
+                                                                    if (($("#Perfil_Profesional").val()) == "") {
                                                                         new PNotify({
                                                                             title: 'Campo requerido',
-                                                                            text: 'El telefono es necesario.',
+                                                                            text: 'El area es necesario.',
                                                                             type: 'error'
                                                                         });
                                                                         return false;
                                                                     }
-                                                                    else {
-
-                                                                        if (($("#Perfil_Profesional").val()) == "") {
-                                                                            new PNotify({
-                                                                                title: 'Campo requerido',
-                                                                                text: 'El area es necesario.',
-                                                                                type: 'error'
-                                                                            });
-                                                                            return false;
-                                                                        }
-                                                                    }
-
                                                                 }
+
                                                             }
-
                                                         }
-
                                                     }
                                                 }
 
@@ -442,9 +421,9 @@
                 startView: 2,
                 minView: 2,
                 forceParse: 0,
-                onSelect: function (textoFecha, objDatepicker) {
+                onSelect: function (textoFecha) {
                     dateDay = textoFecha;
-
+                    alert(dateDay);
                     Sistema = new Date;
                     function addZero(i) {
                         if (i < 10) {
@@ -453,14 +432,12 @@
                         return i;
                     }
 
-                    console.log(dateDay);
-
                     dia = addZero(Sistema.getDate());
                     mes = addZero(Sistema.getMonth() + 1);
                     anio = Sistema.getFullYear();
                     fechahoy = dia + '/' + mes + '/' + anio;
 
-                    if (dateDay == fechahoy) {
+                    if (dateDay >= fechahoy) {
                         new PNotify({
                             title: 'Fecha invalida',
                             text: '',

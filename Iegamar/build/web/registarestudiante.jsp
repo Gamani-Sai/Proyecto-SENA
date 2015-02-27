@@ -214,24 +214,13 @@
                                     <input type="text" id="direcion" class="form-control" name="direccion" placeholder="" onkeypress="return validarn(event)">
                                 </div>      
 
-
-                                <div class="form-group">
-                                    <label for="disabledSelect" style="margin-left: 19px;">Fecha nacimiento</label>
-                                    <div class="input-group date form_date col-md-5" data-date="" id="datepicker" data-date-format="dd/mm/yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                        <input class="form-control" size="16" type="text"  name="Fecha_Nacimiento" id="Fecha_Nacimiento" readonly>
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                                    </div>
-
-
-                                </div>
-
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Telefono</label>
                                     <input type="text" id="Telefono" class="form-control" name="Telefono" placeholder="" onkeypress="ValidaSoloNumeros()">
 
                                 </div> 
 
-                                <div class="form-group col-lg-6">
+                                <div class="form-group col-lg-12">
                                     <label for="disabledSelect">Grado</label>
                                     <select id="Grado" class="form-control" name="grado">
                                         <%

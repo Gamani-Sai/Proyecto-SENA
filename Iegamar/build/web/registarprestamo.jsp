@@ -332,6 +332,7 @@
                 var mySerialArray = new Array();
                 //var row = "";
                 $(function () {
+                    recibir();
                     $('.preview-add-button').click(function () {
                         //var form_data = {};
                         //var miArray = new Array ();
@@ -410,6 +411,7 @@
                                 textos = textos + document.getElementById('tbl').rows[i].cells[j].innerHTML + '-';
                             }
                         }
+                        alert(textos);
                         textos = textos;
                     }
                     $("#serial").val(textos);

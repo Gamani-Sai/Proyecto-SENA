@@ -22,7 +22,7 @@ public class Profesores extends ConexionBD {
     public boolean insertProfesores(entidadProfesores datosprofesores) {
         conectarse();
         boolean retornarObj = false;
-        String regProfesores = "insert into tbl_empleado (Identificacion,Nombre,Apellido,Direccion,Telefono,Fecha_nacimiento,Perfil_profesional,Estado) values (?,?,?,?,?,?,?,?)";
+        String regProfesores = "insert into tbl_empleado (Identificacion,Nombre,Apellido,Direccion,Telefono,Perfil_profesional,Estado) values (?,?,?,?,?,?,?)";
 
         try {
             Stmp();
@@ -32,9 +32,8 @@ public class Profesores extends ConexionBD {
             statement.setString(3, datosprofesores.getApellido());
             statement.setString(4, datosprofesores.getDireccion());
             statement.setString(5, datosprofesores.getTelefono());
-            statement.setString(6, datosprofesores.getFecha_Nacimiento());
-            statement.setString(7, datosprofesores.getPerfil_Profesional());
-            statement.setString(8, datosprofesores.getEstado());
+            statement.setString(6, datosprofesores.getPerfil_Profesional());
+            statement.setString(7, datosprofesores.getEstado());
 
             int cont = statement.executeUpdate();
             if (cont > 0) {
@@ -51,7 +50,7 @@ public class Profesores extends ConexionBD {
         ResultSet rsp = null;
         conectarse();
 
-        String consultapro = "select  Identificacion,Nombre,Apellido,Direccion,Telefono,Fecha_nacimiento,Perfil_profesional,Estado from tbl_empleado ";
+        String consultapro = "select  Identificacion,Nombre,Apellido,Direccion,Telefono,Perfil_profesional,Estado from tbl_empleado ";
         try {
             consulta = conector.createStatement();
             rsp = consulta.executeQuery(consultapro);

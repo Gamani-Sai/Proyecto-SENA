@@ -56,11 +56,10 @@ public class ConsultarProfesores extends HttpServlet {
                 tbl += "<td><center>" + list.getString("Apellido").toString().trim() + "</center></td>";
                 tbl += "<td><center>" + list.getString("Direccion").toString().trim() + "</center></td>";
                 tbl += "<td><center>" + list.getString("Telefono").toString().trim() + "</center></td>";
-                tbl += "<td><center>" + list.getString("Fecha_nacimiento").toString().trim() + "</center></td>";
                 tbl += "<td><center>" + list.getString("Perfil_profesional").toString().trim() + "</center></td>";
                 tbl += " <td><center><button  class='btn btn-primary glyphicon glyphicon-pencil' data-toggle='modal' data-target='#myModal' onclick = 'mapear.profesores(" + '\"' + list.getString("Identificacion").toString().trim() + '\"' + "," + '\"' + list.getString("Nombre").toString().trim() + '\"'
                         + "," + '\"' + list.getString("Apellido").toString().trim() + '\"' + "," + '\"' + list.getString("Direccion").toString().trim() + '\"' + "," + '\"' + list.getString("Telefono").toString().trim() + '\"'
-                        + "," + '\"' + list.getString("Fecha_nacimiento").toString().trim() + '\"' + "," + '\"' + list.getString("Perfil_profesional").toString().trim() + '\"' + ")' ></button></center></td>";
+                        + "," + '\"' + list.getString("Perfil_profesional").toString().trim() + '\"' + ")' ></button></center></td>";
                 if (list.getString("Estado").toString().trim().equals("Habilitado")) {
                     colorEstado = "success";
                     iconoEstado = "ok-circle";

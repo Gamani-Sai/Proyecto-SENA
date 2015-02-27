@@ -121,7 +121,7 @@
 
                 <ul class="notification-list" data-type="unread">
 
-                    <table id="tblArea" class="table2 table-hover" cellspacing="0" width="100%">
+                    <table class="table2 table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th class="text-center">Seriales</th>
@@ -194,7 +194,6 @@
                             <th class="text-center">Apellido</th>
                             <th class="text-center">Direccion</th>
                             <th class="text-center">Telefono</th>
-                            <th class="text-center">Fecha</th>
                             <th class="text-center">Grado</th>                           
                             <th class="text-center">Editar</th>
                             <th class="text-center">Estado</th>

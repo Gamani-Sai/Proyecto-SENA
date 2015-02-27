@@ -223,7 +223,7 @@
                                     </table>
                                 </div> 
                                 <button type="submit" id="Guardar" name="Guardar" value="insertar" onclick="xd();" class="btn btn-success" style="margin-left: 360px;">Guardar</button>
-                                <input type="hidden"  class="form-control2" id="serial" name="serial" placeholder="">
+                                <input type="text"  class="form-control2" id="serial" name="serial" placeholder="">
                                 <button type="Reset" class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
@@ -455,6 +455,7 @@
                                 if (miSerial == true)
                                 {
                                     var newtd = $('<tr><td class="input-' + index + '"></td></tr>').html(link);
+                                    $("#serial").val( $("#serial").val()+serialDelCampo +"-");
                                     $('.preview-table tbody').append(newtd);
                                 } else {
                                     new PNotify({
@@ -468,7 +469,7 @@
 
 
                         }
-                        $('[name="Seriales"]').val("");
+                        document.getElementById("Seriales").value = "";
                     });
 
                 });

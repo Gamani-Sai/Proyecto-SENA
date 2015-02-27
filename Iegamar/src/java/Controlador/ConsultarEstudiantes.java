@@ -70,7 +70,6 @@ public class ConsultarEstudiantes extends HttpServlet {
                 tbl_est += "<td><center>" + list_est.getString("e.Apellido").toString().trim() + "</center></td>";
                 tbl_est += "<td><center>" + list_est.getString("e.Direccion").toString().trim() + "</center></td>";
                 tbl_est += "<td><center>" + list_est.getString("e.Telefono").toString().trim() + "</center></td>";
-                tbl_est += "<td><center>" + list_est.getString("e.Fecha").toString().trim() + "</center></td>";
                 tbl_est += "<td><center>" + list_est.getString("g.Grado").toString().trim() + "</center></td>";
                 tbl_est += " <td><center><button  class='btn btn-primary glyphicon glyphicon-pencil' data-toggle='modal' data-target='#myModal' onclick = 'mapear.estudiantes(" + '\"' + list_est.getString("e.Identificacion").toString().trim() + '\"' + "," + '\"' + list_est.getString("e.Nombre").toString().trim() + '\"' + "," + '\"' + list_est.getString("e.Apellido").toString().trim() + '\"' + "," + '\"' + list_est.getString("e.Direccion").toString().trim() + '\"' + "," + '\"' + list_est.getString("e.Telefono").toString().trim() + '\"' + "," + '\"' + list_est.getString("g.Id_Grado").toString().trim() + '\"' + ")'></button></center></td>";
                 if (list_est.getString("e.Estado").toString().trim().equals("Habilitado")) {
