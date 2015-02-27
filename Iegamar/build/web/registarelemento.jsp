@@ -12,7 +12,7 @@
     String usuario = "";
     String tipo = "";
 
-       String OGrado = "<li><a href=\"registargradoygrupo.jsp\" style=\"margin-top: -46px;\">Grados</a></li>";
+    String OGrado = "<li><a href=\"registargradoygrupo.jsp\" style=\"margin-top: -46px;\">Grados</a></li>";
 
     String OEstudiante = "<li><a href=\"consultarestudiante.jsp\" style=\"margin-top: -46px;\">Estudiantes</a></li>";
 
@@ -27,7 +27,7 @@
     String OElementos = "<li  class=\"active\"><a href=\"consultarelemento.jsp\" style=\"margin-top: -46px;\">Elementos</a></li>";
 
     String OCuenta = "<li><a href=\"consultarcuentas.jsp\" style=\"margin-left: 55px; margin-top: -46px;\">Administar Cuentas</a></li>";
-    
+
     if (sesionOk.getAttribute("usuario") != null && sesionOk.getAttribute("Rol") != null) {
         usuario = sesionOk.getAttribute("usuario").toString();
         tipo = sesionOk.getAttribute("Rol").toString();
@@ -54,7 +54,7 @@
 
         if (tipo.equals("Estudiante")) {
 
-           response.sendRedirect("index.jsp");
+            response.sendRedirect("index.jsp");
         }
 
     } else {
@@ -95,7 +95,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav" >
 
-                       <div id="actualizar" style="margin-top: 8px;" >
+                        <div id="actualizar" style="margin-top: 8px;" >
                             <%
                                 ControladorElemento crt = new ControladorElemento();
                                 out.println(crt.anomaliacont());
@@ -206,6 +206,8 @@
                                     <input type="text" id="descripcion" class="form-control" name="descripcion" placeholder="" onkeypress="sololetras()">
                                 </div>
 
+
+
                                 <div class="form-group col-lg-12">
                                     <label for="disabledSelect">Seriales</label>
                                     <input type="text"   class="form-control" id="Seriales" name="Seriales" onkeypress="return validarn(event)">
@@ -223,7 +225,7 @@
                                     </table>
                                 </div> 
                                 <button type="submit" id="Guardar" name="Guardar" value="insertar" onclick="xd();" class="btn btn-success" style="margin-left: 360px;">Guardar</button>
-                                <input type="text"  class="form-control2" id="serial" name="serial" placeholder="">
+                                <input type="hidden"  class="form-control2" id="serial" name="serial" placeholder="">
                                 <button type="Reset" class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
@@ -455,7 +457,7 @@
                                 if (miSerial == true)
                                 {
                                     var newtd = $('<tr><td class="input-' + index + '"></td></tr>').html(link);
-                                    $("#serial").val( $("#serial").val()+serialDelCampo +"-");
+                                    // $("#serial").val($("#serial").val() + serialDelCampo + "-");
                                     $('.preview-table tbody').append(newtd);
                                 } else {
                                     new PNotify({
@@ -486,23 +488,14 @@
                     return bandera;
                 }
 
-
-
-
                 function xd() {
-                    var textos = '';
-                    for (var i = 0; i < document.getElementById('tbl').rows.length; i++) {
-                        for (var j = 0; j < document.getElementById('tbl').rows[i].cells.length; j++)
-                        {
-                            if (j == 0 && i != 0) {
-                                textos = textos + document.getElementById('tbl').rows[i].cells[j].innerHTML + '-';
-                            }
-                        }
-                        textos = textos;
-                    }
-                    $("#serial").val(textos);
-
+                    var valor = '';
+                    $("#tbl tbody tr").each(function () {
+                        valor+=$(this).find("a").text()+ "-";
+                    });
+                    $("#serial").val(valor);
                 }
+
 
 
             </script>

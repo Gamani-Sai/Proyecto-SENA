@@ -403,19 +403,11 @@
 
 
                 function xd() {
-                    var textos = '';
-                    for (var i = 0; i < document.getElementById('tbl').rows.length; i++) {
-                        for (var j = 0; j < document.getElementById('tbl').rows[i].cells.length; j++)
-                        {
-                            if (j == 0 && i != 0) {
-                                textos = textos + document.getElementById('tbl').rows[i].cells[j].innerHTML + '-';
-                            }
-                        }
-                        alert(textos);
-                        textos = textos;
-                    }
-                    $("#serial").val(textos);
-
+                    var valor = '';
+                    $("#tbl tbody tr").each(function () {
+                        valor += $(this).find("a").text()+"-";
+                    });
+                    $("#serial").val(valor);
                 }
 
 
