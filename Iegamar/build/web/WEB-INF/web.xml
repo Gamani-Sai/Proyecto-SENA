@@ -24,6 +24,14 @@
         <servlet-name>Foto</servlet-name>
         <servlet-class>Controlador.Foto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ConsultarControl</servlet-name>
+        <servlet-class>Controlador.ConsultarControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>pepe</servlet-name>
+        <servlet-class>Controlador.pepe</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Hola</servlet-name>
         <url-pattern>/Hola</url-pattern>
@@ -47,6 +55,14 @@
     <servlet-mapping>
         <servlet-name>Foto</servlet-name>
         <url-pattern>/Foto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConsultarControl</servlet-name>
+        <url-pattern>/ConsultarControl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>pepe</servlet-name>
+        <url-pattern>/pepe</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

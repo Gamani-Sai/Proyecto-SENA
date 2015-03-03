@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Cleiman/Desktop/Proyecto-SENA/Iegamar/src/java/Controlador/RegistrarControl.java</file>
+            <file>file:/C:/Users/Cleiman/Desktop/Proyecto-SENA/Iegamar/src/java/Controlador/ConsultarControl.java</file>
+            <file>file:/C:/Users/Cleiman/Desktop/Proyecto-SENA/Iegamar/web/css/ModalCss.css</file>
             <file>file:/C:/Users/Cleiman/Desktop/Proyecto-SENA/Iegamar/web/registarcontrol.jsp</file>
-            <file>file:/C:/Users/Cleiman/Desktop/Proyecto-SENA/Iegamar/web/registarestudiante.jsp</file>
-            <file>file:/C:/Users/Cleiman/Desktop/Proyecto-SENA/Iegamar/src/java/Controlador/RegistrarEstudiante.java</file>
+            <file>file:/C:/Users/Cleiman/Desktop/Proyecto-SENA/Iegamar/src/java/Controlador/RegistrarControl.java</file>
+            <file>file:/C:/Users/Cleiman/Desktop/Proyecto-SENA/Iegamar/web/consultarcontrol.jsp</file>
             <file>file:/C:/Users/Cleiman/Desktop/Proyecto-SENA/Iegamar/src/java/Modelo/Control.java</file>
         </group>
     </open-files>

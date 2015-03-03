@@ -4,13 +4,16 @@
     Author     : MAÑANA
 --%>
 
+<%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page session="true" %>
+<%@page import="Controlador.ConsultarControl"%>
+
 <%
     HttpSession sesionOk = request.getSession();
     String usuario = "";
     String tipo = "";
-
+     ResultSet rs ;
     String OGrado = "<li><a href=\"registargradoygrupo.jsp\">Grados</a></li>";
 
     String OEstudiante = "<li><a href=\"consultarestudiante.jsp\">Estudiantes</a></li>";
@@ -71,7 +74,9 @@
         <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/dashboard.css" rel="stylesheet">
         <link href="bootstrap/css/dataTables.bootstrap.css" rel="stylesheet" type="text/css"/>
-
+        
+        <link href="css/MyScroll.css" rel="stylesheet" type="text/css"/>
+        <link href="css/ModalCss.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
 
@@ -122,75 +127,69 @@
         </div>
         <div class="tab-content">
             <div class="tab-pane active" id="area">
+          <!--  <form action="ConsultarControl" method="POST">  -->
                 <table id="tblArea" class="table table-hover" cellspacing="0">
                     <thead>
                         <tr>
-                            <th class="text-center">Nombres</th>
                             <th class="text-center">Identificacion</th>
-                            <th class="text-center">Fecha</th>
+                              <th class="text-center">Fecha</th>
                             <th class="text-center">Hora</th>
-                            <th class="text-center">Editar</th>
+                            <th class="text-center">Cantidad</th>
+                              <th class="text-center">Editar</th>
+        
+                           
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td><button  class="btn btn-info" data-toggle="modal" data-target="#myModal">Editar</button></td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td><button  class="btn btn-info" data-toggle="modal" data-target="#myModal">Editar</button></td>                                      
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td><button  class="btn btn-info" data-toggle="modal" data-target="#myModal">Editar</button></td>
-                        </tr>
+                       
+                       <% 
+                      
+                       ConsultarControl objcontrol = new ConsultarControl();
+                      rs = objcontrol.listarCantidad();
+                       // out.print(objcontrol.listarCantidad());
+                    
+                      while(rs.next())
+                      {
+                       %>
+                       
+                       <tr>
+                           
+                           <td>   <center>  <%= rs.getString("Identificacion") %>  </center>   </td>
+                           <td> <%= rs.getString("Fecha") %></td> 
+                           <td>   <center>  <%= rs.getString("Hora") %>   </center>   </td>
+                         <td>   <center>  <%= rs.getString("Cantidad") %>  </center>  </td> 
+                <td>   <center>  <a href="#modal1"  onclick=" Cargar(<%= rs.getString("Identificacion")%>);"> Editar  </a> </center> </td>
+                                 
+                           </tr>
+                       <% 
+                            
+                       
+                      }
+                       %>
 
                     </tbody>
-                </table>
+                </table>  
+                        <input type="Hidden" name="identificador" id ="identificador"  />
+                        
+            
             </div>
         </div>
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Modificar Control de llegadas</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="disabledSelect">Nombre estudian/Profesor</label>
-                            <input type="text" id="disabledTextInput" class="form-control2" placeholder="Manuel Felipe Ramirez">
-                        </div>
-                        <div class="form-group">
-                            <label for="disabledSelect">Identidicación</label>
-                            <input type="text" id="disabledTextInput" class="form-control2" placeholder="4839483948">
-                        </div>
-                        <div class="form-group">
-                            <label for="disabledSelect">Fecha</label>
-                            <input type="date" id="disabledTextInput" class="form-control2" placeholder="pipeMRamirez">
-                        </div>
-                        <div class="form-group">
-                            <label for="disabledSelect">Hora</label>
-                            <input type="time" id="disabledTextInput" class="form-control2" placeholder="pipeMRamirez">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Guardar</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                       
+     <!-----  MODAL ---->
+                   
+           <div id="modal1" class="modalmask">
+           
+    <div class="modalbox movedown">
+        <a href="#close" title="Close" class="close"> <Strong> X </Strong>   </a>
+              
+        
+        <div id="mostrar">  </div>
+              
+             </div>
+            </div>         
+                       
+                       
+                       <!----- / MODAL----->
     </div>
 </div>
 <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
@@ -203,7 +202,38 @@
 <script src="bootstrap/js/jquery.dataTables.min.js"></script>
 <!--       <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script> -->
 <script src="bootstrap/js/dataTables.bootstrap.js" type="text/javascript"></script>
+ 
+   <script src="js/ajax.js" type="text/javascript"></script>
+<script>
+  function  Cargar(parametro)
+    {
+      
+   
+   
+      $("#identificador").val(parametro);
+      var valor = $("#identificador").val();
+  
+    $.ajax({
+        dataType: "html",
+        data: {
+            documento: valor 
+        },
+        type: "POST",
+        url: "ConsultarControl",
+        statusCode: {
+            404: function () {
+                alert("page not found");
+            }
+        }
+    }).done(function (datos) {
 
+        $("#mostrar").empty();
+        $("#mostrar").append(datos);
+    });
+    //ConsultarControl
+    } 
+    
+</script>
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function () {
         $('#tblArea').dataTable({

@@ -6,7 +6,7 @@
 package Controlador;
 
 
-import Entidad.*;
+
 import Modelo.*;
 import java.io.IOException;
 import java.io.PrintWriter;

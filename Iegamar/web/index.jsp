@@ -19,8 +19,8 @@
                           
         <form class="form-signin" role="form" action="ValidarUsuario" method="Post">
             <h2 class="form-signin-heading">Inicio de Sesión</h2>
-            <input type="text" class="form-control" placeholder="Usuario" name="usuario" required autofocus>
-            <input type="password" class="form-control" name="Contra" placeholder="Contraseña" required>
+            <input type="text" class="form-control" placeholder="Usuario" value="Cleiman" name="usuario" required autofocus>
+            <input type="password" class="form-control" name="Contra" placeholder="Contraseña" value="1" required>
 
             <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
 

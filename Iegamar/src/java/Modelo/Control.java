@@ -96,25 +96,107 @@ public class Control extends ConexionBD {
     
     
    
-    
-    public ResultSet listarControl() throws SQLException
+    //Este metodo permite buscar si el documento pertenece al estudiante o al profesor
+    public boolean BuscarControl(String parametro) throws SQLException
 { 
     
+   
+    String dato = parametro;
       // ResultSet rs = null;
-    String Query="Select Fecha,Hora,Identificacion from control_llegada_tarde";
+    String Consultar= "SELECT Identificacion FROM   tbl_empleado WHERE Identificacion= "+dato+"";
   
+    
+    boolean booleano = false;
      /*ConexionBD cnx=new ConexionBD();
             cnx.conectarse();
            cnx.consulta = cnx.conector.createStatement();
           cnx.resultado= cnx.consulta.executeQuery(Query);*/
          conectarse();
                 consulta = conector.createStatement();
-                resultado= consulta.executeQuery(Query);    
-                
-                
-return  resultado;
+                resultado= consulta.executeQuery(Consultar);    
+              
+                if(resultado.first())
+                {
+                 resultado.getString("Identificacion");
+                 
+                 booleano = true;
+                  
+                }
+              
+               return  booleano;
 
 } 
+    
+      public ResultSet ControlProfesor(String parametro) throws SQLException
+{ 
+    
+   
+    String datos = parametro;
+      // ResultSet rs = null;
+    String Query= "SELECT c.Identificacion,CONCAT(e.Nombre,e.Apellido),e.Perfil_profesional,c.Fecha,c.Hora from control_llegada_tarde c INNER JOIN tbl_empleado e  ON c.Identificacion = e.Identificacion WHERE c.Identificacion = "+datos+" ORDER BY c.Fecha DESC, c.Hora DESC "; 
+   
+    
+       
+     
+         conectarse();
+                consulta = conector.createStatement();
+                resultado= consulta.executeQuery(Query);    
+              
+               
+              
+               return  resultado;
+
+}   
+      
+      
+      public ResultSet ControlEstudiante(String parametro) throws SQLException
+{ 
+
+   
+    String datos = parametro;
+      // ResultSet rs = null;
+    String Query= "SELECT c.Identificacion,CONCAT(e.Nombre,e.Apellido),g.Grado,c.Fecha,c.Hora from control_llegada_tarde c INNER JOIN tbl_estudiante e  ON c.Identificacion = e.Identificacion INNER JOIN    tbl_grado g  ON g.Id_grado = e.Id_grado WHERE c.Identificacion = "+datos+" ORDER BY c.Fecha DESC, c.Hora DESC "; 
+   
+    
+       
+     
+         conectarse();
+                consulta = conector.createStatement();
+                resultado= consulta.executeQuery(Query);    
+              
+               
+              
+               return  resultado;
+
+}  
+    
+    
+    
+    
+    
+    
+//    public ResultSet listarCantidad() throws SQLException
+//{ 
+//    
+//      // ResultSet rs = null;
+//    String Query="Select Identificacion ,Fecha,Hora from control_llegada_tarde";
+//  
+//     /*ConexionBD cnx=new ConexionBD();
+//            cnx.conectarse();
+//           cnx.consulta = cnx.conector.createStatement();
+//          cnx.resultado= cnx.consulta.executeQuery(Query);*/
+//         conectarse();
+//                consulta = conector.createStatement();
+//                resultado= consulta.executeQuery(Query);    
+//                
+//                
+//return  resultado;
+//
+//} 
+    
+    
+    
+    
 
      public String DiaSemana() {
             

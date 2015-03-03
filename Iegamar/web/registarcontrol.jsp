@@ -161,19 +161,15 @@
                                 </div>
                               
 
-                                <div class="form-group col-lg-6">
-                                    <label for="disabledSelect">Identidicación</label>
-                                    <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                                </div>
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Fecha</label>
-                                    <input type="date" id="disabledTextInput" class="form-control" placeholder="">
+                                    <input type="date" id="Fechatxt" class="form-control" readonly="readonly" />
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label for="disabledSelect">Hora</label>
-                                    <input type="time" id="disabledTextInput" class="form-control" placeholder="Hora">
+                                    <input type="time" id="Horatxt" class="form-control" readonly="readonly" />
                                 </div>             
 
                                 <button type="reset" class="btn btn-success" style="margin-left: 360px;" data-toggle='modal' data-target='#myModal'onclick="ConsultarFoto()"> Confirmar</button>
@@ -218,7 +214,7 @@
         <script src="js/select2.js" type="text/javascript"></script>
         <script src="js/ajax.js" type="text/javascript"></script>
          <script src="bootstrap/js/alertify.js" type="text/javascript"></script>
- 
+         <script src="js/Fecha.js" type="text/javascript"></script>
 
         <%
             String alerta = (String) request.getAttribute("alerta");
@@ -233,7 +229,7 @@
          //Osea la etiqueta   <Select> se pueda recargar
             $(function () {
                 recibir2();
-                
+                FechaInterfaz();
             });
            
            //--------------------------

@@ -63,8 +63,8 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                          \r\n");
       out.write("        <form class=\"form-signin\" role=\"form\" action=\"ValidarUsuario\" method=\"Post\">\r\n");
       out.write("            <h2 class=\"form-signin-heading\">Inicio de Sesión</h2>\r\n");
-      out.write("            <input type=\"text\" class=\"form-control\" placeholder=\"Usuario\" name=\"usuario\" required autofocus>\r\n");
-      out.write("            <input type=\"password\" class=\"form-control\" name=\"Contra\" placeholder=\"Contraseña\" required>\r\n");
+      out.write("            <input type=\"text\" class=\"form-control\" placeholder=\"Usuario\" value=\"Cleiman\" name=\"usuario\" required autofocus>\r\n");
+      out.write("            <input type=\"password\" class=\"form-control\" name=\"Contra\" placeholder=\"Contraseña\" value=\"1\" required>\r\n");
       out.write("\r\n");
       out.write("            <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">Ingresar</button>\r\n");
       out.write("\r\n");
