@@ -244,7 +244,7 @@
                         <div class="form-group">
                             <label for="disabledSelect">Descrición</label>
 
-                            <textarea rows="4" name="Anomalia" id="Anomalia1" cols="50" class="form-control">
+                            <textarea rows="4" maxlength="120" name="Anomalia" id="Anomalia1" cols="50" onkeypress="return validarn(event)" class="form-control">
 
                             </textarea>
                         </div>
@@ -296,6 +296,23 @@
         <script type="text/javascript" charset="utf-8">
 
 
+function validarn(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 8)
+                    return true;
+                if (tecla == 9)
+                    return true;
+                if (tecla == 11)
+                    return true;
+                if (tecla == 32)
+                    return false;
+                if (tecla == 13)
+                    return false;
+                patron = /[0-9A-Za-zñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛÑñäëïöüÄËÏÖÜ\s\t]/;
+                te = String.fromCharCode(tecla);
+                return patron.test(te);
+            }
+            
             var actualizacion = setInterval(function () {
                 actualizar_anomalias()
             }, 3000);

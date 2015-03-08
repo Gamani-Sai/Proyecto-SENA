@@ -53,7 +53,7 @@
 
         if (tipo.equals("Estudiante")) {
 
-           response.sendRedirect("index.jsp");
+            response.sendRedirect("index.jsp");
         }
 
     } else {
@@ -225,7 +225,7 @@
 
                                 <div class="form-group col-lg-6">
                                     <label>Contraseña</label>
-                                    <input type="password" name="contra" class="form-control" id="contra" value="">
+                                    <input type="password" name="contra" class="form-control" onkeypress="return validarn(event)" id="contra" value="">
                                 </div>   
 
                                 <button type="submit" id="Guardar" name="guardar" value="insertar" class="btn btn-success" style="margin-left: 360px;">Guardar</button>
@@ -268,6 +268,8 @@
                     return true;
                 if (tecla == 11)
                     return true;
+                if (tecla == 32)
+                    return false;
                 patron = /[0-9A-Za-zñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛÑñäëïöüÄËÏÖÜ\s\t]/;
                 te = String.fromCharCode(tecla);
                 return patron.test(te);

@@ -257,6 +257,8 @@
                                             return true;
                                         if (tecla == 11)
                                             return true;
+                                        if (tecla == 32)
+                                            return false;
                                         patron = /[0-9A-Za-zñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛÑñäëïöüÄËÏÖÜ\s\t]/;
                                         te = String.fromCharCode(tecla);
                                         return patron.test(te);
@@ -398,7 +400,7 @@
                         event.returnValue = false;
                 }
                 function sololetras() {
-                    if ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122))
+                    if ((event.keyCode >= 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122))
                         event.returnValue = false;
                 }
                 function pulsar(e) {
@@ -491,7 +493,7 @@
                 function xd() {
                     var valor = '';
                     $("#tbl tbody tr").each(function () {
-                        valor+=$(this).find("a").text()+ "-";
+                        valor += $(this).find("a").text() + "-";
                     });
                     $("#serial").val(valor);
                 }
