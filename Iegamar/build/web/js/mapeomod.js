@@ -64,6 +64,6 @@ var mapear = {
     {
       $("#Serial").val(serial);
       $("#Anomalia").val(anomalia);
-    }
+    } 
 };
 
