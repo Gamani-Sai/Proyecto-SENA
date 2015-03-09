@@ -261,7 +261,7 @@ public class Prestamo extends ConexionBD {
                 + "FROM tbl_prestamo p INNER JOIN tbl_dtlls_estudiantexprestamo ep \n"
                 + "ON (p.Id_prestamo = ep.Id_prestamo) INNER JOIN tbl_estudiante e ON (ep.Identificacion = e.Identificacion) JOIN tbl_dtlls_cunetaxprestamo cp\n"
                 + "ON (p.Id_prestamo = cp.Id_prestamo) INNER JOIN tbl_cuentas_usuario cu ON (cp.Id_cuenta = cu.Id_cuenta) INNER JOIN tbl_dtlls_estudiantesxcuentas ec \n"
-                + "ON (cu.Id_cuenta = ec.Id_cuenta)INNER JOIN tbl_estudiante es ON (ec.Identificacion = es.Identificacion) WHERE cp.Tipo = 'Prestador' ";
+                + "ON (cu.Id_cuenta = ec.Id_cuenta)INNER JOIN tbl_estudiante es ON (ec.Identificacion = es.Identificacion) WHERE cp.Tipo = 'Prestador' ORDER BY  devolucion DESC";
         try {
             consulta = conector.createStatement();
             rsPrestamo = consulta.executeQuery(consultaPrestamo);
@@ -281,7 +281,7 @@ public class Prestamo extends ConexionBD {
                 + "FROM tbl_prestamo p INNER JOIN tbl_dtlls_empleadxprestamo ep\n"
                 + "ON (p.Id_prestamo = ep.Id_prestamo) INNER JOIN tbl_empleado em ON (ep.Identificacion = em.Identificacion) JOIN tbl_dtlls_cunetaxprestamo cp\n"
                 + "ON (p.Id_prestamo = cp.Id_prestamo) INNER JOIN tbl_cuentas_usuario cu ON (cp.Id_cuenta = cu.Id_cuenta) INNER JOIN tbl_dtlls_estudiantesxcuentas ec \n"
-                + "ON (cu.Id_cuenta = ec.Id_cuenta)INNER JOIN tbl_estudiante es ON (ec.Identificacion = es.Identificacion) WHERE cp.Tipo = 'Prestador' ";
+                + "ON (cu.Id_cuenta = ec.Id_cuenta)INNER JOIN tbl_estudiante es ON (ec.Identificacion = es.Identificacion) WHERE cp.Tipo = 'Prestador' ORDER BY  devolucion DESC";
         try {
             consulta = conector.createStatement();
             rsPrestamo = consulta.executeQuery(consultaPrestamo);

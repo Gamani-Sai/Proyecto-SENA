@@ -304,8 +304,6 @@ function validarn(e) {
                     return true;
                 if (tecla == 11)
                     return true;
-                if (tecla == 32)
-                    return false;
                 if (tecla == 13)
                     return false;
                 patron = /[0-9A-Za-zñÑáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛÑñäëïöüÄËÏÖÜ\s\t]/;
@@ -428,7 +426,7 @@ function validarn(e) {
 
                     recibir(localStorage.getItem("codigoElm"));
                 });
-                $("#Anomalia").val("");
+                $("#Anomalia1").val("");
             }
 
 
